@@ -22,13 +22,16 @@ public class Usuario {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    private String clerk_user_id;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
     private String nombre;
 
     @Column(nullable = false)
-    private String contraseña;
+    private String apellido;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
