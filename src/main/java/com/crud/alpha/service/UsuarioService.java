@@ -22,6 +22,11 @@ public class UsuarioService {
         return usuarioRepository.findById(id);
     }
 
+    // Obtener usuario por su 'clerkId'
+    public Optional<Usuario> obtenerPorClerkID(String clerkId) {
+        return usuarioRepository.findByClerkId(clerkId);
+    }
+
     public Optional<Usuario> obtenerPorEmail(String email) {
         return usuarioRepository.findByEmail(email);
     }

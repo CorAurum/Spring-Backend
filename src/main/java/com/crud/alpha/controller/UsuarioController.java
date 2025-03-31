@@ -20,9 +20,9 @@ public class UsuarioController {
         return usuarioService.obtenerTodos();
     }
 
-    @GetMapping("/{id}")
-    public Optional<Usuario> obtenerUsuario(@PathVariable Long id) {
-        return usuarioService.obtenerPorId(id);
+    @GetMapping("/{clerkId}")
+    public Optional<Usuario> obtenerUsuario(@PathVariable String clerkId) {
+        return usuarioService.obtenerPorClerkID(clerkId);
     }
 
     @GetMapping("/buscar")

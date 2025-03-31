@@ -16,13 +16,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario {
+// Importante no nombrar atributos utilizando '_' (piso/barra baja)
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String clerk_user_id;
+    private String clerkId;
 
     @Column(nullable = false, unique = true)
     private String email;

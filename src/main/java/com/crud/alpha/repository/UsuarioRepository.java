@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByEmail(String email); //Metodo generado usando la funcion de JPA findBy
+
+    Optional<Usuario> findByClerkId(String clerkId); //Metodo generado usando la funcion de JPA findBy
 }
