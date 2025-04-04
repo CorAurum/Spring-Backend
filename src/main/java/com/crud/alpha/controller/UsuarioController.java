@@ -3,6 +3,7 @@ package com.crud.alpha.controller;
 import com.crud.alpha.clase.Usuario;
 import com.crud.alpha.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,16 +31,22 @@ public class UsuarioController {
         return usuarioService.obtenerPorEmail(email);
     }
 
-
     @PostMapping
     public Usuario crearUsuario(@RequestBody Usuario usuario) {
         return usuarioService.guardarUsuario(usuario);
     }
 
-    @PutMapping("/{id}")
-    public Usuario actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        usuario.setId(id); // Aseguramos que actualiza el usuario existente
-        return usuarioService.guardarUsuario(usuario);
+    @PatchMapping("/{clerkId}")
+    public ResponseEntity<Usuario> updateUsuario(
+            @PathVariable String clerkId,
+            @RequestBody Usuario usuarioActualizado) {
+        // Ensure the clerkId in the path matches the body
+        if (!clerkId.equals(usuarioActualizado.getClerkId())) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Usuario updatedUsuario = usuarioService.actualizarUsuario(usuarioActualizado);
+        return ResponseEntity.ok(updatedUsuario);
     }
 
     @DeleteMapping("/{id}")

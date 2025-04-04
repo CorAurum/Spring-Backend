@@ -35,6 +35,29 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    public Usuario actualizarUsuario(Usuario usuarioActualizado) {
+        // Fetch the existing user by clerkId
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByClerkId(usuarioActualizado.getClerkId());
+
+        if (usuarioOpt.isEmpty()) {
+            // If no user exists, create a new one (optional, depending on your use case)
+            return usuarioRepository.save(usuarioActualizado);
+        }
+
+        // Get the existing user
+        Usuario usuario = usuarioOpt.get();
+
+        if (usuarioActualizado.getNombre() != null) {
+            usuario.setNombre(usuarioActualizado.getNombre());
+        }
+
+        if (usuarioActualizado.getApellido() != null) {
+            usuario.setApellido(usuarioActualizado.getApellido());
+        }
+
+        return usuarioRepository.save(usuario);
+    }
+
     public void eliminarUsuario(Long id) {
         usuarioRepository.deleteById(id);
     }
