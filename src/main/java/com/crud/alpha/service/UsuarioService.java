@@ -1,6 +1,7 @@
 package com.crud.alpha.service;
 
 import com.crud.alpha.clase.Usuario;
+import com.crud.alpha.dto.UsuarioUpdateDTO;
 import com.crud.alpha.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,29 +36,28 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario actualizarUsuario(Usuario usuarioActualizado) {
+    // Actualizar datos de un usuario
+    public Usuario actualizarUsuario(String clerkId, String nombre, String apellido) {
         // Fetch the existing user by clerkId
-        Optional<Usuario> usuarioOpt = usuarioRepository.findByClerkId(usuarioActualizado.getClerkId());
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByClerkId(clerkId);
 
-        if (usuarioOpt.isEmpty()) {
-            // If no user exists, create a new one (optional, depending on your use case)
-            return usuarioRepository.save(usuarioActualizado);
-        }
-
-        // Get the existing user
+        // Get the existing user.
         Usuario usuario = usuarioOpt.get();
 
-        if (usuarioActualizado.getNombre() != null) {
-            usuario.setNombre(usuarioActualizado.getNombre());
+        // Update only the user's name and last name.
+        if (nombre != null) {
+            usuario.setNombre(nombre);
         }
 
-        if (usuarioActualizado.getApellido() != null) {
-            usuario.setApellido(usuarioActualizado.getApellido());
+        if (apellido != null) {
+            usuario.setApellido(apellido);
         }
 
         return usuarioRepository.save(usuario);
     }
 
+
+    // Eliminar usuario
     public void eliminarUsuario(Long id) {
         usuarioRepository.deleteById(id);
     }

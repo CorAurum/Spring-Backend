@@ -1,6 +1,7 @@
 package com.crud.alpha.controller;
 
 import com.crud.alpha.clase.Usuario;
+import com.crud.alpha.dto.UsuarioUpdateDTO;
 import com.crud.alpha.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,13 +40,9 @@ public class UsuarioController {
     @PatchMapping("/{clerkId}")
     public ResponseEntity<Usuario> updateUsuario(
             @PathVariable String clerkId,
-            @RequestBody Usuario usuarioActualizado) {
-        // Ensure the clerkId in the path matches the body
-        if (!clerkId.equals(usuarioActualizado.getClerkId())) {
-            return ResponseEntity.badRequest().build();
-        }
+            @RequestBody UsuarioUpdateDTO usuarioActualizado) {
 
-        Usuario updatedUsuario = usuarioService.actualizarUsuario(usuarioActualizado);
+        Usuario updatedUsuario = usuarioService.actualizarUsuario(clerkId, usuarioActualizado.getNombre(), usuarioActualizado.getApellido());
         return ResponseEntity.ok(updatedUsuario);
     }
 
