@@ -1,14 +1,15 @@
-# Use Eclipse Temurin JDK 21 as the base image
+# Use Java 21 runtime
 FROM eclipse-temurin:21-jdk-alpine
 
-# Set the working directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy the project files into the container
-COPY ../../AppData/Local/Temp/Rar$DRa18716.37835.rartemp/Spring-Backend-main .
+# Copy the built JAR file
+COPY target/*.jar app.jar
 
-# Grant execute permissions to the Maven wrapper and build the project
-RUN chmod +x ./mvnw && ./mvnw clean package -DskipTests
+# Expose the port expected by Railway
+ENV PORT=8080
+EXPOSE 8080
 
-# Run the application
-CMD ["sh", "-c", "java -jar target/*.jar"]
+# Run the Spring Boot app
+ENTRYPOINT ["java", "-jar", "app.jar"]
