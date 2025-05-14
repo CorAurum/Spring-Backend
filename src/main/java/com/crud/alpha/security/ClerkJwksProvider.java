@@ -1,4 +1,4 @@
-package com.crud.alpha.clase;
+package com.crud.alpha.security;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,6 +1,5 @@
-package com.crud.alpha.service;
+package com.crud.alpha.security;
 
-import com.crud.alpha.clase.ClerkJwksProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

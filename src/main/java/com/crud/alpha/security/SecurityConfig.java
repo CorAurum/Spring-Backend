@@ -1,6 +1,5 @@
-package com.crud.alpha.config;
+package com.crud.alpha.security;
 
-import com.crud.alpha.clase.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -567,13 +567,13 @@ This generated password is for development use only. Your security configuration
 2025-05-13T18:00:26.382-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2025-05-13T18:00:26.382-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2025-05-13T18:00:26.383-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2025-05-13T18:08:40.630-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-7] com.crud.alpha.clase.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
-2025-05-13T18:08:41.220-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-7] com.crud.alpha.clase.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
-2025-05-13T18:08:41.228-03:00 ERROR 16020 --- [alpha] [http-nio-8080-exec-7] com.crud.alpha.service.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-13T18:08:40.630-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-7] com.crud.alpha.security.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
+2025-05-13T18:08:41.220-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-7] com.crud.alpha.security.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
+2025-05-13T18:08:41.228-03:00 ERROR 16020 --- [alpha] [http-nio-8080-exec-7] com.crud.alpha.security.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
 2025-05-13T18:08:41.228-03:00  WARN 16020 --- [alpha] [http-nio-8080-exec-7] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
-2025-05-13T18:08:53.560-03:00 ERROR 16020 --- [alpha] [http-nio-8080-exec-3] com.crud.alpha.service.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-13T18:08:53.560-03:00 ERROR 16020 --- [alpha] [http-nio-8080-exec-3] com.crud.alpha.security.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
 2025-05-13T18:08:53.560-03:00  WARN 16020 --- [alpha] [http-nio-8080-exec-3] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
-2025-05-13T18:08:56.070-03:00 ERROR 16020 --- [alpha] [http-nio-8080-exec-10] com.crud.alpha.service.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-13T18:08:56.070-03:00 ERROR 16020 --- [alpha] [http-nio-8080-exec-10] com.crud.alpha.security.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
 2025-05-13T18:08:56.070-03:00  WARN 16020 --- [alpha] [http-nio-8080-exec-10] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
 2025-05-13T18:10:10.113-03:00  INFO 16020 --- [alpha] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
 2025-05-13T18:10:10.115-03:00  INFO 16020 --- [alpha] [Thread-5] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
@@ -707,9 +707,9 @@ This generated password is for development use only. Your security configuration
 2025-05-13T18:10:54.747-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2025-05-13T18:10:54.747-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2025-05-13T18:10:54.747-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
-2025-05-13T18:10:54.748-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.clase.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
-2025-05-13T18:10:55.342-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.clase.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
-2025-05-13T18:10:55.342-03:00 ERROR 16020 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.service.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-13T18:10:54.748-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
+2025-05-13T18:10:55.342-03:00  INFO 16020 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
+2025-05-13T18:10:55.342-03:00 ERROR 16020 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
 2025-05-13T18:10:55.343-03:00  WARN 16020 --- [alpha] [http-nio-8080-exec-1] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
 2025-05-13T18:10:58.001-03:00  INFO 16020 --- [alpha] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
 2025-05-13T18:10:58.003-03:00  INFO 16020 --- [alpha] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
@@ -758,25 +758,25 @@ This generated password is for development use only. Your security configuration
 2025-05-13T18:11:29.071-03:00  INFO 3152 --- [alpha] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2025-05-13T18:11:29.071-03:00  INFO 3152 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2025-05-13T18:11:29.072-03:00  INFO 3152 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2025-05-13T18:11:29.087-03:00  INFO 3152 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.clase.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
-2025-05-13T18:11:29.254-03:00  INFO 3152 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.clase.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
-2025-05-13T18:11:29.261-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.service.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-13T18:11:29.087-03:00  INFO 3152 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
+2025-05-13T18:11:29.254-03:00  INFO 3152 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
+2025-05-13T18:11:29.261-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
 2025-05-13T18:11:29.261-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-1] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
-2025-05-13T18:11:49.558-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-2] com.crud.alpha.service.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-13T18:11:49.558-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-2] com.crud.alpha.security.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
 2025-05-13T18:11:49.558-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-2] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
-2025-05-13T18:11:53.726-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-3] com.crud.alpha.service.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-13T18:11:53.726-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-3] com.crud.alpha.security.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
 2025-05-13T18:11:53.726-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-3] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
-2025-05-13T18:12:21.454-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-4] com.crud.alpha.service.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-13T18:12:21.454-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-4] com.crud.alpha.security.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
 2025-05-13T18:12:21.454-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-4] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
-2025-05-13T18:12:29.156-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-5] com.crud.alpha.service.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-13T18:12:29.156-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-5] com.crud.alpha.security.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
 2025-05-13T18:12:29.156-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-5] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
-2025-05-13T18:13:50.626-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-8] com.crud.alpha.service.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-13T18:13:50.626-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-8] com.crud.alpha.security.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
 2025-05-13T18:13:50.626-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-8] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
-2025-05-13T18:14:40.722-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-9] com.crud.alpha.service.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
+2025-05-13T18:14:40.722-03:00 ERROR 3152 --- [alpha] [http-nio-8080-exec-9] com.crud.alpha.security.JwtService        : JWT validation error: JWT strings must contain exactly 2 period characters. Found: 0
 2025-05-13T18:14:40.722-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-9] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
-2025-05-13T18:14:50.578-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-10] com.crud.alpha.service.JwtService        : Invalid issuer: https://sensible-octopus-22.clerk.accounts.dev
+2025-05-13T18:14:50.578-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-10] com.crud.alpha.security.JwtService        : Invalid issuer: https://sensible-octopus-22.clerk.accounts.dev
 2025-05-13T18:14:50.578-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-10] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
-2025-05-13T18:14:56.134-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.service.JwtService        : Invalid issuer: https://sensible-octopus-22.clerk.accounts.dev
+2025-05-13T18:14:56.134-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.JwtService        : Invalid issuer: https://sensible-octopus-22.clerk.accounts.dev
 2025-05-13T18:14:56.134-03:00  WARN 3152 --- [alpha] [http-nio-8080-exec-1] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
 2025-05-13T18:15:51.687-03:00  INFO 3152 --- [alpha] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
 2025-05-13T18:15:51.690-03:00  INFO 3152 --- [alpha] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
@@ -825,11 +825,11 @@ This generated password is for development use only. Your security configuration
 2025-05-13T18:15:58.794-03:00  INFO 1416 --- [alpha] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2025-05-13T18:15:58.794-03:00  INFO 1416 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2025-05-13T18:15:58.795-03:00  INFO 1416 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
-2025-05-13T18:15:58.811-03:00  INFO 1416 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.clase.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
-2025-05-13T18:15:59.127-03:00  INFO 1416 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.clase.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
-2025-05-13T18:15:59.153-03:00  WARN 1416 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.service.JwtService        : Invalid audience: null
+2025-05-13T18:15:58.811-03:00  INFO 1416 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
+2025-05-13T18:15:59.127-03:00  INFO 1416 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
+2025-05-13T18:15:59.153-03:00  WARN 1416 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.JwtService        : Invalid audience: null
 2025-05-13T18:15:59.153-03:00  WARN 1416 --- [alpha] [http-nio-8080-exec-1] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
-2025-05-13T18:32:09.494-03:00  WARN 1416 --- [alpha] [http-nio-8080-exec-4] com.crud.alpha.service.JwtService        : Invalid audience: null
+2025-05-13T18:32:09.494-03:00  WARN 1416 --- [alpha] [http-nio-8080-exec-4] com.crud.alpha.security.JwtService        : Invalid audience: null
 2025-05-13T18:32:09.495-03:00  WARN 1416 --- [alpha] [http-nio-8080-exec-4] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
 2025-05-13T18:32:14.061-03:00  INFO 1416 --- [alpha] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
 2025-05-13T18:32:14.064-03:00  INFO 1416 --- [alpha] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
@@ -878,9 +878,9 @@ This generated password is for development use only. Your security configuration
 2025-05-13T18:32:24.074-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2025-05-13T18:32:24.075-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2025-05-13T18:32:24.075-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
-2025-05-13T18:32:24.092-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.clase.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
-2025-05-13T18:32:24.327-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.clase.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
-2025-05-13T18:32:24.352-03:00  WARN 10748 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.service.JwtService        : Invalid audience: null
+2025-05-13T18:32:24.092-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
+2025-05-13T18:32:24.327-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
+2025-05-13T18:32:24.352-03:00  WARN 10748 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.JwtService        : Invalid audience: null
 2025-05-13T18:32:24.352-03:00  WARN 10748 --- [alpha] [http-nio-8080-exec-1] c.c.alpha.clase.JwtAuthenticationFilter  : Invalid JWT token
 2025-05-13T18:37:58.661-03:00  INFO 10748 --- [alpha] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
 2025-05-13T18:37:58.663-03:00  INFO 10748 --- [alpha] [Thread-5] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
@@ -1313,8 +1313,8 @@ This generated password is for development use only. Your security configuration
 2025-05-13T18:39:11.932-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat-3].[localhost].[/]     : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2025-05-13T18:39:11.932-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2025-05-13T18:39:11.932-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
-2025-05-13T18:39:11.933-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.clase.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
-2025-05-13T18:39:12.123-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.clase.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
+2025-05-13T18:39:11.933-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.ClerkJwksProvider   : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
+2025-05-13T18:39:12.123-03:00  INFO 10748 --- [alpha] [http-nio-8080-exec-1] com.crud.alpha.security.ClerkJwksProvider   : JWKS refresh complete, cached 1 keys
 2025-05-13T19:14:56.233-03:00  INFO 10748 --- [alpha] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
 2025-05-13T19:14:56.234-03:00  INFO 10748 --- [alpha] [Thread-20] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
 2025-05-13T19:14:56.236-03:00  INFO 10748 --- [alpha] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete

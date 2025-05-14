@@ -1,6 +1,5 @@
-package com.crud.alpha.clase;
+package com.crud.alpha.security;
 
-import com.crud.alpha.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
