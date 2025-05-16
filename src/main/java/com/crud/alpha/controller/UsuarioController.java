@@ -42,7 +42,7 @@ public class UsuarioController {
             @PathVariable String clerkId,
             @RequestBody UsuarioUpdateDTO usuarioActualizado) {
 
-        Usuario updatedUsuario = usuarioService.actualizarUsuario(clerkId, usuarioActualizado.getNombre(), usuarioActualizado.getApellido());
+        Usuario updatedUsuario = usuarioService.actualizarUsuario(clerkId, usuarioActualizado);
         return ResponseEntity.ok(updatedUsuario);
     }
 

@@ -37,23 +37,31 @@ public class UsuarioService {
     }
 
     // Actualizar datos de un usuario
-    public Usuario actualizarUsuario(String clerkId, String nombre, String apellido) {
+    public Usuario actualizarUsuario(String clerkId, UsuarioUpdateDTO usuarioActualizado) {
         // Fetch the existing user by clerkId
         Optional<Usuario> usuarioOpt = usuarioRepository.findByClerkId(clerkId);
 
-        // Get the existing user.
-        Usuario usuario = usuarioOpt.get();
+        if (usuarioOpt.isPresent()) {
 
-        // Update only the user's name and last name.
-        if (nombre != null) {
-            usuario.setNombre(nombre);
+            // Get the existing user.
+            Usuario usuario = usuarioOpt.get();
+            // Update only the user's name and last name.
+            if (usuarioActualizado.getNombre() != null) {
+                usuario.setNombre(usuarioActualizado.getNombre());
+            }
+
+            if (usuarioActualizado.getApellido() != null) {
+                usuario.setApellido(usuarioActualizado.getApellido());
+            }
+
+            if (usuarioActualizado.getFechaNacimiento() != null) {
+                usuario.setFechaNacimiento(usuarioActualizado.getFechaNacimiento());
+            }
+
+            return usuarioRepository.save(usuario);
+        } else {
+            return null;
         }
-
-        if (apellido != null) {
-            usuario.setApellido(apellido);
-        }
-
-        return usuarioRepository.save(usuario);
     }
 
 
