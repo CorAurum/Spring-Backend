@@ -3599,3 +3599,53 @@ This generated password is for development use only. Your security configuration
 2025-05-16T18:38:36.443-03:00  INFO 11028 --- [alpha] [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-05-16T18:38:36.444-03:00  INFO 11028 --- [alpha] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2025-05-16T18:38:36.452-03:00  INFO 11028 --- [alpha] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-05-16T18:39:16.550-03:00  INFO 12412 --- [alpha] [restartedMain] com.crud.alpha.AlphaApplication          : Starting AlphaApplication using Java 23 with PID 12412 (C:\Users\joaqu\OneDrive\Documentos\GitHub\Spring-Backend\target\classes started by joaqu in C:\Users\joaqu\OneDrive\Documentos\GitHub\Spring-Backend)
+2025-05-16T18:39:16.551-03:00  INFO 12412 --- [alpha] [restartedMain] com.crud.alpha.AlphaApplication          : No active profile set, falling back to 1 default profile: "default"
+2025-05-16T18:39:16.586-03:00  INFO 12412 --- [alpha] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-05-16T18:39:16.586-03:00  INFO 12412 --- [alpha] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-05-16T18:39:16.972-03:00  INFO 12412 --- [alpha] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-16T18:39:17.005-03:00  INFO 12412 --- [alpha] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 28 ms. Found 2 JPA repository interfaces.
+2025-05-16T18:39:17.360-03:00  INFO 12412 --- [alpha] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-05-16T18:39:17.367-03:00  INFO 12412 --- [alpha] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-05-16T18:39:17.367-03:00  INFO 12412 --- [alpha] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-05-16T18:39:17.393-03:00  INFO 12412 --- [alpha] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-05-16T18:39:17.394-03:00  INFO 12412 --- [alpha] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 807 ms
+2025-05-16T18:39:17.488-03:00  INFO 12412 --- [alpha] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-16T18:39:17.518-03:00  INFO 12412 --- [alpha] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-05-16T18:39:17.536-03:00  INFO 12412 --- [alpha] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-05-16T18:39:17.700-03:00  INFO 12412 --- [alpha] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-16T18:39:17.719-03:00  INFO 12412 --- [alpha] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-05-16T18:39:17.919-03:00  INFO 12412 --- [alpha] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@31042dc8
+2025-05-16T18:39:17.921-03:00  INFO 12412 --- [alpha] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-05-16T18:39:17.969-03:00  INFO 12412 --- [alpha] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 9.2
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-16T18:39:18.442-03:00  INFO 12412 --- [alpha] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-16T18:39:18.471-03:00  INFO 12412 --- [alpha] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-16T18:39:18.650-03:00  WARN 12412 --- [alpha] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-16T18:39:18.659-03:00  WARN 12412 --- [alpha] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 4b07463f-11ad-4e1e-8ec2-5e933f630628
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-05-16T18:39:18.667-03:00  INFO 12412 --- [alpha] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-05-16T18:39:18.916-03:00  INFO 12412 --- [alpha] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-05-16T18:39:18.934-03:00  INFO 12412 --- [alpha] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-05-16T18:39:18.939-03:00  INFO 12412 --- [alpha] [restartedMain] com.crud.alpha.AlphaApplication          : Started AlphaApplication in 2.635 seconds (process running for 3.05)
+2025-05-16T18:41:45.146-03:00  INFO 12412 --- [alpha] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-05-16T18:41:45.146-03:00  INFO 12412 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-05-16T18:41:45.147-03:00  INFO 12412 --- [alpha] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-05-16T18:41:45.164-03:00  INFO 12412 --- [alpha] [http-nio-8080-exec-1] c.crud.alpha.security.ClerkJwksProvider  : Fetching JWKS from https://sensible-octopus-22.clerk.accounts.dev/.well-known/jwks.json
+2025-05-16T18:41:46.138-03:00  INFO 12412 --- [alpha] [http-nio-8080-exec-1] c.crud.alpha.security.ClerkJwksProvider  : JWKS refresh complete, cached 1 keys
+2025-05-16T20:53:20.244-03:00  INFO 12412 --- [alpha] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-05-16T20:53:20.250-03:00  INFO 12412 --- [alpha] [Thread-5] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-16T20:53:20.254-03:00  INFO 12412 --- [alpha] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-05-16T20:53:20.258-03:00  INFO 12412 --- [alpha] [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-16T20:53:20.262-03:00  INFO 12412 --- [alpha] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-05-16T20:53:20.270-03:00  INFO 12412 --- [alpha] [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
