@@ -1,6 +1,6 @@
 package com.crud.alpha.repository;
 
-import com.crud.alpha.clase.Usuario;
+import com.crud.alpha.clase.Usuarios.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,3 +12,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByClerkId(String clerkId); //Metodo generado usando la funcion de JPA findBy
 }
+

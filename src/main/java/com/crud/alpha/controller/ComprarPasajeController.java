@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("/api/payment")
+@RequestMapping("/api/public/payment")
 public class ComprarPasajeController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class ComprarPasajeController {
 
     @PostConstruct // Establecemos el Token
     public void initMercadoPago() {
-        MercadoPagoConfig.setAccessToken("${PROD_MP_TOKEN}");
+        MercadoPagoConfig.setAccessToken("APP_USR-4660902402181456-051421-a0dc72f950d732f8c86b2ac9f49a8c2c-2442411888");
     }
 
     @PostMapping("/create")
