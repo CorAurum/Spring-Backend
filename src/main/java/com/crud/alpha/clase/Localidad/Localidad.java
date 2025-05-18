@@ -1,5 +1,6 @@
 package com.crud.alpha.clase.Localidad;
 
+import com.crud.alpha.clase.Usuarios.Vendedor;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,5 +26,12 @@ public class Localidad {
     // *** Manual
     @Column(nullable = false)
     private String Nombre;
+
+
+    // Fk tabla y relacion con Vendedor
+
+    @ManyToOne
+    @JoinColumn(name = "id_Vendedor", referencedColumnName = "id")  // id seria el atributo PK de Vendedor, idVendedor es el nombre que tendra en la BD este atributo.
+    private Vendedor idVendedor;
 
 }

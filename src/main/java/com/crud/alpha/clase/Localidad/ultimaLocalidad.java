@@ -1,5 +1,6 @@
 package com.crud.alpha.clase.Localidad;
 
+import com.crud.alpha.clase.Omnibus.Omnibus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,11 +31,13 @@ public class ultimaLocalidad {
     @Column(nullable = false)
     private LocalDate hora;
 
-
     // *** FK
 
     @ManyToOne
-    @JoinColumn(name = "ultima_localidad_id")
-    private Localidad localidad_id;
+    private Omnibus omnibus;
+
+    @ManyToOne
+    @JoinColumn(name = "localidad_nombre", referencedColumnName = "nombre")
+    private Localidad localidad;
 
 }

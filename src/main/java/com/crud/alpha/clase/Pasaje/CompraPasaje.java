@@ -35,14 +35,15 @@ public class CompraPasaje {
     @Column(nullable = false)
     private String paymentStatus;
 
-    // *** FK
+    // *** FK Cliente
 
     @OneToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false,name = "idCliente", referencedColumnName = "id")
     private Usuario idCliente;
 
-    @OneToMany
-    @JoinColumn(nullable = false)
+    // *** Fk Pasaje
+
+    @OneToMany(mappedBy = "idCompraPasaje")
     private List<Pasaje> idPasaje;
 
 }

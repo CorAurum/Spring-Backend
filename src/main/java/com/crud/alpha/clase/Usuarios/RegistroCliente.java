@@ -18,6 +18,9 @@ public class RegistroCliente {
     @Column
     private LocalDate fecha;
 
+
+    // fk Usuario
+
     @OneToOne
     @JoinColumn(name = "idUsuario", referencedColumnName = "id") // id seria el atributo PK de Usuario, idUsuario es el nombre que tendra en la BD este atributo.
     private Usuario idUsuario;

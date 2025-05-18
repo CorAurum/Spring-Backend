@@ -1,10 +1,18 @@
 package com.crud.alpha.clase;
 
+import com.crud.alpha.clase.Localidad.Localidad;
+import com.crud.alpha.clase.Omnibus.Omnibus;
+import com.crud.alpha.clase.Pasaje.Pasaje;
+import com.crud.alpha.clase.Usuarios.Administrador;
+import com.crud.alpha.clase.Usuarios.RegistroUsuario;
+import com.crud.alpha.clase.Usuarios.Vendedor;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 //Modelado de la clase y tabla usuarios, @Tabla le da el nombre a la tabla, los demas @ nos ahorran declarar los getters
@@ -38,5 +46,37 @@ public class Viaje {
 
     @Column(nullable = false)
     private boolean cerrado;
+
+
+    // Fk tabla y relacion con Omnibus
+
+    @OneToOne
+    @JoinColumn(nullable = false,name = "id_Omnibus_Asignado", referencedColumnName = "id") // id es la PK de Omnibus
+    private Omnibus omnibusAsignado;
+
+    // Fk tabla y relacion con Vendedor
+
+    @ManyToOne
+    @JoinColumn(name = "id_Vendedor", referencedColumnName = "id")  // id seria el atributo PK de Vendedor, idVendedor es el nombre que tendra en la BD este atributo.
+    private Vendedor idVendedor;
+
+
+    // FK tabla y relacion con Localidad // PENSADO PARA LOCALIDAD DONDE INICIA EL VIAJE
+
+    @OneToOne
+    @JoinColumn(nullable = false,name = "localidad_Inicial", referencedColumnName = "id") // id es la PK de Localidad
+    private Localidad localidadInicial;
+
+
+    // FK tabla y relacion con Localidad // PENSADO PARA LOCALIDAD DONDE FINALIZA EL VIAJE
+
+    @OneToOne
+    @JoinColumn(nullable = false,name = "localidad_Final", referencedColumnName = "id") // id es la PK de Localidad
+    private Localidad localidadFinal;
+
+    // ** FK Tabla y relacion con Pasaje
+
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
+    private List<Pasaje> RegistroPasaje = new ArrayList<>();
 
 }

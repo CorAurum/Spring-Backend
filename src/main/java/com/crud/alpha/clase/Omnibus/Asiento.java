@@ -31,16 +31,21 @@ public class Asiento {
     @Column(nullable = false)
     private int nroAsiento;
 
-    // *** FK
+    // *** FK Tabla y relacion con Omnibus
 
     @ManyToOne
-    @JoinColumn(name = "Omnibus_Id")
-    private Omnibus Omnibus;
+    @JoinColumn(name = "Omnibus_Id") // esta columna estará en la tabla Omnibus
+    private Omnibus omnibusId;
 
+
+    // *** Fk Tabla y relacion con Pasaje
 
     @OneToOne
     @JoinColumn(name = "pasaje_id", unique = true) // Asiento solo tiene un pasaje
     private Pasaje pasaje;
+
+
+
 
 
 }

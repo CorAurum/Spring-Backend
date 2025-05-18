@@ -15,4 +15,5 @@ public class Administrador extends Usuario {
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
     private List<RegistroUsuario> RegistroUsuario = new ArrayList<>();
 
+
 }

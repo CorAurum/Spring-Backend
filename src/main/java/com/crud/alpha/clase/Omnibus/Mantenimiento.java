@@ -28,25 +28,26 @@ public class Mantenimiento {
     // *** Manual
 
     @Column(nullable = false)
-    private LocalDate FechaDesde;
+    private LocalDate fechaDesde;
 
     @Column(nullable = false)
-    private LocalTime HoraDesde;
+    private LocalTime horaDesde;
 
     @Column(nullable = false)
-    private LocalDate FechaHasta;
+    private LocalDate fechaHasta;
 
     @Column(nullable = false)
-    private LocalTime HoraHasta;
+    private LocalTime horaHasta;
 
     @Column(nullable = false)
     private String Motivo;
 
-    // *** FK
+
+    // *** FK Tabla y relacion con Omnibus
 
     @ManyToOne
-    @JoinColumn(name = "Omnibus_Id")
-    private Omnibus OmnibusId;
+    @JoinColumn(name = "Omnibus_Id") // esta columna estará en la tabla Mantenimiento
+    private Omnibus omnibusId;
 
 
 }

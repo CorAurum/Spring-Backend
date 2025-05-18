@@ -1,10 +1,13 @@
 package com.crud.alpha.clase.Omnibus;
 
 import com.crud.alpha.clase.Pasaje.Pasaje;
+import com.crud.alpha.clase.Usuarios.Vendedor;
 import com.crud.alpha.enums.EstadoOmnibus;
+import com.crud.alpha.clase.Localidad.ultimaLocalidad;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,9 +49,27 @@ public class Omnibus {
     @Column(nullable = false)
     private boolean accesibilidad;
 
-    // *** FK
+    // *** FK de Tabla y relacion con Mantenimiento
 
-    @OneToMany(mappedBy = "id") // Opcional
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY) // Opcional
     private List<Mantenimiento> Mantenimientos;
+
+    // *** FK de Tabla y relacion con Vendedor
+
+    @ManyToOne
+    @JoinColumn(name = "vendedor_Id") // esta columna estará en la tabla Omnibus
+    private Vendedor vendedorId;
+
+    // *** FK de Tabla y relacion con Ultimalocalidad (UltimaLocalidad en la que estuvo el bus presente, AKA su ultima ubicacion registrada)
+
+    @OneToMany(mappedBy = "omnibus") // mappedby indica a la tabla que la columna de esta relacion no se genera en Omnibus, si no en UltimaLocalidad.
+    private List<ultimaLocalidad> ultimasLocalidades = new ArrayList<>();
+
+
+    // *** FK de Tabla y relacion con Asiento
+
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY) // Opcional
+    private List<Asiento> Asientos;
+
 
 }

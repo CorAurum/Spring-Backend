@@ -1,8 +1,11 @@
 package com.crud.alpha.clase.Pasaje;
 
 import com.crud.alpha.clase.Omnibus.Asiento;
+import com.crud.alpha.clase.Usuarios.Administrador;
+import com.crud.alpha.clase.Viaje;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.boot.context.properties.bind.Name;
 
 import java.time.LocalTime;
 
@@ -26,16 +29,24 @@ public class Pasaje {
     private Long id;
     // *** Manual
 
-    @Column(nullable = false)
-    private LocalTime hora_partida;
-
-    @Column(nullable = false)
-    private LocalTime hora_llegada;
-
-    // *** FK
+    // *** FK Tabla y relacion con Asiento
 
     @OneToOne(mappedBy = "pasaje")
     private Asiento asiento;
+
+
+    // *** FK Tabla y relacion con CompraPasaje
+
+    @ManyToOne
+    @JoinColumn(name = "id_compra_pasaje", referencedColumnName = "PaymentId")
+    private CompraPasaje idCompraPasaje;
+
+
+    // *** FK Tabla y relacion con Viaje
+
+    @ManyToOne
+    @JoinColumn(name = "idViaje", referencedColumnName = "id")  // id seria el atributo PK de Viaje, idViaje es el nombre que tendra en la BD este atributo.
+    private Viaje idViaje;
 
 
 }
