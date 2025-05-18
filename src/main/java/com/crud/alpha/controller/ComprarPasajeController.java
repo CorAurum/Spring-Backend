@@ -1,6 +1,6 @@
 package com.crud.alpha.controller;
 
-import com.crud.alpha.clase.Compra;
+import com.crud.alpha.clase.MP_Temporal.Compra;
 import com.crud.alpha.service.CompraPasajeService;
 import com.mercadopago.client.preference.PreferenceClient;
 import com.mercadopago.client.preference.PreferenceItemRequest;
@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("/api/public/payment")
+@RequestMapping("/payment")
 public class ComprarPasajeController {
 
     @Autowired
@@ -83,4 +83,3 @@ public class ComprarPasajeController {
     }
 
 }
-

@@ -1,4 +1,4 @@
-package com.crud.alpha.clase;
+package com.crud.alpha.clase.MP_Temporal;
 
 
 import lombok.AllArgsConstructor;
