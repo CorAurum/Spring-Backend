@@ -1,8 +1,9 @@
 package com.crud.alpha.service;
 
 import com.crud.alpha.clase.Usuarios.Administrador;
+import com.crud.alpha.clase.Usuarios.dto.AdministradorDTO;
+import com.crud.alpha.clase.Usuarios.dto.AdministradorUpdateDTO;
 import com.crud.alpha.clase.Usuarios.dto.NewAdministradorDTO;
-import com.crud.alpha.clase.Usuarios.dto.UsuarioUpdateDTO;
 import com.crud.alpha.clase.Usuarios.exceptions.AdministradorNotFoundException;
 import com.crud.alpha.clase.Usuarios.exceptions.AdministradorServiceException;
 import com.crud.alpha.repository.AdministradorRepository;
@@ -99,28 +100,43 @@ public class AdministradorService {
     }
 
 
-    // ACtualizar los datos de un administrador.
-    public Administrador actualizarAdministrador(String clerkId, UsuarioUpdateDTO adminActualizado) {
-        Optional<Administrador> adminOpt = administradorRepository.findByClerkId(clerkId);
+    // Actualizar los datos de un administrador.
+    @Transactional
+    public AdministradorDTO actualizarAdministrador(String clerkId, AdministradorUpdateDTO adminUpdateDTO) {
+        try {
+            // Fetch the existing administrator by ClerkId.
+            Administrador admin = obtenerPorClerkID(clerkId); // Throws AdministradorNotFoundException if not found
 
-        if (adminOpt.isPresent()) {
-            Administrador admin = adminOpt.get();
-
-            if (adminActualizado.getNombre() != null) {
-                admin.setNombre(adminActualizado.getNombre());
+            // Update the provided fields.
+            if (adminUpdateDTO.getNombre() != null) {
+                admin.setNombre(adminUpdateDTO.getNombre());
+            }
+            if (adminUpdateDTO.getApellido() != null) {
+                admin.setApellido(adminUpdateDTO.getApellido());
+            }
+            if (adminUpdateDTO.getFechaNacimiento() != null) {
+                admin.setFechaNacimiento(adminUpdateDTO.getFechaNacimiento());
             }
 
-            if (adminActualizado.getApellido() != null) {
-                admin.setApellido(adminActualizado.getApellido());
-            }
+            // Save the updated entity.
+            Administrador updatedAdmin = administradorRepository.save(admin);
 
-            if (adminActualizado.getFechaNacimiento() != null) {
-                admin.setFechaNacimiento(adminActualizado.getFechaNacimiento());
-            }
+            // Convert to DTO.
+            AdministradorDTO updatedAdminDTO = new AdministradorDTO();
+            updatedAdminDTO.setEmail(updatedAdmin.getEmail());
+            updatedAdminDTO.setNombre(updatedAdmin.getNombre());
+            updatedAdminDTO.setApellido(updatedAdmin.getApellido());
+            updatedAdminDTO.setActivo(updatedAdmin.isActivo());
+            updatedAdminDTO.setFechaNacimiento(updatedAdmin.getFechaNacimiento());
 
-            return administradorRepository.save(admin);
-        } else {
-            return null;
+            // return the updated object.
+            return updatedAdminDTO;
+        } catch (AdministradorNotFoundException | IllegalArgumentException e) {
+            throw e;
+        } catch (DataAccessException e) {
+            throw new AdministradorServiceException("Error al actualizar administrador con clerkId: " + clerkId, e);
+        } catch (Exception e) {
+            throw new AdministradorServiceException("Error inesperado al actualizar administrador con clerkId: " + clerkId, e);
         }
     }
 
@@ -161,4 +177,5 @@ public class AdministradorService {
             throw new AdministradorServiceException("Error inesperado al eliminar administrador por id: " + id, e);
         }
     }
+
 }

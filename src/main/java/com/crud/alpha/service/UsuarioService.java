@@ -1,7 +1,6 @@
 package com.crud.alpha.service;
 
 import com.crud.alpha.clase.Usuarios.Usuario;
-import com.crud.alpha.clase.Usuarios.dto.UsuarioUpdateDTO;
 import com.crud.alpha.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

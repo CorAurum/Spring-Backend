@@ -2,8 +2,8 @@ package com.crud.alpha.controller;
 
 import com.crud.alpha.clase.Usuarios.Administrador;
 import com.crud.alpha.clase.Usuarios.dto.AdministradorDTO;
+import com.crud.alpha.clase.Usuarios.dto.AdministradorUpdateDTO;
 import com.crud.alpha.clase.Usuarios.dto.NewAdministradorDTO;
-import com.crud.alpha.clase.Usuarios.dto.UsuarioUpdateDTO;
 import com.crud.alpha.clase.Usuarios.exceptions.AdministradorNotFoundException;
 import com.crud.alpha.clase.Usuarios.exceptions.AdministradorServiceException;
 import com.crud.alpha.service.AdministradorService;
@@ -74,12 +74,21 @@ public class AdministradorController {
 
     // Actualizar los datos de un administrador existente
     @PatchMapping("/{clerkId}")
-    public ResponseEntity<Administrador> actualizarAdministrador(
+    public ResponseEntity<AdministradorDTO> actualizarAdministrador(
             @PathVariable String clerkId,
-            @RequestBody UsuarioUpdateDTO AdminActualizado) {
-
-        Administrador updatedAdmin = administradorService.actualizarAdministrador(clerkId, AdminActualizado);
-        return ResponseEntity.ok(updatedAdmin);
+            @RequestBody AdministradorUpdateDTO adminUpdateDTO) {
+        try {
+            AdministradorDTO updatedAdminDTO = administradorService.actualizarAdministrador(clerkId, adminUpdateDTO);
+            return ResponseEntity.ok(updatedAdminDTO);
+        } catch (AdministradorNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } catch (AdministradorServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // Eliminar un administrador por la id de Clerk.
