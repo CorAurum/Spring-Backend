@@ -11,5 +11,9 @@ public interface AdministradorRepository extends JpaRepository<Administrador, Lo
     Optional<Administrador> findByEmail(String email); //Metodo generado usando la funcion de JPA findBy
 
     Optional<Administrador> findByClerkId(String clerkId); //Metodo generado usando la funcion de JPA findBy
+
+    boolean existsByEmail(String email); //Metodo generado usando la funcion de JPA existsBy
+
+    boolean existsByClerkId(String clerkId); //Metodo generado usando la funcion de JPA existsBy
 }
 

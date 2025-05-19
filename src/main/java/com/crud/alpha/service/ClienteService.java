@@ -1,7 +1,7 @@
 package com.crud.alpha.service;
 
 import com.crud.alpha.clase.Usuarios.Cliente;
-import com.crud.alpha.dto.UsuarioUpdateDTO;
+import com.crud.alpha.clase.Usuarios.dto.UsuarioUpdateDTO;
 import com.crud.alpha.enums.Beneficiario;
 import com.crud.alpha.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.crud.alpha.controller;
 
 import com.crud.alpha.clase.Usuarios.Usuario;
-import com.crud.alpha.dto.UsuarioUpdateDTO;
+import com.crud.alpha.clase.Usuarios.dto.UsuarioUpdateDTO;
 import com.crud.alpha.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/public/usuarios")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired
