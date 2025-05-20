@@ -1,7 +1,7 @@
 package com.crud.alpha.clase.Pasaje;
 
 import com.crud.alpha.clase.Omnibus.Asiento;
-import com.crud.alpha.clase.Viaje;
+import com.crud.alpha.clase.Viaje.Viaje;
 import jakarta.persistence.*;
 import lombok.*;
 

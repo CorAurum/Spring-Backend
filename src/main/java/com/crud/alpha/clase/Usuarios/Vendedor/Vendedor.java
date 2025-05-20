@@ -3,7 +3,7 @@ package com.crud.alpha.clase.Usuarios.Vendedor;
 import com.crud.alpha.clase.Localidad.Localidad;
 import com.crud.alpha.clase.Omnibus.Omnibus;
 import com.crud.alpha.clase.Usuarios.Usuario;
-import com.crud.alpha.clase.Viaje;
+import com.crud.alpha.clase.Viaje.Viaje;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

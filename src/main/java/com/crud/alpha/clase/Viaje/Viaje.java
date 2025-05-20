@@ -1,4 +1,4 @@
-package com.crud.alpha.clase;
+package com.crud.alpha.clase.Viaje;
 
 import com.crud.alpha.clase.Localidad.Localidad;
 import com.crud.alpha.clase.Omnibus.Omnibus;

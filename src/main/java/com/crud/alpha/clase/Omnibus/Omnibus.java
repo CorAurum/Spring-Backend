@@ -1,7 +1,7 @@
 package com.crud.alpha.clase.Omnibus;
 
 import com.crud.alpha.clase.Pasaje.Pasaje;
-import com.crud.alpha.clase.Usuarios.Vendedor;
+import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.enums.EstadoOmnibus;
 import com.crud.alpha.clase.Localidad.ultimaLocalidad;
 import jakarta.persistence.*;

@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 // el @Id establece que atributo va a ser la clave primaria y el Identity hace que cada nuevo ID autogenerado sea el siguiente del anterior.
 
 @Entity
-@Table(name = "usuarios")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter

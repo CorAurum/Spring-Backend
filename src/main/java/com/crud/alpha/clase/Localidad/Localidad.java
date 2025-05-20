@@ -1,6 +1,6 @@
 package com.crud.alpha.clase.Localidad;
 
-import com.crud.alpha.clase.Usuarios.Vendedor;
+import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +9,6 @@ import lombok.*;
 // el @Id establece que atributo va a ser la clave primaria y el Identity hace que cada nuevo ID autogenerado sea el siguiente del anterior.
 
 @Entity
-@Table(name = "Localidad")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,7 +24,7 @@ public class Localidad {
 
     // *** Manual
     @Column(nullable = false)
-    private String Nombre;
+    private String nombre;
 
 
     // Fk tabla y relacion con Vendedor
