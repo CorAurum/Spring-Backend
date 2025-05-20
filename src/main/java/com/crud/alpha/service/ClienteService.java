@@ -1,9 +1,9 @@
 package com.crud.alpha.service;
 
-import com.crud.alpha.clase.Usuarios.Cliente;
-import com.crud.alpha.clase.Usuarios.dto.ClienteDTO;
-import com.crud.alpha.clase.Usuarios.dto.ClienteUpdateDTO;
-import com.crud.alpha.clase.Usuarios.dto.NewClienteDTO;
+import com.crud.alpha.clase.Usuarios.Cliente.Cliente;
+import com.crud.alpha.clase.Usuarios.Cliente.ClienteDTO;
+import com.crud.alpha.clase.Usuarios.Cliente.ClienteUpdateDTO;
+import com.crud.alpha.clase.Usuarios.Cliente.NewClienteDTO;
 import com.crud.alpha.clase.Usuarios.exceptions.ServiceException;
 import com.crud.alpha.clase.Usuarios.exceptions.UsuarioNotFoundException;
 import com.crud.alpha.repository.ClienteRepository;

@@ -1,9 +1,9 @@
 package com.crud.alpha.service;
 
-import com.crud.alpha.clase.Usuarios.Administrador;
-import com.crud.alpha.clase.Usuarios.dto.AdministradorDTO;
-import com.crud.alpha.clase.Usuarios.dto.AdministradorUpdateDTO;
-import com.crud.alpha.clase.Usuarios.dto.NewAdministradorDTO;
+import com.crud.alpha.clase.Usuarios.Administrador.Administrador;
+import com.crud.alpha.clase.Usuarios.Administrador.AdministradorDTO;
+import com.crud.alpha.clase.Usuarios.Administrador.AdministradorUpdateDTO;
+import com.crud.alpha.clase.Usuarios.Administrador.NewAdministradorDTO;
 import com.crud.alpha.clase.Usuarios.exceptions.ServiceException;
 import com.crud.alpha.clase.Usuarios.exceptions.UsuarioNotFoundException;
 import com.crud.alpha.repository.AdministradorRepository;

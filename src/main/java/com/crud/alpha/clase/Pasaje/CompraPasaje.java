@@ -1,6 +1,5 @@
 package com.crud.alpha.clase.Pasaje;
 
-import com.crud.alpha.clase.Usuarios.Cliente;
 import com.crud.alpha.clase.Usuarios.Usuario;
 import jakarta.persistence.*;
 import lombok.*;

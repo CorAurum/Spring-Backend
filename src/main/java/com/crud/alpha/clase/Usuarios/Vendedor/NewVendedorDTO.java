@@ -1,4 +1,4 @@
-package com.crud.alpha.clase.Usuarios.dto;
+package com.crud.alpha.clase.Usuarios.Vendedor;
 
 
 import com.crud.alpha.enums.Beneficiario;
@@ -9,14 +9,12 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ClienteDTO {
+public class NewVendedorDTO {
     private String clerkId;
     private String email;
     private String nombre;
     private String apellido;
     private boolean activo;
-    private Beneficiario tipoBenef;
     private LocalDateTime fechaNacimiento;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime fechaIngreso;
 }

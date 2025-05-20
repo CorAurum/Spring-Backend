@@ -1,13 +1,9 @@
 package com.crud.alpha.clase.Pasaje;
 
 import com.crud.alpha.clase.Omnibus.Asiento;
-import com.crud.alpha.clase.Usuarios.Administrador;
 import com.crud.alpha.clase.Viaje;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.context.properties.bind.Name;
-
-import java.time.LocalTime;
 
 
 //Modelado de la clase y tabla usuarios, @Tabla le da el nombre a la tabla, los demas @ nos ahorran declarar los getters

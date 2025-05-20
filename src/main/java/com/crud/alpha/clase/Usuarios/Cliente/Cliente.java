@@ -1,5 +1,6 @@
-package com.crud.alpha.clase.Usuarios;
+package com.crud.alpha.clase.Usuarios.Cliente;
 
+import com.crud.alpha.clase.Usuarios.Usuario;
 import com.crud.alpha.enums.Beneficiario;
 import jakarta.persistence.*;
 import lombok.Getter;

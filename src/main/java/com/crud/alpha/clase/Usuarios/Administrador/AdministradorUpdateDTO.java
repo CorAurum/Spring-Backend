@@ -1,4 +1,4 @@
-package com.crud.alpha.clase.Usuarios.dto;
+package com.crud.alpha.clase.Usuarios.Administrador;
 
 
 import lombok.Getter;
