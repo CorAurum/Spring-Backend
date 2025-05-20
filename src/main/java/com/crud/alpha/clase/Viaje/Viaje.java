@@ -64,7 +64,8 @@ public class Viaje {
     // FK tabla y relacion con Localidad // PENSADO PARA LOCALIDAD DONDE INICIA EL VIAJE
 
     @OneToOne
-    @JoinColumn(nullable = false,name = "localidad_Inicial", referencedColumnName = "id") // id es la PK de Localidad
+    @JoinColumn(nullable = false,name = "localidad_Inicial", referencedColumnName = "id")
+    // id es la PK de Localidad
     private Localidad localidadInicial;
 
 
