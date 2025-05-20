@@ -1,5 +1,6 @@
 package com.crud.alpha.clase.Usuarios;
 
+import com.crud.alpha.clase.Usuarios.Administrador.Administrador;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

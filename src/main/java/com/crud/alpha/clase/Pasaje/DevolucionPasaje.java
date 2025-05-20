@@ -1,11 +1,9 @@
 package com.crud.alpha.clase.Pasaje;
 
-import com.crud.alpha.clase.Usuarios.Cliente;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 //Modelado de la clase y tabla usuarios, @Tabla le da el nombre a la tabla, los demas @ nos ahorran declarar los getters
