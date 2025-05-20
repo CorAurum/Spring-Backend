@@ -13,5 +13,5 @@ import lombok.Setter;
 public class Cliente extends Usuario {
 
     @Enumerated(EnumType.STRING)
-    private Beneficiario tipoBenef;
+    private Beneficiario tipoBeneficiario;
 }

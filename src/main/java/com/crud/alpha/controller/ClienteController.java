@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/usuarios/clientes")
 public class ClienteController {
 
     // ** PRIVATE
@@ -29,7 +29,7 @@ public class ClienteController {
         dto.setNombre(cliente.getNombre());
         dto.setApellido(cliente.getApellido());
         dto.setActivo(cliente.isActivo());
-        dto.setTipoBenef(cliente.getTipoBenef());
+        dto.setTipoBeneficiario(cliente.getTipoBeneficiario());
         dto.setFechaNacimiento(cliente.getFechaNacimiento());
         return dto;
     }

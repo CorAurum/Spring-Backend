@@ -72,7 +72,7 @@ public class ClienteService {
     @Transactional
     public NewClienteDTO createEntity(NewClienteDTO entityDTO) {
         try {
-            // Validate uniqueness of clerkId and email if provided
+            // Validate uniqueness of clerkId and email if provided.
             if (entityDTO.getClerkId() != null && clienteRepository.existsByClerkId(entityDTO.getClerkId())) {
                 throw new IllegalArgumentException("El clerkId ya está en uso: " + entityDTO.getClerkId());
             }
@@ -86,20 +86,20 @@ public class ClienteService {
             entity.setEmail(entityDTO.getEmail());
             entity.setNombre(entityDTO.getNombre());
             entity.setApellido(entityDTO.getApellido());
-            entity.setTipoBenef(entityDTO.getTipoBenef());
+            entity.setTipoBeneficiario(entityDTO.getTipoBeneficiario());
             entity.setActivo(entityDTO.isActivo());
             entity.setFechaNacimiento(entityDTO.getFechaNacimiento());
 
-            // Save entity
+            // Save entity.
             Cliente savedClient = clienteRepository.save(entity);
 
-            // Convert saved entity to DTO
+            // Convert saved entity to DTO.
             NewClienteDTO savedClientDTO = new NewClienteDTO();
             savedClientDTO.setClerkId(savedClient.getClerkId());
             savedClientDTO.setEmail(savedClient.getEmail());
             savedClientDTO.setNombre(savedClient.getNombre());
             savedClientDTO.setApellido(savedClient.getApellido());
-            savedClientDTO.setTipoBenef(savedClient.getTipoBenef());
+            savedClientDTO.setTipoBeneficiario(savedClient.getTipoBeneficiario());
             savedClientDTO.setActivo(savedClient.isActivo());
             savedClientDTO.setFechaNacimiento(savedClient.getFechaNacimiento());
 

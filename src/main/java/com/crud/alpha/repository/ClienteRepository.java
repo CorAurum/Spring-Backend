@@ -14,7 +14,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     Optional<Cliente> findByClerkId(String clerkId); //Metodo generado usando la funcion de JPA findBy
 
-    List<Cliente> findBytipoBenef(Beneficiario tipoBenef); //Metodo generado usando la funcion de JPA findBy
+    List<Cliente> findBytipoBeneficiario(Beneficiario tipoBeneficiario); //Metodo generado usando la funcion de JPA findBy
 
     boolean existsByEmail(String email); //Metodo generado usando la funcion de JPA existsBy
 

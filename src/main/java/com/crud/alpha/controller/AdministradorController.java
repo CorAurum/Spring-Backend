@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/administradores")
+@RequestMapping("/usuarios/administradores")
 public class AdministradorController {
 
     // ** PRIVATE

@@ -15,7 +15,7 @@ public class ClienteDTO {
     private String nombre;
     private String apellido;
     private boolean activo;
-    private Beneficiario tipoBenef;
+    private Beneficiario tipoBeneficiario;
     private LocalDateTime fechaNacimiento;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
