@@ -13,6 +13,5 @@ public class ClienteUpdateDTO {
     private String nombre;
     private String apellido;
     private Beneficiario tipoBeneficiario;
-    private boolean activo;
     private LocalDateTime fechaNacimiento;
 }

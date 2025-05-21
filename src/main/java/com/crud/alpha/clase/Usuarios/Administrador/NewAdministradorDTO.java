@@ -13,6 +13,6 @@ public class NewAdministradorDTO {
     private String email;
     private String nombre;
     private String apellido;
-    private boolean activo;
     private LocalDateTime fechaNacimiento;
+    private boolean activo;
 }

@@ -31,6 +31,7 @@ public class VendedorController {
         dto.setActivo(vendedor.isActivo());
         // PONER LOS QUE FALTAN
         dto.setFechaNacimiento(vendedor.getFechaNacimiento());
+        dto.setFechaIngreso(vendedor.getFechaIngreso());
         return dto;
     }
 

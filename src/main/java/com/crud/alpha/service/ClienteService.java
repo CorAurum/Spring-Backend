@@ -141,6 +141,7 @@ public class ClienteService {
             updatedEntityDTO.setNombre(updatedEntity.getNombre());
             updatedEntityDTO.setApellido(updatedEntity.getApellido());
             updatedEntityDTO.setFechaNacimiento(updatedEntity.getFechaNacimiento());
+            updatedEntityDTO.setTipoBeneficiario(updatedEntity.getTipoBeneficiario());
 
             // return the updated object.
             return updatedEntityDTO;

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {
+// TODO: ENDPOINT PARA DESACTIVAR/ACTIVAR UN USUARIO
 
     // ** PRIVATE
     @Autowired

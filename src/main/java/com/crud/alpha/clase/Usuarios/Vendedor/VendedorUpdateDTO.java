@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 public class VendedorUpdateDTO {
     private String nombre;
     private String apellido;
-    private boolean activo;
     private LocalDateTime fechaNacimiento;
     private LocalDateTime fechaIngreso;
 

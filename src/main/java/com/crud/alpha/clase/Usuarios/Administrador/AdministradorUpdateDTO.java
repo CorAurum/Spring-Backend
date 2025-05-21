@@ -11,6 +11,5 @@ import java.time.LocalDateTime;
 public class AdministradorUpdateDTO {
     private String nombre;
     private String apellido;
-    private boolean activo;
     private LocalDateTime fechaNacimiento;
 }

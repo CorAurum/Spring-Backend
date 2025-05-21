@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,6 +89,7 @@ public class AdministradorService {
             entity.setApellido(entityDTO.getApellido());
             entity.setActivo(entityDTO.isActivo());
             entity.setFechaNacimiento(entityDTO.getFechaNacimiento());
+            entity.setRegistroUsuario(new ArrayList<>());
 
             // Save entity.
             Administrador savedEntity = administradorRepository.save(entity);
