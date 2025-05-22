@@ -3,8 +3,8 @@ import com.crud.alpha.clase.Usuarios.Vendedor.NewVendedorDTO;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.Usuarios.Vendedor.VendedorDTO;
 import com.crud.alpha.clase.Usuarios.Vendedor.VendedorUpdateDTO;
-import com.crud.alpha.clase.Usuarios.exceptions.ServiceException;
-import com.crud.alpha.clase.Usuarios.exceptions.UsuarioNotFoundException;
+import com.crud.alpha.clase.exceptions.ServiceException;
+import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.service.VendedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,7 +58,7 @@ public class VendedorController {
             Vendedor entity = vendedorService.findEntity(clerkId);
             VendedorDTO dto = convertToDTO(entity);
             return ResponseEntity.ok(dto);
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         }
@@ -71,7 +71,7 @@ public class VendedorController {
             Vendedor entity = vendedorService.findEntityByEmail(email);
             VendedorDTO dto = convertToDTO(entity);
             return ResponseEntity.ok(dto);
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         }
@@ -100,7 +100,7 @@ public class VendedorController {
         try {
             VendedorDTO updatedEntityDTO = vendedorService.updateEntity(clerkId, updateDTO);
             return ResponseEntity.ok(updatedEntityDTO);
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -117,7 +117,7 @@ public class VendedorController {
         try {
             vendedorService.deleteEntity(clerkId);
             return ResponseEntity.ok("Vendedor eliminado con éxito");
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

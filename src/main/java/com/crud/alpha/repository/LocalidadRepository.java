@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface LocalidadRepository extends JpaRepository<Localidad, Long> {
 
-    Optional<Localidad> findByNombre(String nombreLocalidad); //Metodo generado usando la funcion de JPA findBy
+    Optional<Localidad> findByNombre(String nombre); //Metodo generado usando la funcion de JPA findBy
 
 
 

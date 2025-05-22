@@ -1,6 +1,5 @@
 package com.crud.alpha.clase.Omnibus;
 
-import com.crud.alpha.clase.Pasaje.Pasaje;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.enums.EstadoOmnibus;
 import com.crud.alpha.clase.Localidad.ultimaLocalidad;
@@ -9,11 +8,6 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
-//Modelado de la clase y tabla usuarios, @Tabla le da el nombre a la tabla, los demas @ nos ahorran declarar los getters
-//Setters y constructor vacio y con argumentos.
-// el @Id establece que atributo va a ser la clave primaria y el Identity hace que cada nuevo ID autogenerado sea el siguiente del anterior.
 
 @Entity
 @Table(name = "Omnibus")
@@ -30,13 +24,6 @@ public class Omnibus {
     private Long id;
 
     // *** Manual
-
-    @Column(nullable = false)
-    private boolean activo;
-
-    @Column(nullable = false)
-    private int cantAsientos;
-
     @Column(nullable = false)
     private String descripcion;
 
@@ -51,24 +38,20 @@ public class Omnibus {
     private boolean accesibilidad;
 
     // *** FK de Tabla y relacion con Mantenimiento
-
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
     private List<Mantenimiento> Mantenimientos;
 
     // *** FK de Tabla y relacion con Vendedor
-
     @ManyToOne
-    @JoinColumn(name = "vendedor_clerk_id", referencedColumnName = "clerkId", nullable = false) // esta columna estará en la tabla Omnibus
-    private Vendedor vendedorId;
+    @JoinColumn(name = "registeredBy", referencedColumnName = "clerkId") // esta columna estará en la tabla Omnibus
+    private Vendedor registeredBy;
 
     // *** FK de Tabla y relacion con Ultimalocalidad (UltimaLocalidad en la que estuvo el bus presente, AKA su ultima ubicacion registrada)
-
     @OneToMany(mappedBy = "omnibus") // mappedby indica a la tabla que la columna de esta relacion no se genera en Omnibus, si no en UltimaLocalidad.
     private List<ultimaLocalidad> ultimasLocalidades = new ArrayList<>();
 
 
     // *** FK de Tabla y relacion con Asiento
-
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY) // Opcional
     private List<Asiento> Asientos;
 

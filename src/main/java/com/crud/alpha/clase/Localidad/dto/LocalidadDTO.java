@@ -13,4 +13,5 @@ import lombok.Setter;
 @Setter
 public class LocalidadDTO {
     private String nombre;
+    private String registeredBy;
 }

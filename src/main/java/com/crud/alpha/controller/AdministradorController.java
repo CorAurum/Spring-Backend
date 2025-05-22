@@ -4,8 +4,8 @@ import com.crud.alpha.clase.Usuarios.Administrador.Administrador;
 import com.crud.alpha.clase.Usuarios.Administrador.AdministradorDTO;
 import com.crud.alpha.clase.Usuarios.Administrador.AdministradorUpdateDTO;
 import com.crud.alpha.clase.Usuarios.Administrador.NewAdministradorDTO;
-import com.crud.alpha.clase.Usuarios.exceptions.UsuarioNotFoundException;
-import com.crud.alpha.clase.Usuarios.exceptions.ServiceException;
+import com.crud.alpha.clase.exceptions.EntityNotFoundException;
+import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.service.AdministradorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,7 +56,7 @@ public class AdministradorController {
             Administrador admin = administradorService.findEntity(clerkId);
             AdministradorDTO dto = convertToDTO(admin);
             return ResponseEntity.ok(dto);
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         }
@@ -69,7 +69,7 @@ public class AdministradorController {
             Administrador entity = administradorService.findEntityByEmail(email);
             AdministradorDTO dto = convertToDTO(entity);
             return ResponseEntity.ok(dto);
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         }
@@ -98,7 +98,7 @@ public class AdministradorController {
         try {
             AdministradorDTO updatedAdminDTO = administradorService.updateEntity(clerkId, adminUpdateDTO);
             return ResponseEntity.ok(updatedAdminDTO);
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -115,7 +115,7 @@ public class AdministradorController {
         try {
             administradorService.deleteEntity(clerkId);
             return ResponseEntity.ok("Administrador eliminado con éxito");
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

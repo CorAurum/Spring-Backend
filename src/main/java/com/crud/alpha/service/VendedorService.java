@@ -4,8 +4,8 @@ import com.crud.alpha.clase.Usuarios.Vendedor.NewVendedorDTO;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.Usuarios.Vendedor.VendedorDTO;
 import com.crud.alpha.clase.Usuarios.Vendedor.VendedorUpdateDTO;
-import com.crud.alpha.clase.Usuarios.exceptions.ServiceException;
-import com.crud.alpha.clase.Usuarios.exceptions.UsuarioNotFoundException;
+import com.crud.alpha.clase.exceptions.ServiceException;
+import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.repository.VendedorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class VendedorService {
         try {
             Optional<Vendedor> entityOptional = vendedorRepository.findByClerkId(clerkId);
             if (entityOptional.isEmpty()) {
-                throw new UsuarioNotFoundException("Vendedor no encontrado para el clerkId: " + clerkId);
+                throw new EntityNotFoundException("Vendedor no encontrado para el clerkId: " + clerkId);
             }
             return entityOptional.get();
         } catch (DataAccessException e) {
@@ -59,7 +59,7 @@ public class VendedorService {
         try {
             Optional<Vendedor> entityOptional = vendedorRepository.findByEmail(email);
             if (entityOptional.isEmpty()) {
-                throw new UsuarioNotFoundException("Vendedor no encontrado para el email: " + email);
+                throw new EntityNotFoundException("Vendedor no encontrado para el email: " + email);
             }
             return entityOptional.get();
         } catch (DataAccessException e) {
@@ -154,7 +154,7 @@ public class VendedorService {
 
             // return the updated object.
             return updatedEntityDTO;
-        } catch (UsuarioNotFoundException | IllegalArgumentException e) {
+        } catch (EntityNotFoundException | IllegalArgumentException e) {
             throw e;
         } catch (DataAccessException e) {
             throw new ServiceException("Error al actualizar vendedor con clerkId: " + clerkId, e);
@@ -171,7 +171,7 @@ public class VendedorService {
             Vendedor vendedor = findEntity(clerkId);
             // Delete the seller.
             eliminarVendedorPorId(vendedor.getId());
-        } catch (IllegalArgumentException | UsuarioNotFoundException | ServiceException e) {
+        } catch (IllegalArgumentException | EntityNotFoundException | ServiceException e) {
             throw e; // Rethrow to let controller handle
         } catch (Exception e) {
             throw new ServiceException("Error inesperado al eliminar vendedor por clerkId: " + clerkId, e);
@@ -188,11 +188,11 @@ public class VendedorService {
             }
             // Verify existence (optional, for consistent not-found handling).
             if (!vendedorRepository.existsById(id)) {
-                throw new UsuarioNotFoundException("Vendedor no encontrado para el id: " + id);
+                throw new EntityNotFoundException("Vendedor no encontrado para el id: " + id);
             }
             // Delete the seller.
             vendedorRepository.deleteById(id);
-        } catch (IllegalArgumentException | UsuarioNotFoundException e) {
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
             throw e;
         } catch (DataAccessException e) {
             throw new ServiceException("Error al eliminar vendedor por id: " + id, e);

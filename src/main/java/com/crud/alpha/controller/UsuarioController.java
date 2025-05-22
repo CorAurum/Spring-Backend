@@ -5,7 +5,7 @@ import com.crud.alpha.clase.Usuarios.Cliente.Cliente;
 import com.crud.alpha.clase.Usuarios.UserDetailsDTO;
 import com.crud.alpha.clase.Usuarios.Usuario;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
-import com.crud.alpha.clase.Usuarios.exceptions.UsuarioNotFoundException;
+import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,7 +52,7 @@ public class UsuarioController {
             Usuario entity = usuarioService.findEntity(clerkId);
             UserDetailsDTO dto = convertToUserDetailsDTO(entity);
             return ResponseEntity.ok(dto);
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         }

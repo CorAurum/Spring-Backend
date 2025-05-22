@@ -7,10 +7,6 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-//Modelado de la clase y tabla usuarios, @Tabla le da el nombre a la tabla, los demas @ nos ahorran declarar los getters
-//Setters y constructor vacio y con argumentos.
-// el @Id establece que atributo va a ser la clave primaria y el Identity hace que cada nuevo ID autogenerado sea el siguiente del anterior.
-
 @Entity
 @Table(name = "ultimaLocalidad")
 @Getter
@@ -24,8 +20,8 @@ public class ultimaLocalidad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // *** Manual
 
+    // *** Manual
     @Column(nullable = false)
     private LocalDate fecha;
 
@@ -33,7 +29,6 @@ public class ultimaLocalidad {
     private LocalTime hora;
 
     // *** FK
-
     @ManyToOne
     private Omnibus omnibus;
 

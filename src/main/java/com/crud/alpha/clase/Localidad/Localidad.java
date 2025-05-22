@@ -30,6 +30,6 @@ public class Localidad {
 
     @ManyToOne
     @JoinColumn(name = "id_Vendedor", referencedColumnName = "id")  // id seria el atributo PK de Vendedor, idVendedor es el nombre que tendra en la BD este atributo.
-    private Vendedor idVendedor;
+    private Vendedor vendedor;
 
 }

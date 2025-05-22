@@ -4,8 +4,8 @@ import com.crud.alpha.clase.Usuarios.Cliente.Cliente;
 import com.crud.alpha.clase.Usuarios.Cliente.ClienteDTO;
 import com.crud.alpha.clase.Usuarios.Cliente.ClienteUpdateDTO;
 import com.crud.alpha.clase.Usuarios.Cliente.NewClienteDTO;
-import com.crud.alpha.clase.Usuarios.exceptions.ServiceException;
-import com.crud.alpha.clase.Usuarios.exceptions.UsuarioNotFoundException;
+import com.crud.alpha.clase.exceptions.ServiceException;
+import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.repository.ClienteRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class ClienteService {
         try {
             Optional<Cliente> entityOptional = clienteRepository.findByClerkId(clerkId);
             if (entityOptional.isEmpty()) {
-                throw new UsuarioNotFoundException("Cliente no encontrado para el clerkId: " + clerkId);
+                throw new EntityNotFoundException("Cliente no encontrado para el clerkId: " + clerkId);
             }
             return entityOptional.get();
         } catch (DataAccessException e) {
@@ -59,7 +59,7 @@ public class ClienteService {
         try {
             Optional<Cliente> entityOptional = clienteRepository.findByEmail(email);
             if (entityOptional.isEmpty()) {
-                throw new UsuarioNotFoundException("Cliente no encontrado para el email: " + email);
+                throw new EntityNotFoundException("Cliente no encontrado para el email: " + email);
             }
             return entityOptional.get();
         } catch (DataAccessException e) {
@@ -145,7 +145,7 @@ public class ClienteService {
 
             // return the updated object.
             return updatedEntityDTO;
-        } catch (UsuarioNotFoundException | IllegalArgumentException e) {
+        } catch (EntityNotFoundException | IllegalArgumentException e) {
             throw e;
         } catch (DataAccessException e) {
             throw new ServiceException("Error al actualizar cliente con clerkId: " + clerkId, e);
@@ -162,7 +162,7 @@ public class ClienteService {
             Cliente cliente = findEntity(clerkId);
             // Delete the client.
             eliminarClientePorId(cliente.getId());
-        } catch (IllegalArgumentException | UsuarioNotFoundException | ServiceException e) {
+        } catch (IllegalArgumentException | EntityNotFoundException | ServiceException e) {
             throw e; // Rethrow to let controller handle
         } catch (Exception e) {
             throw new ServiceException("Error inesperado al eliminar cliente por clerkId: " + clerkId, e);
@@ -179,11 +179,11 @@ public class ClienteService {
             }
             // Verify existence (optional, for consistent not-found handling).
             if (!clienteRepository.existsById(id)) {
-                throw new UsuarioNotFoundException("Cliente no encontrado para el id: " + id);
+                throw new EntityNotFoundException("Cliente no encontrado para el id: " + id);
             }
             // Delete the client.
             clienteRepository.deleteById(id);
-        } catch (IllegalArgumentException | UsuarioNotFoundException e) {
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
             throw e;
         } catch (DataAccessException e) {
             throw new ServiceException("Error al eliminar cliente por id: " + id, e);

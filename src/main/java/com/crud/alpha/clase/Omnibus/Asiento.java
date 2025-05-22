@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 
 //Modelado de la clase y tabla usuarios, @Tabla le da el nombre a la tabla, los demas @ nos ahorran declarar los getters
@@ -27,25 +28,19 @@ public class Asiento {
     private Long id;                                    // en el contexto que una ID deberia ser unica y hay multiples asientos "iguales" por cada bus.
 
     // *** Manual
-
     @Column(nullable = false)
     private int nroAsiento;
 
     // *** FK Tabla y relacion con Omnibus
-
     @ManyToOne
     @JoinColumn(name = "Omnibus_Id") // esta columna estará en la tabla Omnibus
     private Omnibus omnibusId;
 
 
     // *** Fk Tabla y relacion con Pasaje
+//    @OneToOne(mappedBy = "asiento")
+//    private Pasaje pasaje;
 
-    @OneToOne
-    @JoinColumn(name = "pasaje_id", unique = true) // Asiento solo tiene un pasaje
-    private Pasaje pasaje;
-
-
-
-
-
+    @OneToMany(mappedBy = "asiento")
+    private List<Pasaje> pasajes;
 }

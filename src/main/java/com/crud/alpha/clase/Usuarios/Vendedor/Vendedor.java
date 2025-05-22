@@ -27,7 +27,7 @@ public class Vendedor extends Usuario {
     // Seguramente hacemos otra funcion aparte en el service para updatearle/crearle los omnibus creados, registro viaje y registro localidad.
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // FK tabla y relacion con Omnibus
-    @OneToMany(mappedBy = "vendedorId")
+    @OneToMany(mappedBy = "registeredBy")
     // mappedby indica a la tabla que la columna de esta relacion no se genera en Omnibus, si no en UltimaLocalidad.
     private List<Omnibus> OmnibusRegistrados = new ArrayList<>();
 

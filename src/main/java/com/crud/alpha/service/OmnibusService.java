@@ -24,5 +24,4 @@ public class OmnibusService {
         omnibusRepository.save(omnibus);
     }
 
-
 }

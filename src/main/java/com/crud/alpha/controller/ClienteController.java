@@ -3,8 +3,8 @@ import com.crud.alpha.clase.Usuarios.Cliente.Cliente;
 import com.crud.alpha.clase.Usuarios.Cliente.ClienteDTO;
 import com.crud.alpha.clase.Usuarios.Cliente.ClienteUpdateDTO;
 import com.crud.alpha.clase.Usuarios.Cliente.NewClienteDTO;
-import com.crud.alpha.clase.Usuarios.exceptions.ServiceException;
-import com.crud.alpha.clase.Usuarios.exceptions.UsuarioNotFoundException;
+import com.crud.alpha.clase.exceptions.ServiceException;
+import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,7 +57,7 @@ public class ClienteController {
             Cliente entity = clienteService.findEntity(clerkId);
             ClienteDTO dto = convertToDTO(entity);
             return ResponseEntity.ok(dto);
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         }
@@ -70,7 +70,7 @@ public class ClienteController {
             Cliente entity = clienteService.findEntityByEmail(email);
             ClienteDTO dto = convertToDTO(entity);
             return ResponseEntity.ok(dto);
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
         }
@@ -99,7 +99,7 @@ public class ClienteController {
         try {
             ClienteDTO updatedEntityDTO = clienteService.updateEntity(clerkId, updateDTO);
             return ResponseEntity.ok(updatedEntityDTO);
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -116,7 +116,7 @@ public class ClienteController {
         try {
             clienteService.deleteEntity(clerkId);
             return ResponseEntity.ok("Cliente eliminado con éxito");
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

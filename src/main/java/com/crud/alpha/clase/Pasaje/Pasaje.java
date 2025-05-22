@@ -26,20 +26,18 @@ public class Pasaje {
     // *** Manual
 
     // *** FK Tabla y relacion con Asiento
-
-    @OneToOne(mappedBy = "pasaje")
+    @ManyToOne
+    @JoinColumn(name = "asiento", referencedColumnName = "id")
     private Asiento asiento;
 
 
-    // *** FK Tabla y relacion con CompraPasaje
-
+    // *** FK Tabla y relacion con VentaPasaje
     @ManyToOne
-    @JoinColumn(name = "id_compra_pasaje", referencedColumnName = "PaymentId")
-    private CompraPasaje idCompraPasaje;
+    @JoinColumn(name = "id_compra_pasaje", referencedColumnName = "id")
+    private VentaPasaje idCompraPasaje;
 
 
     // *** FK Tabla y relacion con Viaje
-
     @ManyToOne
     @JoinColumn(name = "idViaje", referencedColumnName = "id")  // id seria el atributo PK de Viaje, idViaje es el nombre que tendra en la BD este atributo.
     private Viaje idViaje;

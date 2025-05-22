@@ -4,8 +4,8 @@ import com.crud.alpha.clase.Usuarios.Administrador.Administrador;
 import com.crud.alpha.clase.Usuarios.Administrador.AdministradorDTO;
 import com.crud.alpha.clase.Usuarios.Administrador.AdministradorUpdateDTO;
 import com.crud.alpha.clase.Usuarios.Administrador.NewAdministradorDTO;
-import com.crud.alpha.clase.Usuarios.exceptions.ServiceException;
-import com.crud.alpha.clase.Usuarios.exceptions.UsuarioNotFoundException;
+import com.crud.alpha.clase.exceptions.ServiceException;
+import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.repository.AdministradorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class AdministradorService {
         try {
             Optional<Administrador> adminOptional = administradorRepository.findByClerkId(clerkId);
             if (adminOptional.isEmpty()) {
-                throw new UsuarioNotFoundException("Administrador no encontrado para el clerkId: " + clerkId);
+                throw new EntityNotFoundException("Administrador no encontrado para el clerkId: " + clerkId);
             }
             return adminOptional.get();
         } catch (DataAccessException e) {
@@ -61,7 +61,7 @@ public class AdministradorService {
         try {
             Optional<Administrador> entityOptional = administradorRepository.findByEmail(email);
             if (entityOptional.isEmpty()) {
-                throw new UsuarioNotFoundException("Administrador no encontrado para el email: " + email);
+                throw new EntityNotFoundException("Administrador no encontrado para el email: " + email);
             }
             return entityOptional.get();
         } catch (DataAccessException e) {
@@ -144,7 +144,7 @@ public class AdministradorService {
 
             // return the updated object.
             return updatedEntityDTO;
-        } catch (UsuarioNotFoundException | IllegalArgumentException e) {
+        } catch (EntityNotFoundException | IllegalArgumentException e) {
             throw e;
         } catch (DataAccessException e) {
             throw new ServiceException("Error al actualizar administrador con clerkId: " + clerkId, e);
@@ -161,7 +161,7 @@ public class AdministradorService {
             Administrador admin = findEntity(clerkId);
             // Delete admin
             eliminarAdministradorPorId(admin.getId());
-        } catch (IllegalArgumentException | UsuarioNotFoundException | ServiceException e) {
+        } catch (IllegalArgumentException | EntityNotFoundException | ServiceException e) {
             throw e; // Rethrow to let controller handle
         } catch (Exception e) {
             throw new ServiceException("Error inesperado al eliminar administrador por clerkId: " + clerkId, e);
@@ -178,11 +178,11 @@ public class AdministradorService {
             }
             // Verify existence (optional, for consistent not-found handling)
             if (!administradorRepository.existsById(id)) {
-                throw new UsuarioNotFoundException("Administrador no encontrado para el id: " + id);
+                throw new EntityNotFoundException("Administrador no encontrado para el id: " + id);
             }
             // Delete admin
             administradorRepository.deleteById(id);
-        } catch (IllegalArgumentException | UsuarioNotFoundException e) {
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
             throw e;
         } catch (DataAccessException e) {
             throw new ServiceException("Error al eliminar administrador por id: " + id, e);

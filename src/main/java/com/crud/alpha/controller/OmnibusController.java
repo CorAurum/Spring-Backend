@@ -3,7 +3,7 @@ package com.crud.alpha.controller;
 import com.crud.alpha.clase.Omnibus.Omnibus;
 import com.crud.alpha.clase.Omnibus.dto.OmnibusDTO;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
-import com.crud.alpha.clase.Usuarios.exceptions.UsuarioNotFoundException;
+import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.service.OmnibusService;
 import com.crud.alpha.service.VendedorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/public/omnibus")
+@RequestMapping("/omnibus")
 public class OmnibusController {
 
     @Autowired
@@ -27,8 +27,6 @@ public class OmnibusController {
     // Conversor a DTO
     private OmnibusDTO convertirAOmnibusDTO(Omnibus omnibus) {
         OmnibusDTO dto = new OmnibusDTO();
-        dto.setActivo(omnibus.isActivo());
-        dto.setCantAsientos(omnibus.getCantAsientos());
         dto.setDescripcion(omnibus.getDescripcion());
         dto.setNroCoche(omnibus.getNroCoche());
         dto.setEstado(omnibus.getEstado());
@@ -51,8 +49,8 @@ public class OmnibusController {
     }
 
     // Buscar un ómnibus por número de coche
-    @GetMapping("/buscar")
-    public ResponseEntity<OmnibusDTO> buscarPorNroCoche(@RequestParam int nroCoche) {
+    @GetMapping("/{nroCoche}")
+    public ResponseEntity<OmnibusDTO> buscarPorNroCoche(@PathVariable int nroCoche) {
         try {
             Optional<Omnibus> omnibusOpt = omnibusService.buscarOmnibusPorNroCoche(nroCoche);
             if (omnibusOpt.isPresent()) {
@@ -68,29 +66,27 @@ public class OmnibusController {
 
 
     // Crear Omnibus
-    @PostMapping("/crear")
+    @PostMapping
     public ResponseEntity<String> createOmnibus(@RequestBody OmnibusDTO dto) {
         try {
             // This will throw UsuarioNotFoundException if not found
-            Vendedor vendedor = vendedorService.findEntity(dto.getClerkId());
+            Vendedor vendedor = vendedorService.findEntity(dto.getRegisteredBy());
 
             Omnibus omnibus = new Omnibus();
-            omnibus.setActivo(dto.isActivo());
-            omnibus.setCantAsientos(dto.getCantAsientos());
             omnibus.setDescripcion(dto.getDescripcion());
             omnibus.setNroCoche(dto.getNroCoche());
             omnibus.setEstado(dto.getEstado());
             omnibus.setAccesibilidad(dto.isAccesibilidad());
-            omnibus.setVendedorId(vendedor); // Assuming it's a Vendedor entity here
+            omnibus.setRegisteredBy(vendedor); // Assuming it's a Vendedor entity here
 
             omnibusService.guardarOmnibus(omnibus);
 
             return ResponseEntity.ok("Ómnibus creado exitosamente.");
-        } catch (UsuarioNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest()
-                    .body("No se encontró un vendedor con clerkId: " + dto.getClerkId());
+                    .body("No se encontró un vendedor con clerkId: " + dto.getRegisteredBy());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error al crear el ómnibus.");
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
