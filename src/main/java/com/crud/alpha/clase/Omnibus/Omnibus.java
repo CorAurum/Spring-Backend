@@ -34,16 +34,17 @@ public class Omnibus {
     @Column(nullable = false)
     private boolean activo;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private int cantAsientos;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String descripcion;
 
     @Column(nullable = false)
     private int nroCoche;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private EstadoOmnibus estado;
 
     @Column(nullable = false)
@@ -51,13 +52,13 @@ public class Omnibus {
 
     // *** FK de Tabla y relacion con Mantenimiento
 
-    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY) // Opcional
+    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
     private List<Mantenimiento> Mantenimientos;
 
     // *** FK de Tabla y relacion con Vendedor
 
     @ManyToOne
-    @JoinColumn(name = "vendedor_Id") // esta columna estará en la tabla Omnibus
+    @JoinColumn(name = "vendedor_clerk_id", referencedColumnName = "clerkId", nullable = false) // esta columna estará en la tabla Omnibus
     private Vendedor vendedorId;
 
     // *** FK de Tabla y relacion con Ultimalocalidad (UltimaLocalidad en la que estuvo el bus presente, AKA su ultima ubicacion registrada)

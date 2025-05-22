@@ -36,7 +36,7 @@ public class CompraPasaje {
 
     // *** FK Cliente
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(nullable = false,name = "idCliente", referencedColumnName = "id")
     private Usuario idCliente;
 

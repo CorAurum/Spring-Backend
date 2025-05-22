@@ -17,7 +17,7 @@ public class ViajeDTO {
     private String horaPartida;
     private String horaLlegada;
     private boolean cerrado;
-    private Long idOmnibusAsignado;
+    private int nroCoche;
     private String localidadInicial;
     private String localidadFinal;
 

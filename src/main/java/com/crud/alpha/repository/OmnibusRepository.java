@@ -1,7 +1,7 @@
 package com.crud.alpha.repository;
 
 import com.crud.alpha.clase.Localidad.Localidad;
-import com.crud.alpha.clase.Viaje.Viaje;
+import com.crud.alpha.clase.Omnibus.Omnibus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,10 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface LocalidadRepository extends JpaRepository<Localidad, Long> {
+public interface OmnibusRepository extends JpaRepository<Omnibus, Long> {
 
-    Optional<Localidad> findByNombre(String nombreLocalidad); //Metodo generado usando la funcion de JPA findBy
-
+    Optional<Omnibus> findByNroCoche(int nroCoche); //Metodo generado usando la funcion de JPA findBy
 
 
 }

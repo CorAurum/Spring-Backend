@@ -48,7 +48,7 @@ public class Viaje {
 
     // Fk tabla y relacion con Omnibus
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(nullable = false,name = "id_Omnibus_Asignado", referencedColumnName = "id") // id es la PK de Omnibus
     private Omnibus omnibusAsignado;
 
@@ -61,16 +61,16 @@ public class Viaje {
 
     // FK tabla y relacion con Localidad // PENSADO PARA LOCALIDAD DONDE INICIA EL VIAJE
 
-    @OneToOne
-    @JoinColumn(nullable = false,name = "localidad_Inicial", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(nullable = false,name = "localidad_Inicial", referencedColumnName = "nombre")
     // id es la PK de Localidad
     private Localidad localidadInicial;
 
 
     // FK tabla y relacion con Localidad // PENSADO PARA LOCALIDAD DONDE FINALIZA EL VIAJE
 
-    @OneToOne
-    @JoinColumn(nullable = false,name = "localidad_Final", referencedColumnName = "id") // id es la PK de Localidad
+    @ManyToOne
+    @JoinColumn(nullable = false,name = "localidad_Final", referencedColumnName = "nombre") // id es la PK de Localidad
     private Localidad localidadFinal;
 
     // ** FK Tabla y relacion con Pasaje

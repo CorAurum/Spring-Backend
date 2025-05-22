@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 //Modelado de la clase y tabla usuarios, @Tabla le da el nombre a la tabla, los demas @ nos ahorran declarar los getters
 //Setters y constructor vacio y con argumentos.
@@ -29,7 +30,7 @@ public class ultimaLocalidad {
     private LocalDate fecha;
 
     @Column(nullable = false)
-    private LocalDate hora;
+    private LocalTime hora;
 
     // *** FK
 

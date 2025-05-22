@@ -26,7 +26,7 @@ public class ViajeController {
         dto.setHoraPartida(viaje.getHora_partida().toString());
         dto.setHoraLlegada(viaje.getHora_llegada().toString());
         dto.setCerrado(viaje.isCerrado());
-        dto.setIdOmnibusAsignado(viaje.getOmnibusAsignado().getId());
+        dto.setNroCoche(viaje.getOmnibusAsignado().getNroCoche());
         dto.setLocalidadInicial(viaje.getLocalidadInicial().getNombre());
         dto.setLocalidadFinal(viaje.getLocalidadFinal().getNombre());
         return dto;

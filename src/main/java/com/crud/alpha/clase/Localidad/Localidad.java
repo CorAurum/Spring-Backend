@@ -13,7 +13,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Localidad {
 // Importante no nombrar atributos utilizando '_' (piso/barra baja)
 
@@ -23,7 +22,7 @@ public class Localidad {
     private Long id;
 
     // *** Manual
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String nombre;
 
 
