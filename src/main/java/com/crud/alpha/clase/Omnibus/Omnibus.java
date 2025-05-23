@@ -43,7 +43,7 @@ public class Omnibus {
 
     // *** FK de Tabla y relacion con Vendedor
     @ManyToOne
-    @JoinColumn(name = "registeredBy", referencedColumnName = "clerkId") // esta columna estará en la tabla Omnibus
+    @JoinColumn(name = "registered_by", referencedColumnName = "clerkId") // esta columna estará en la tabla Omnibus
     private Vendedor registeredBy;
 
     // *** FK de Tabla y relacion con Ultimalocalidad (UltimaLocalidad en la que estuvo el bus presente, AKA su ultima ubicacion registrada)

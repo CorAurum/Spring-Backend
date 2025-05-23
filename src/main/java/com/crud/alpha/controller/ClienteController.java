@@ -31,6 +31,8 @@ public class ClienteController {
         dto.setActivo(cliente.isActivo());
         dto.setTipoBeneficiario(cliente.getTipoBeneficiario());
         dto.setFechaNacimiento(cliente.getFechaNacimiento());
+        dto.setCreatedAt(cliente.getCreatedAt());
+        dto.setUpdatedAt(cliente.getUpdatedAt());
         return dto;
     }
 

@@ -3,6 +3,10 @@ package com.crud.alpha.clase.Localidad;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
+import java.time.LocalDateTime;
 
 //Modelado de la clase y tabla usuarios, @Tabla le da el nombre a la tabla, los demas @ nos ahorran declarar los getters
 //Setters y constructor vacio y con argumentos.
@@ -21,15 +25,22 @@ public class Localidad {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     // *** Manual
     @Column(nullable = false, unique = true)
     private String nombre;
 
+    @Column
+    private String descripcion;
 
     // Fk tabla y relacion con Vendedor
-
     @ManyToOne
-    @JoinColumn(name = "id_Vendedor", referencedColumnName = "id")  // id seria el atributo PK de Vendedor, idVendedor es el nombre que tendra en la BD este atributo.
-    private Vendedor vendedor;
+    @JoinColumn(name = "registered_by", referencedColumnName = "id")  // id seria el atributo PK de Vendedor, idVendedor es el nombre que tendra en la BD este atributo.
+    private Vendedor registeredBy;
 
 }

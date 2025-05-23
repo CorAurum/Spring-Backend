@@ -75,22 +75,26 @@ public class LocalidadService {
     @Transactional
     public LocalidadDTO createEntity(LocalidadDTO entityDTO) {
         try {
-            if (entityDTO.getRegisteredBy() != null && vendedorService.findEntity(entityDTO.getRegisteredBy()) == null)  {
-                throw new IllegalArgumentException("No existe un vendedor para el clerkId: " + entityDTO.getRegisteredBy());
+            if (entityDTO.getRegisteredByFullName() != null && vendedorService.findEntity(entityDTO.getRegisteredByFullName()) == null)  {
+                throw new IllegalArgumentException("No existe un vendedor para el clerkId: " + entityDTO.getRegisteredByFullName());
             }
 
-            Vendedor vendedor = vendedorService.findEntity(entityDTO.getRegisteredBy());
+            Vendedor vendedor = vendedorService.findEntity(entityDTO.getRegisteredByFullName());
             // Convert DTO into an entity so that we can save it.
             Localidad entity = new Localidad();
             entity.setNombre(entityDTO.getNombre());
-            entity.setVendedor(vendedor);
+            entity.setDescripcion(entityDTO.getDescripcion());
+            entity.setRegisteredBy(vendedor);
             // Save entity.
-            Localidad savedLocalidad = localidadRepository.save(entity);
+            Localidad savedEntity = localidadRepository.save(entity);
 
             // Convert saved entity to DTO.
             LocalidadDTO savedEntityDTO = new LocalidadDTO();
-            savedEntityDTO.setNombre(savedLocalidad.getNombre());
-            savedEntityDTO.setRegisteredBy(entityDTO.getRegisteredBy());
+            savedEntityDTO.setNombre(savedEntity.getNombre());
+            savedEntityDTO.setRegisteredByFullName(savedEntity.getRegisteredBy().getNombre() + " " + savedEntity.getRegisteredBy().getApellido());
+            savedEntityDTO.setDescripcion(savedEntity.getDescripcion());
+            savedEntityDTO.setCreatedAt(savedEntity.getCreatedAt());
+            savedEntityDTO.setUpdatedAt(savedEntity.getUpdatedAt());
 
             return savedEntityDTO;
         } catch (IllegalArgumentException e) {
@@ -112,6 +116,11 @@ public class LocalidadService {
             // Update the provided fields.
             if (entityUpdateDTO.getNombre() != null) {
                 entity.setNombre(entityUpdateDTO.getNombre());
+            }
+
+            // Update the provided fields.
+            if (entityUpdateDTO.getDescripcion() != null) {
+                entity.setNombre(entityUpdateDTO.getDescripcion());
             }
 
             // Save the updated entity.

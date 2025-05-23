@@ -3,6 +3,8 @@ package com.crud.alpha.clase.Usuarios;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class UserDetailsDTO {
@@ -12,4 +14,6 @@ public class UserDetailsDTO {
     private String apellido;
     private boolean activo;
     private String tipo; // Determined by the controller.
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

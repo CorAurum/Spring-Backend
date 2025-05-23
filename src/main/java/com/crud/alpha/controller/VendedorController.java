@@ -29,9 +29,10 @@ public class VendedorController {
         dto.setNombre(vendedor.getNombre());
         dto.setApellido(vendedor.getApellido());
         dto.setActivo(vendedor.isActivo());
-        // PONER LOS QUE FALTAN
         dto.setFechaNacimiento(vendedor.getFechaNacimiento());
         dto.setFechaIngreso(vendedor.getFechaIngreso());
+        dto.setCreatedAt(vendedor.getCreatedAt());
+        dto.setUpdatedAt(vendedor.getUpdatedAt());
         return dto;
     }
 

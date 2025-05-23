@@ -2,8 +2,8 @@ package com.crud.alpha.controller;
 
 import com.crud.alpha.clase.Localidad.Localidad;
 import com.crud.alpha.clase.Localidad.dto.LocalidadDTO;
-import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
+import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.service.LocalidadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,10 @@ public class LocalidadController {
     private LocalidadDTO convertToDTO(Localidad localidad) {
         LocalidadDTO dto = new LocalidadDTO();
         dto.setNombre(localidad.getNombre());
-        dto.setRegisteredBy(localidad.getVendedor().getClerkId());
+        dto.setRegisteredByFullName(localidad.getRegisteredBy().getNombre() + " " + localidad.getRegisteredBy().getApellido());
+        dto.setDescripcion(localidad.getDescripcion());
+        dto.setCreatedAt(localidad.getCreatedAt());
+        dto.setUpdatedAt(localidad.getUpdatedAt());
         return dto;
     }
 

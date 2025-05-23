@@ -31,6 +31,8 @@ public class AdministradorController {
         dto.setApellido(admin.getApellido());
         dto.setActivo(admin.isActivo());
         dto.setFechaNacimiento(admin.getFechaNacimiento());
+        dto.setCreatedAt(admin.getCreatedAt());
+        dto.setUpdatedAt(admin.getUpdatedAt());
         return dto;
     }
 

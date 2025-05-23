@@ -31,6 +31,8 @@ public class UsuarioController {
         dto.setNombre(usuario.getNombre());
         dto.setApellido(usuario.getApellido());
         dto.setActivo(usuario.isActivo());
+        dto.setCreatedAt(usuario.getCreatedAt());
+        dto.setUpdatedAt(usuario.getUpdatedAt());
         // Determine user type using instanceof
         if (usuario instanceof Administrador) {
             dto.setTipo("ADMINISTRADOR");
