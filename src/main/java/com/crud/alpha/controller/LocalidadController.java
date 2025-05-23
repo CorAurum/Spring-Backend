@@ -2,6 +2,8 @@ package com.crud.alpha.controller;
 
 import com.crud.alpha.clase.Localidad.Localidad;
 import com.crud.alpha.clase.Localidad.dto.LocalidadDTO;
+import com.crud.alpha.clase.Localidad.dto.LocalidadUpdateDTO;
+import com.crud.alpha.clase.Localidad.dto.NewLocalidadDTO;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.service.LocalidadService;
@@ -23,6 +25,7 @@ public class LocalidadController {
     // Convertir entidad a DTO.
     private LocalidadDTO convertToDTO(Localidad localidad) {
         LocalidadDTO dto = new LocalidadDTO();
+        dto.setId(localidad.getId());
         dto.setNombre(localidad.getNombre());
         dto.setRegisteredByFullName(localidad.getRegisteredBy().getNombre() + " " + localidad.getRegisteredBy().getApellido());
         dto.setDescripcion(localidad.getDescripcion());
@@ -46,9 +49,22 @@ public class LocalidadController {
         }
     }
 
+    // Obtener una localidad por su id.
+    @GetMapping("/{id}")
+    public ResponseEntity<LocalidadDTO> findEntity(@PathVariable Long id) {
+        try {
+            Localidad entity = localidadService.findEntityById(id);
+            LocalidadDTO dto = convertToDTO(entity);
+            return ResponseEntity.ok(dto);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null);
+        }
+    }
+
     // Obtener una localidad por su nombre.
     @GetMapping("/buscar")
-    public ResponseEntity<LocalidadDTO> obtenerPorNombre(@RequestParam String nombre) {
+    public ResponseEntity<LocalidadDTO> findEntityById(@RequestParam String nombre) {
         try {
             Localidad entity = localidadService.findEntity(nombre);
             LocalidadDTO dto = convertToDTO(entity);
@@ -61,7 +77,7 @@ public class LocalidadController {
 
     // Crear una nueva localidad.
     @PostMapping
-    public ResponseEntity<String> createEntity(@RequestBody LocalidadDTO entityDTO) {
+    public ResponseEntity<String> createEntity(@RequestBody NewLocalidadDTO entityDTO) {
         try {
             LocalidadDTO savedEntityDTO = localidadService.createEntity(entityDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Localidad creada con exito");
@@ -78,7 +94,7 @@ public class LocalidadController {
     @PatchMapping("/{nombre}")
     public ResponseEntity<String> updateEntity(
             @PathVariable String nombre,
-            @RequestBody LocalidadDTO updateDTO) {
+            @RequestBody LocalidadUpdateDTO updateDTO) {
         try {
             LocalidadDTO updatedEntityDTO = localidadService.updateEntity(nombre, updateDTO);
             return ResponseEntity.ok("Localidad actualizada con exito");

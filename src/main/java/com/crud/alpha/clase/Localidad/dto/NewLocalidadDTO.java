@@ -12,11 +12,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class LocalidadDTO {
-    private Long id;
+public class NewLocalidadDTO {
     private String nombre;
-    private String registeredByFullName;
+    private String registeredBy;
     private String descripcion;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

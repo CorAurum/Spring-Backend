@@ -2,6 +2,8 @@ package com.crud.alpha.service;
 
 import com.crud.alpha.clase.Localidad.Localidad;
 import com.crud.alpha.clase.Localidad.dto.LocalidadDTO;
+import com.crud.alpha.clase.Localidad.dto.LocalidadUpdateDTO;
+import com.crud.alpha.clase.Localidad.dto.NewLocalidadDTO;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
@@ -21,10 +23,6 @@ public class LocalidadService {
 
     @Autowired
     private LocalidadRepository LocalidadRepository;
-    @Autowired
-    private ClienteRepository clienteRepository;
-    @Autowired
-    private VendedorRepository vendedorRepository;
     @Autowired
     private VendedorService vendedorService;
     @Autowired
@@ -73,13 +71,14 @@ public class LocalidadService {
 
     // Crear una nueva localidad.
     @Transactional
-    public LocalidadDTO createEntity(LocalidadDTO entityDTO) {
+    public LocalidadDTO createEntity(NewLocalidadDTO entityDTO) {
         try {
-            if (entityDTO.getRegisteredByFullName() != null && vendedorService.findEntity(entityDTO.getRegisteredByFullName()) == null)  {
-                throw new IllegalArgumentException("No existe un vendedor para el clerkId: " + entityDTO.getRegisteredByFullName());
+            Vendedor vendedor = vendedorService.findEntity(entityDTO.getRegisteredBy());
+
+            if (entityDTO.getRegisteredBy() != null && vendedor == null)  {
+                throw new IllegalArgumentException("No existe un vendedor para el clerkId: " + entityDTO.getRegisteredBy());
             }
 
-            Vendedor vendedor = vendedorService.findEntity(entityDTO.getRegisteredByFullName());
             // Convert DTO into an entity so that we can save it.
             Localidad entity = new Localidad();
             entity.setNombre(entityDTO.getNombre());
@@ -108,7 +107,7 @@ public class LocalidadService {
 
     // Actualizar los datos de una localidad.
     @Transactional
-    public LocalidadDTO updateEntity(String nombre, LocalidadDTO entityUpdateDTO) {
+    public LocalidadDTO updateEntity(String nombre, LocalidadUpdateDTO entityUpdateDTO) {
         try {
             // Fetch the existing client by name.
             Localidad entity = findEntity(nombre); // Throws UserNotFoundException if not found
@@ -120,7 +119,7 @@ public class LocalidadService {
 
             // Update the provided fields.
             if (entityUpdateDTO.getDescripcion() != null) {
-                entity.setNombre(entityUpdateDTO.getDescripcion());
+                entity.setDescripcion(entityUpdateDTO.getDescripcion());
             }
 
             // Save the updated entity.
