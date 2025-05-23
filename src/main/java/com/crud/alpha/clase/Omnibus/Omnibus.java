@@ -27,7 +27,7 @@ public class Omnibus {
     @Column(nullable = false)
     private String descripcion;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private int nroCoche;
 
     @Column(nullable = false)
@@ -52,8 +52,8 @@ public class Omnibus {
 
 
     // *** FK de Tabla y relacion con Asiento
-    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY) // Opcional
-    private List<Asiento> Asientos;
+    @OneToMany(mappedBy = "nroCoche", fetch = FetchType.LAZY)
+    private List<Asiento> asientos;
 
 
 }

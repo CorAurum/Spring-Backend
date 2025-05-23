@@ -33,14 +33,15 @@ public class Asiento {
 
     // *** FK Tabla y relacion con Omnibus
     @ManyToOne
-    @JoinColumn(name = "Omnibus_Id") // esta columna estará en la tabla Omnibus
-    private Omnibus omnibusId;
+    @JoinColumn(name = "NroCoche", referencedColumnName ="nroCoche") // esta columna estará en la tabla Omnibus
+    private Omnibus nroCoche;
 
 
     // *** Fk Tabla y relacion con Pasaje
 //    @OneToOne(mappedBy = "asiento")
 //    private Pasaje pasaje;
 
+    // *** Fk Tabla y relacion con Pasaje
     @OneToMany(mappedBy = "asiento")
     private List<Pasaje> pasajes;
 }

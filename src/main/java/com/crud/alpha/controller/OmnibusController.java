@@ -4,9 +4,12 @@ import com.crud.alpha.clase.Omnibus.Omnibus;
 import com.crud.alpha.clase.Omnibus.dto.OmnibusDTO;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
+import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.service.OmnibusService;
 import com.crud.alpha.service.VendedorService;
+import org.hibernate.sql.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/omnibus")
+@RequestMapping("/api/public/omnibus")
 public class OmnibusController {
 
     @Autowired
@@ -31,8 +34,20 @@ public class OmnibusController {
         dto.setNroCoche(omnibus.getNroCoche());
         dto.setEstado(omnibus.getEstado());
         dto.setAccesibilidad(omnibus.isAccesibilidad());
+
+        if (omnibus.getAsientos() != null && !omnibus.getAsientos().isEmpty()) {
+            List<Integer> nroAsientos = omnibus.getAsientos()
+                    .stream()
+                    .map(asiento -> asiento.getNroAsiento())
+                    .toList();
+            dto.setNroAsientos(nroAsientos);
+        } else {
+            dto.setNroAsientos(null);  // o Collections.emptyList() si prefieres no nulo
+        }
+
         return dto;
     }
+
 
     // Listar todos los ómnibus
     @GetMapping
@@ -67,7 +82,7 @@ public class OmnibusController {
 
     // Crear Omnibus
     @PostMapping
-    public ResponseEntity<String> createOmnibus(@RequestBody OmnibusDTO dto) {
+    public ResponseEntity<String> crearOmnibus(@RequestBody OmnibusDTO dto) {
         try {
             // This will throw UsuarioNotFoundException if not found
             Vendedor vendedor = vendedorService.findEntity(dto.getRegisteredBy());
@@ -77,7 +92,7 @@ public class OmnibusController {
             omnibus.setNroCoche(dto.getNroCoche());
             omnibus.setEstado(dto.getEstado());
             omnibus.setAccesibilidad(dto.isAccesibilidad());
-            omnibus.setRegisteredBy(vendedor); // Assuming it's a Vendedor entity here
+            omnibus.setRegisteredBy(vendedor);
 
             omnibusService.guardarOmnibus(omnibus);
 
@@ -89,6 +104,49 @@ public class OmnibusController {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
+
+    //Modificar un omnibus por nroCoche
+    @PatchMapping("/{nroCoche}")
+    public ResponseEntity<String> modificarOmnibus(@PathVariable int nroCoche, @RequestBody OmnibusDTO dto) {
+        try {
+            Optional<Omnibus> omnibusOpt = omnibusService.buscarOmnibusPorNroCoche(nroCoche);
+
+            if (omnibusOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("No se encontró un ómnibus con nroCoche: " + nroCoche);
+            }
+
+            Omnibus omnibus = omnibusOpt.get();
+
+            // Actualizar solo campos permitidos
+            omnibus.setDescripcion(dto.getDescripcion());
+            omnibus.setEstado(dto.getEstado());
+            omnibus.setAccesibilidad(dto.isAccesibilidad());
+
+            omnibusService.guardarOmnibus(omnibus);
+
+            return ResponseEntity.ok("Ómnibus modificado exitosamente.");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Error al modificar el ómnibus: " + e.getMessage());
+        }
+    }
+
+
+    // Eliminar un omnibus por nroCoche.
+    @DeleteMapping("/{nroCoche}")
+    public ResponseEntity<String> borrarOmnibus(@PathVariable int nroCoche) {
+        try {
+            omnibusService.eliminarOmnibus(nroCoche);
+            return ResponseEntity.ok("Omnibus eliminado con éxito");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar Omnibus: " + e.getMessage());
+        }
+    }
+
 
 }
 

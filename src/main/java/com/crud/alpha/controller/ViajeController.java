@@ -48,10 +48,10 @@ public class ViajeController {
     }
 
     // Obtener viajes por nombre de localidad final
-    @GetMapping("/localidad_Destino")
-    public ResponseEntity<List<ViajeDTO>> obtenerPorLocalidadDestino(@RequestParam String localidadDestino) {
+    @GetMapping("/{destino}")
+    public ResponseEntity<List<ViajeDTO>> obtenerPorLocalidadDestino(@PathVariable String destino) {
         try {
-            List<Viaje> viajes = viajeService.ObtenerPorLocalidadFinal(localidadDestino);
+            List<Viaje> viajes = viajeService.ObtenerPorLocalidadFinal(destino);
             if (viajes.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
@@ -66,12 +66,12 @@ public class ViajeController {
     }
 
     // Obtener viajes por localidad inicial y final
-    @GetMapping("/localidades_Inicio_Destino")
+    @GetMapping("/localidades_{origen}_{destino}")
     public ResponseEntity<List<ViajeDTO>> obtenerPorLocalidadInicialYFinal(
-            @RequestParam String localidadInicial,
-            @RequestParam String localidadFinal) {
+            @PathVariable String origen,
+            @PathVariable String destino) {
         try {
-            List<Viaje> viajes = viajeService.ObtenerPorLocalidadInicialyFinal(localidadInicial, localidadFinal);
+            List<Viaje> viajes = viajeService.ObtenerPorLocalidadInicialyFinal(origen, destino);
             List<ViajeDTO> viajeDTOs = viajes.stream()
                     .map(this::convertirAViajeDTO)
                     .toList();

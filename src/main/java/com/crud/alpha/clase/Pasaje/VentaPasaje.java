@@ -1,6 +1,7 @@
 package com.crud.alpha.clase.Pasaje;
 
 import com.crud.alpha.clase.Usuarios.Usuario;
+import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,10 +37,16 @@ public class VentaPasaje {
     @Column(nullable = false)
     private String paymentStatus;
 
+    // *** FK Vendedor
+    @ManyToOne
+    @JoinColumn(nullable = true,name = "sellerId", referencedColumnName = "id")
+    private Vendedor sellerId;
+
     // *** FK Cliente
     @ManyToOne
-    @JoinColumn(nullable = false,name = "idCliente", referencedColumnName = "id")
-    private Usuario idCliente;
+    @JoinColumn(nullable = true,name = "buyerId", referencedColumnName = "id")
+    private Usuario buyerId;
+
 
     // *** Fk Pasaje
     @OneToMany(mappedBy = "idCompraPasaje")
