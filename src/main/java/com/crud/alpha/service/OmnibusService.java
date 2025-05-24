@@ -22,8 +22,7 @@ public class OmnibusService {
 
     public Optional<Omnibus> buscarOmnibusPorNroCoche(int nroCoche){ return omnibusRepository.findByNroCoche(nroCoche);}
 
-    public void guardarOmnibus(Omnibus omnibus) {
-        omnibusRepository.save(omnibus);
+    public void guardarOmnibus(Omnibus omnibus) {omnibusRepository.save(omnibus);
     }
 
     // eliminar bus por nroCoche
@@ -38,6 +37,6 @@ public class OmnibusService {
     }
 
 
-
-
+    public boolean existeOmnibusPorNroCoche(int nroCoche) {
+        return omnibusRepository.findByNroCoche(nroCoche).isPresent();}
 }

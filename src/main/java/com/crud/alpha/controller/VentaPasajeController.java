@@ -1,7 +1,7 @@
 package com.crud.alpha.controller;
 
 import com.crud.alpha.clase.MP_Temporal.Compra;
-import com.crud.alpha.service.CompraPasajeService;
+import com.crud.alpha.service.VentaPasajeService;
 import com.mercadopago.client.preference.PreferenceClient;
 import com.mercadopago.client.preference.PreferenceItemRequest;
 import com.mercadopago.client.preference.PreferenceRequest;
@@ -21,10 +21,10 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/payment")
-public class ComprarPasajeController {
+public class VentaPasajeController {
 
     @Autowired
-    private CompraPasajeService compraPasajeService;
+    private VentaPasajeService ventaPasajeService;
 
     @PostConstruct // Establecemos el Token
     public void initMercadoPago() {

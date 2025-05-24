@@ -4,6 +4,9 @@ import com.crud.alpha.clase.Usuarios.Usuario;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +17,7 @@ import java.util.List;
 // el @Id establece que atributo va a ser la clave primaria y el Identity hace que cada nuevo ID autogenerado sea el siguiente del anterior.
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "VentaPasaje")
 @Getter
 @Setter
@@ -36,6 +40,13 @@ public class VentaPasaje {
 
     @Column(nullable = false)
     private String paymentStatus;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
 
     // *** FK Vendedor
     @ManyToOne

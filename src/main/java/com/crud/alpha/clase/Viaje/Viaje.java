@@ -6,8 +6,12 @@ import com.crud.alpha.clase.Pasaje.Pasaje;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +22,7 @@ import java.util.List;
 // el @Id establece que atributo va a ser la clave primaria y el Identity hace que cada nuevo ID autogenerado sea el siguiente del anterior.
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "Viaje")
 @Getter
 @Setter
@@ -45,6 +50,13 @@ public class Viaje {
     @Column(nullable = false)
     private boolean cerrado;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+
 
     // Fk tabla y relacion con Omnibus
 
@@ -55,8 +67,8 @@ public class Viaje {
     // Fk tabla y relacion con Vendedor
 
     @ManyToOne
-    @JoinColumn(name = "id_Vendedor", referencedColumnName = "id")  // id seria el atributo PK de Vendedor, idVendedor es el nombre que tendra en la BD este atributo.
-    private Vendedor idVendedor;
+    @JoinColumn(name = "registered_by", referencedColumnName = "clerkId") // esta columna estará en la tabla Omnibus
+    private Vendedor registeredBy;
 
 
     // FK tabla y relacion con Localidad // PENSADO PARA LOCALIDAD DONDE INICIA EL VIAJE

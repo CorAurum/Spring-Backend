@@ -2,8 +2,12 @@ package com.crud.alpha.clase.Omnibus;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
@@ -12,6 +16,7 @@ import java.time.LocalTime;
 // el @Id establece que atributo va a ser la clave primaria y el Identity hace que cada nuevo ID autogenerado sea el siguiente del anterior.
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "Mantenimiento")
 @Getter
 @Setter
@@ -41,6 +46,13 @@ public class Mantenimiento {
 
     @Column(nullable = false)
     private String Motivo;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
 
 
     // *** FK Tabla y relacion con Omnibus

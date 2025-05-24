@@ -2,6 +2,9 @@ package com.crud.alpha.clase.Pasaje;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +14,7 @@ import java.time.LocalDateTime;
 // el @Id establece que atributo va a ser la clave primaria y el Identity hace que cada nuevo ID autogenerado sea el siguiente del anterior.
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "DevolucionPasaje")
 @Getter
 @Setter
@@ -31,6 +35,13 @@ public class DevolucionPasaje {
 
     @Column(nullable = false)
     private String paymentStatus;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
 
 }
 

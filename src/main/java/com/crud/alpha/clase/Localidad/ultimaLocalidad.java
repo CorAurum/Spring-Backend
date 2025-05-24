@@ -3,11 +3,16 @@ package com.crud.alpha.clase.Localidad;
 import com.crud.alpha.clase.Omnibus.Omnibus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "ultimaLocalidad")
 @Getter
 @Setter
@@ -27,6 +32,12 @@ public class ultimaLocalidad {
 
     @Column(nullable = false)
     private LocalTime hora;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     // *** FK
     @ManyToOne

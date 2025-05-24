@@ -1,17 +1,17 @@
 package com.crud.alpha.service;
 
-import com.crud.alpha.repository.CompraPasajeRepository;
+import com.crud.alpha.repository.VentaPasajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CompraPasajeService {
+public class VentaPasajeService {
 
     @Autowired
-    private CompraPasajeRepository CompraPasajeRepository;
+    private VentaPasajeRepository VentaPasajeRepository;
 
     // Eliminar Pago
     public void eliminarPago(Long CompraPasajeId) {
-        CompraPasajeRepository.deleteById(CompraPasajeId);
+        VentaPasajeRepository.deleteById(CompraPasajeId);
     }
 }

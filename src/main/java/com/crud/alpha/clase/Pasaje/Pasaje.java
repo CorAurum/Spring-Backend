@@ -4,6 +4,11 @@ import com.crud.alpha.clase.Omnibus.Asiento;
 import com.crud.alpha.clase.Viaje.Viaje;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 
 //Modelado de la clase y tabla usuarios, @Tabla le da el nombre a la tabla, los demas @ nos ahorran declarar los getters
@@ -11,6 +16,7 @@ import lombok.*;
 // el @Id establece que atributo va a ser la clave primaria y el Identity hace que cada nuevo ID autogenerado sea el siguiente del anterior.
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "Pasaje")
 @Getter
 @Setter
@@ -24,6 +30,13 @@ public class Pasaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     // *** Manual
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
 
     // *** FK Tabla y relacion con Asiento
     @ManyToOne

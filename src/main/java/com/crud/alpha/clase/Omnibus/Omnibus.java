@@ -5,11 +5,16 @@ import com.crud.alpha.enums.EstadoOmnibus;
 import com.crud.alpha.clase.Localidad.ultimaLocalidad;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "Omnibus")
 @Getter
 @Setter
@@ -36,6 +41,13 @@ public class Omnibus {
 
     @Column(nullable = false)
     private boolean accesibilidad;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
 
     // *** FK de Tabla y relacion con Mantenimiento
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)

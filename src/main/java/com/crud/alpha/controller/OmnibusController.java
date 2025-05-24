@@ -1,11 +1,13 @@
 package com.crud.alpha.controller;
 
+import com.crud.alpha.clase.Localidad.ultimaLocalidad;
 import com.crud.alpha.clase.Omnibus.Omnibus;
 import com.crud.alpha.clase.Omnibus.dto.OmnibusDTO;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.service.OmnibusService;
+import com.crud.alpha.service.UltimaLocalidadService;
 import com.crud.alpha.service.VendedorService;
 import org.hibernate.sql.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,6 +26,8 @@ public class OmnibusController {
 
     @Autowired
     private OmnibusService omnibusService;
+
+    private UltimaLocalidadService ultimaLocalidadService;
 
     @Autowired
     private VendedorService vendedorService;
@@ -44,6 +49,11 @@ public class OmnibusController {
         } else {
             dto.setNroAsientos(null);  // o Collections.emptyList() si prefieres no nulo
         }
+
+        dto.setCreatedAt(omnibus.getCreatedAt());
+        dto.setUpdatedAt(omnibus.getUpdatedAt());
+        dto.setRegisteredByFullName(omnibus.getRegisteredBy().getNombre() + " " + omnibus.getRegisteredBy().getApellido());
+
 
         return dto;
     }
@@ -84,8 +94,12 @@ public class OmnibusController {
     @PostMapping
     public ResponseEntity<String> crearOmnibus(@RequestBody OmnibusDTO dto) {
         try {
-            // This will throw UsuarioNotFoundException if not found
-            Vendedor vendedor = vendedorService.findEntity(dto.getRegisteredBy());
+            if (omnibusService.existeOmnibusPorNroCoche(dto.getNroCoche())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("Ya existe un ómnibus con el número de coche: " + dto.getNroCoche());
+            }
+
+            Vendedor vendedor = vendedorService.findEntity(dto.getRegisteredByFullName());
 
             Omnibus omnibus = new Omnibus();
             omnibus.setDescripcion(dto.getDescripcion());
@@ -94,16 +108,29 @@ public class OmnibusController {
             omnibus.setAccesibilidad(dto.isAccesibilidad());
             omnibus.setRegisteredBy(vendedor);
 
+            // Fechas
+            LocalDateTime now = LocalDateTime.now();
+            omnibus.setCreatedAt(now);
+            omnibus.setUpdatedAt(now);
+
             omnibusService.guardarOmnibus(omnibus);
+
+            // Guardar última localidad si está presente en el DTO
+            if (dto.getUltimasLocalidades() != null && !dto.getUltimasLocalidades().isEmpty()) {
+                ultimaLocalidad ul = dto.getUltimasLocalidades().get(0); // solo tomamos la última ubicación actual
+                ul.setOmnibus(omnibus);
+                ultimaLocalidadService.guardar(ul); // implementado en la sección siguiente
+            }
 
             return ResponseEntity.ok("Ómnibus creado exitosamente.");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest()
-                    .body("No se encontró un vendedor con clerkId: " + dto.getRegisteredBy());
+                    .body("No se encontró un vendedor con clerkId: " + dto.getRegisteredByFullName());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+            return ResponseEntity.internalServerError().body("Error interno: " + e.getMessage());
         }
     }
+
 
     //Modificar un omnibus por nroCoche
     @PatchMapping("/{nroCoche}")
@@ -118,10 +145,12 @@ public class OmnibusController {
 
             Omnibus omnibus = omnibusOpt.get();
 
-            // Actualizar solo campos permitidos
             omnibus.setDescripcion(dto.getDescripcion());
             omnibus.setEstado(dto.getEstado());
             omnibus.setAccesibilidad(dto.isAccesibilidad());
+
+            // Actualizar updatedAt
+            omnibus.setUpdatedAt(LocalDateTime.now());
 
             omnibusService.guardarOmnibus(omnibus);
 
@@ -130,6 +159,7 @@ public class OmnibusController {
             return ResponseEntity.internalServerError().body("Error al modificar el ómnibus: " + e.getMessage());
         }
     }
+
 
 
     // Eliminar un omnibus por nroCoche.

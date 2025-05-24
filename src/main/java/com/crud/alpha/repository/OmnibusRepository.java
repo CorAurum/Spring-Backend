@@ -14,4 +14,6 @@ public interface OmnibusRepository extends JpaRepository<Omnibus, Long> {
     Optional<Omnibus> findByNroCoche(int nroCoche); //Metodo generado usando la funcion de JPA findBy
 
     void deleteOmnibusByNroCoche(int nroCoche);
+
+    boolean existsByNroCoche(int nroCoche);
 }

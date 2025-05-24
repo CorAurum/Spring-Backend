@@ -12,6 +12,8 @@ public interface ViajeRepository extends JpaRepository<Viaje, Long> {
 
     List<Viaje> findByCerrado(boolean cerrado); //Metodo generado usando la funcion de JPA findBy
 
+    Optional<Viaje> findById(Long id);
+
     // Hay que testear si estas funcionan, en vez de buscar por el atributo declarado,
 
     List<Viaje> findByLocalidadFinal_Nombre(String nombre);
@@ -20,6 +22,8 @@ public interface ViajeRepository extends JpaRepository<Viaje, Long> {
 
     //Deberia devolver una instancia que tenga la localida inicial y localidad final buscada
     List<Viaje> findByLocalidadInicial_NombreAndLocalidadFinal_Nombre(String nombreLocalidadInicial, String nombreLocalidadFinal);
+
+
 
 
 }
