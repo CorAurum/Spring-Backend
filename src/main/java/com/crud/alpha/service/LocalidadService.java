@@ -5,12 +5,12 @@ import com.crud.alpha.clase.Localidad.dto.LocalidadDTO;
 import com.crud.alpha.clase.Localidad.dto.LocalidadUpdateDTO;
 import com.crud.alpha.clase.Localidad.dto.NewLocalidadDTO;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
-import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
-import com.crud.alpha.repository.ClienteRepository;
+import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.repository.LocalidadRepository;
-import com.crud.alpha.repository.VendedorRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @Service
 public class LocalidadService {
+    private static final Logger logger = LoggerFactory.getLogger(LocalidadService.class);
 
     @Autowired
     private LocalidadRepository LocalidadRepository;
@@ -74,9 +75,16 @@ public class LocalidadService {
     public LocalidadDTO createEntity(NewLocalidadDTO entityDTO) {
         try {
             Vendedor vendedor = vendedorService.findEntity(entityDTO.getRegisteredBy());
-
-            if (entityDTO.getRegisteredBy() != null && vendedor == null)  {
+            if (entityDTO.getRegisteredBy() != null && vendedor == null) {
+                logger.error("No existe un vendedor para el clerkId: " + entityDTO.getRegisteredBy());
                 throw new IllegalArgumentException("No existe un vendedor para el clerkId: " + entityDTO.getRegisteredBy());
+            }
+
+            // Check if a localidad with the same name exists.
+            Optional<Localidad> entityOptional = localidadRepository.findByNombre(entityDTO.getNombre());
+            if (!entityOptional.isEmpty()) {
+                logger.error("Ya existe una localidad para el nombre: " + entityDTO.getNombre());
+                throw new IllegalArgumentException("localidad-duplicada " + entityDTO.getNombre());
             }
 
             // Convert DTO into an entity so that we can save it.
@@ -84,8 +92,10 @@ public class LocalidadService {
             entity.setNombre(entityDTO.getNombre());
             entity.setDescripcion(entityDTO.getDescripcion());
             entity.setRegisteredBy(vendedor);
+
             // Save entity.
             Localidad savedEntity = localidadRepository.save(entity);
+            logger.info("Localidad guardada");
 
             // Convert saved entity to DTO.
             LocalidadDTO savedEntityDTO = new LocalidadDTO();
@@ -97,20 +107,29 @@ public class LocalidadService {
 
             return savedEntityDTO;
         } catch (IllegalArgumentException e) {
+            logger.warn("IllegalArgumentException: ");
             throw e;
         } catch (DataAccessException e) {
+            logger.warn("DataAcessException: Error al guardar localidad ");
             throw new ServiceException("Error al guardar localidad", e);
         } catch (Exception e) {
+            logger.warn("Exception: Error inesperado al guardar localidad ");
             throw new ServiceException("Error inesperado al guardar localidad", e);
         }
     }
 
     // Actualizar los datos de una localidad.
     @Transactional
-    public LocalidadDTO updateEntity(String nombre, LocalidadUpdateDTO entityUpdateDTO) {
+    public LocalidadDTO updateEntity(Long id, LocalidadUpdateDTO entityUpdateDTO) {
         try {
-            // Fetch the existing client by name.
-            Localidad entity = findEntity(nombre); // Throws UserNotFoundException if not found
+            // Fetch the existing localidad by name.
+            Localidad entity = findEntityById(id); // Throws an Exception if not found
+            // Check if a localidad with the new name exists.
+            Optional<Localidad> entityOptional = localidadRepository.findByNombre(entityUpdateDTO.getNombre());
+            if (!entityOptional.isEmpty()) {
+                logger.error("Ya existe una localidad para el nuevo nombre: " + entityUpdateDTO.getNombre());
+                throw new IllegalArgumentException("localidad-duplicada " + entityUpdateDTO.getNombre());
+            }
 
             // Update the provided fields.
             if (entityUpdateDTO.getNombre() != null) {
@@ -132,11 +151,14 @@ public class LocalidadService {
             // return the updated object.
             return updatedEntityDTO;
         } catch (EntityNotFoundException | IllegalArgumentException e) {
+            logger.warn("EntityNotFoundException | IllegalArgumentException ");
             throw e;
         } catch (DataAccessException e) {
-            throw new ServiceException("Error al actualizar la localidad con nombre: " + nombre, e);
+            logger.warn("DataAcessException: Error al actualizar la localidad ");
+            throw new ServiceException("Error al actualizar la localidad", e);
         } catch (Exception e) {
-            throw new ServiceException("Error inesperado al actualizar la localidad con nombre: " + nombre, e);
+            logger.warn("Exception: Error inesperado al actualizar la localidad ");
+            throw new ServiceException("Error inesperado al actualizar la localidad", e);
         }
     }
 

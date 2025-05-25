@@ -82,6 +82,9 @@ public class LocalidadController {
             LocalidadDTO savedEntityDTO = localidadService.createEntity(entityDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Localidad creada con exito");
         } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("localidad-duplicada")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (ServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -91,16 +94,19 @@ public class LocalidadController {
     }
 
     // Actualizar los datos de una localidad existente.
-    @PatchMapping("/{nombre}")
+    @PatchMapping("/{id}")
     public ResponseEntity<String> updateEntity(
-            @PathVariable String nombre,
+            @PathVariable Long id,
             @RequestBody LocalidadUpdateDTO updateDTO) {
         try {
-            LocalidadDTO updatedEntityDTO = localidadService.updateEntity(nombre, updateDTO);
+            LocalidadDTO updatedEntityDTO = localidadService.updateEntity(id, updateDTO);
             return ResponseEntity.ok("Localidad actualizada con exito");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("localidad-duplicada")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         } catch (ServiceException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -109,11 +115,11 @@ public class LocalidadController {
         }
     }
 
-    // Eliminar una localidad por nombre.
-    @DeleteMapping("/{nombre}")
-    public ResponseEntity<String> deleteEntity(@PathVariable String nombre) {
+    // Eliminar una localidad por id.
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteEntity(@PathVariable Long id) {
         try {
-            localidadService.deleteEntity(nombre);
+            localidadService.eliminarLocalidadPorId(id);
             return ResponseEntity.ok("Localidad eliminada con éxito");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
