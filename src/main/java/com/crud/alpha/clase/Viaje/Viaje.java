@@ -56,6 +56,9 @@ public class Viaje {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Column
+    private int precio;
+
 
 
     // Fk tabla y relacion con Omnibus

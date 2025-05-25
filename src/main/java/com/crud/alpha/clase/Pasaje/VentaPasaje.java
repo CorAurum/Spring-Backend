@@ -2,6 +2,7 @@ package com.crud.alpha.clase.Pasaje;
 
 import com.crud.alpha.clase.Usuarios.Usuario;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
+import com.crud.alpha.clase.Viaje.Viaje;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -62,6 +63,12 @@ public class VentaPasaje {
     // *** Fk Pasaje
     @OneToMany(mappedBy = "idCompraPasaje")
     private List<Pasaje> idPasaje;
+
+    // *** Fk Viaje
+    @ManyToOne
+    @JoinColumn(name = "precioViaje", referencedColumnName = "precio")  // id seria el atributo PK de Viaje, idViaje es el nombre que tendra en la BD este atributo.
+    private Viaje precioViaje;
+
 
 }
 
