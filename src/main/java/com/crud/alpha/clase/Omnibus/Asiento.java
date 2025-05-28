@@ -7,9 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 
@@ -31,29 +29,21 @@ public class Asiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // No se bien como declarar una ID que identifique al asiento .
     private Long id;                                    // en el contexto que una ID deberia ser unica y hay multiples asientos "iguales" por cada bus.
-
-    // *** Manual
-    @Column(nullable = false)
-    private int nroAsiento;
-
-
+                                                        // ta bien asi :thumbsup: pensalo como un SKU jjja
     @CreatedDate
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    // *** Manual
+    @Column(nullable = false)
+    private int numero;
 
     // *** FK Tabla y relacion con Omnibus
     @ManyToOne
-    @JoinColumn(name = "NroCoche", referencedColumnName ="nroCoche") // esta columna estará en la tabla Omnibus
-    private Omnibus nroCoche;
-
-
-
-    // *** Fk Tabla y relacion con Pasaje
-//    @OneToOne(mappedBy = "asiento")
-//    private Pasaje pasaje;
+    @JoinColumn(name = "nroCoche", referencedColumnName ="nroCoche") // esta columna estará en la tabla Omnibus
+    private Omnibus omnibus;
 
     // *** Fk Tabla y relacion con Pasaje
     @OneToMany(mappedBy = "asiento")

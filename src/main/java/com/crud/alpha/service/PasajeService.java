@@ -34,7 +34,7 @@ public class PasajeService {
         Omnibus omnibus = viaje.getOmnibusAsignado();
 
         // Buscar todos los asientos del ómnibus
-        List<Asiento> asientos = asientoRepository.findByNroCoche(omnibus);
+        List<Asiento> asientos = asientoRepository.findByOmnibus_nroCoche(omnibus.getNroCoche());
 
         if (omnibus.getAsientos() == null || omnibus.getAsientos().isEmpty()) {
             throw new IllegalStateException("No se pueden crear pasajes: el ómnibus asignado no tiene asientos.");
