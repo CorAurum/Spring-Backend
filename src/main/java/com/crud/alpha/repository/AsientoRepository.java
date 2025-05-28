@@ -10,7 +10,5 @@ import java.util.List;
 @Repository
 public interface AsientoRepository extends JpaRepository<Asiento, Long> {
     // Listar asientos filtrando por Omnibus (nroCoche)
-    List<Asiento> findByNroCoche_NroCoche(int nroCoche);
-
-    List<Asiento> findByNroCoche(Omnibus omnibus);
+    List<Asiento> findByOmnibus_nroCoche(int nroCoche);
 }

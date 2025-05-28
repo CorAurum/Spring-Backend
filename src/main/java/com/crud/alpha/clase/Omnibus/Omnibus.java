@@ -1,8 +1,8 @@
 package com.crud.alpha.clase.Omnibus;
 
+import com.crud.alpha.clase.Localidad.UltimaLocalidad;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.enums.EstadoOmnibus;
-import com.crud.alpha.clase.Localidad.ultimaLocalidad;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -29,11 +29,11 @@ public class Omnibus {
     private Long id;
 
     // *** Manual
-    @Column(nullable = false)
-    private String descripcion;
-
     @Column(nullable = false, unique = true)
     private int nroCoche;
+
+    @Column(nullable = false)
+    private String descripcion;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -60,11 +60,11 @@ public class Omnibus {
 
     // *** FK de Tabla y relacion con Ultimalocalidad (UltimaLocalidad en la que estuvo el bus presente, AKA su ultima ubicacion registrada)
     @OneToMany(mappedBy = "omnibus") // mappedby indica a la tabla que la columna de esta relacion no se genera en Omnibus, si no en UltimaLocalidad.
-    private List<ultimaLocalidad> ultimasLocalidades = new ArrayList<>();
+    private List<UltimaLocalidad> ultimasLocalidades = new ArrayList<>();
 
 
     // *** FK de Tabla y relacion con Asiento
-    @OneToMany(mappedBy = "nroCoche", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "omnibus", fetch = FetchType.LAZY)
     private List<Asiento> asientos;
 
 
