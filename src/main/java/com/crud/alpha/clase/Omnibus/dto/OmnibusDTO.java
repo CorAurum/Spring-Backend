@@ -21,7 +21,9 @@ public class OmnibusDTO {
     private EstadoOmnibus estado;
     private boolean accesibilidad;
     private String registeredByFullName;
-//    private UltimaLocalidad ultimaLocalidad;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    // Experimentales
+    private String ultimaLocalidadNombre;
+    private long ultimaLocalidadid;
 }

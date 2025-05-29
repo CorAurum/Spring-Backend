@@ -1,5 +1,6 @@
 package com.crud.alpha.controller;
 
+import com.crud.alpha.clase.Localidad.UltimaLocalidad;
 import com.crud.alpha.clase.Localidad.dto.LocalidadDTO;
 import com.crud.alpha.clase.Localidad.dto.LocalidadUpdateDTO;
 import com.crud.alpha.clase.Omnibus.Omnibus;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/flota")
+@RequestMapping("/api/public/flota")
 public class OmnibusController {
 
     @Autowired
@@ -43,8 +44,16 @@ public class OmnibusController {
         } else {
             dto.setAsientos(0);
         }
+        // Experimentales
+        if (omnibus.getUltimasLocalidades() != null && !omnibus.getUltimasLocalidades().isEmpty()) {
+            UltimaLocalidad ultima = omnibus.getUltimasLocalidades().getFirst();
+            dto.setUltimaLocalidadid(ultima.getId());
 
-//        dto.setUltimaLocalidad(omnibus.getUltimasLocalidades().getFirst());  DA PROBLEMAS QUE TROLL!!!
+            if (ultima.getLocalidad() != null) {
+                dto.setUltimaLocalidadNombre(ultima.getLocalidad().getNombre());
+            }
+        }
+        // ----------------------------------------------------------------------------
         dto.setRegisteredByFullName(omnibus.getRegisteredBy().getNombre() + " " + omnibus.getRegisteredBy().getApellido());
         dto.setCreatedAt(omnibus.getCreatedAt());
         dto.setUpdatedAt(omnibus.getUpdatedAt());
