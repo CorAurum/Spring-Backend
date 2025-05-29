@@ -79,10 +79,10 @@ public class LocalidadController {
     @PostMapping
     public ResponseEntity<String> createEntity(@RequestBody NewLocalidadDTO entityDTO) {
         try {
-            LocalidadDTO savedEntityDTO = localidadService.createEntity(entityDTO);
+            localidadService.createEntity(entityDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Localidad creada con exito");
         } catch (IllegalArgumentException e) {
-            if (e.getMessage().contains("localidad-duplicada")) {
+            if (e.getMessage().contains("entidad-duplicada")) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -99,12 +99,12 @@ public class LocalidadController {
             @PathVariable Long id,
             @RequestBody LocalidadUpdateDTO updateDTO) {
         try {
-            LocalidadDTO updatedEntityDTO = localidadService.updateEntity(id, updateDTO);
+            localidadService.updateEntity(id, updateDTO);
             return ResponseEntity.ok("Localidad actualizada con exito");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (IllegalArgumentException e) {
-            if (e.getMessage().contains("localidad-duplicada")) {
+            if (e.getMessage().contains("entidad-duplicada")) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

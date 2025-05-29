@@ -84,7 +84,7 @@ public class LocalidadService {
             Optional<Localidad> entityOptional = localidadRepository.findByNombre(entityDTO.getNombre());
             if (!entityOptional.isEmpty()) {
                 logger.error("Ya existe una localidad para el nombre: " + entityDTO.getNombre());
-                throw new IllegalArgumentException("localidad-duplicada " + entityDTO.getNombre());
+                throw new IllegalArgumentException("entidad-duplicada " + entityDTO.getNombre());
             }
 
             // Convert DTO into an entity so that we can save it.
@@ -124,11 +124,13 @@ public class LocalidadService {
         try {
             // Fetch the existing localidad by name.
             Localidad entity = findEntityById(id); // Throws an Exception if not found
-            // Check if a localidad with the new name exists.
-            Optional<Localidad> entityOptional = localidadRepository.findByNombre(entityUpdateDTO.getNombre());
-            if (!entityOptional.isEmpty()) {
-                logger.error("Ya existe una localidad para el nuevo nombre: " + entityUpdateDTO.getNombre());
-                throw new IllegalArgumentException("localidad-duplicada " + entityUpdateDTO.getNombre());
+            // Check if a localidad with the new name exists. It is not necessary to do so if the name was not modified.
+            if (!entity.getNombre().equals(entityUpdateDTO.getNombre())) {
+                Optional<Localidad> entityOptional = localidadRepository.findByNombre(entityUpdateDTO.getNombre());
+                if (entityOptional.isPresent()) {
+                    logger.error("Ya existe una localidad para el nuevo nombre: " + entityUpdateDTO.getNombre());
+                    throw new IllegalArgumentException("entidad-duplicada " + entityUpdateDTO.getNombre());
+                }
             }
 
             // Update the provided fields.

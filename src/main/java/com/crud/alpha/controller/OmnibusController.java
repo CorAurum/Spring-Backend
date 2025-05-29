@@ -1,8 +1,11 @@
 package com.crud.alpha.controller;
 
+import com.crud.alpha.clase.Localidad.dto.LocalidadDTO;
+import com.crud.alpha.clase.Localidad.dto.LocalidadUpdateDTO;
 import com.crud.alpha.clase.Omnibus.Omnibus;
 import com.crud.alpha.clase.Omnibus.dto.NewOmnibusDTO;
 import com.crud.alpha.clase.Omnibus.dto.OmnibusDTO;
+import com.crud.alpha.clase.Omnibus.dto.OmnibusUpdateDTO;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.service.OmnibusService;
@@ -85,7 +88,7 @@ public class OmnibusController {
            omnibusService.createEntity(entityDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Ómnibus creado con éxito");
         } catch (IllegalArgumentException e) {
-            if (e.getMessage().contains("omnibus-duplicado")) {
+            if (e.getMessage().contains("entidad-duplicada")) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
             }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -96,33 +99,27 @@ public class OmnibusController {
         }
     }
 
-//    //Modificar un omnibus por nroCoche
-//    @PatchMapping("/{nroCoche}")
-//    public ResponseEntity<String> modificarOmnibus(@PathVariable int nroCoche, @RequestBody OmnibusDTO dto) {
-//        try {
-//            Optional<Omnibus> omnibusOpt = omnibusService.findEntity(nroCoche);
-//
-//            if (omnibusOpt.isEmpty()) {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                        .body("No se encontró un ómnibus con nroCoche: " + nroCoche);
-//            }
-//
-//            Omnibus omnibus = omnibusOpt.get();
-//
-//            omnibus.setDescripcion(dto.getDescripcion());
-//            omnibus.setEstado(dto.getEstado());
-//            omnibus.setAccesibilidad(dto.isAccesibilidad());
-//
-//            // Actualizar updatedAt
-//            omnibus.setUpdatedAt(LocalDateTime.now());
-//
-//            omnibusService.guardarOmnibus(omnibus);
-//
-//            return ResponseEntity.ok("Ómnibus modificado exitosamente.");
-//        } catch (Exception e) {
-//            return ResponseEntity.internalServerError().body("Error al modificar el ómnibus: " + e.getMessage());
-//        }
-//    }
+// Modificar un omnibus por nroCoche
+@PatchMapping("/{nroCoche}")
+public ResponseEntity<String> updateEntity(
+        @PathVariable int nroCoche,
+        @RequestBody OmnibusUpdateDTO updateDTO) {
+    try {
+        omnibusService.updateEntity(nroCoche, updateDTO);
+        return ResponseEntity.ok("Ómnibus actualizado con exito");
+    } catch (EntityNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    } catch (IllegalArgumentException e) {
+        if (e.getMessage().contains("entidad-duplicada")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    } catch (ServiceException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+}
 
 
 
