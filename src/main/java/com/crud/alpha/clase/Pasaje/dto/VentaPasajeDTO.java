@@ -26,7 +26,7 @@ import java.util.List;
 public class VentaPasajeDTO {
     private Long paymentId;
     private String paymentStatus;
-    private LocalDateTime fechaCompra;
+    private LocalDateTime fechaVenta;
     private String sellerId;        // ID del vendedor
     private String buyerId;         // ID del cliente
     private List<Long> pasajesIds; // Lista de IDs de pasajes asociados (opcional)

@@ -34,11 +34,11 @@ public class VentaPasaje {
     private Long id;
 
     // *** Manual
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long paymentId; // paymentId de mercadopago
 
     @Column(nullable = false)
-    private LocalDateTime fechaCompra; // Aca le agregue LocalDateTime que nos da tanto hora como fecha para tener mas precision con el manejo.
+    private LocalDateTime fechaVenta; // Aca le agregue LocalDateTime que nos da tanto hora como fecha para tener mas precision con el manejo.
 
     @Column(nullable = false)
     private String paymentStatus;

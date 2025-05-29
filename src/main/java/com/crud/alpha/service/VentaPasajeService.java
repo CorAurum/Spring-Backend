@@ -40,8 +40,13 @@ public class VentaPasajeService {
     public VentaPasaje crearVentaPasaje(VentaPasajeDTO dto) {
         VentaPasaje venta = new VentaPasaje();
 
-        venta.setPaymentId(dto.getPaymentId());
-        venta.setFechaCompra(dto.getFechaCompra());
+        if(dto.getPaymentId() == null) {
+          venta.setPaymentId(null);
+        }else{
+            venta.setPaymentId(dto.getPaymentId());
+        }
+
+        venta.setFechaVenta(dto.getFechaVenta());
         venta.setPaymentStatus(dto.getPaymentStatus());
 
         System.out.println("Buyer ID: " + dto.getBuyerId());
@@ -80,5 +85,9 @@ public class VentaPasajeService {
 
     public VentaPasaje obtenerVentaPorId(Long id) {
         return ventaPasajeRepository.findById(id).orElseThrow(() -> new RuntimeException("Venta no encontrada"));
+    }
+
+    public void actualizar(VentaPasaje venta) {
+
     }
 }

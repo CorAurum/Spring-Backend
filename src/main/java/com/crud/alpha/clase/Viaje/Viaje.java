@@ -60,7 +60,6 @@ public class Viaje {
     private int precio;
 
 
-
     // Fk tabla y relacion con Omnibus
 
     @ManyToOne
