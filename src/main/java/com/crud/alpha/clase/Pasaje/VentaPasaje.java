@@ -1,5 +1,6 @@
 package com.crud.alpha.clase.Pasaje;
 
+import com.crud.alpha.clase.Usuarios.Cliente.Cliente;
 import com.crud.alpha.clase.Usuarios.Usuario;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.Viaje.Viaje;
@@ -33,11 +34,11 @@ public class VentaPasaje {
     private Long id;
 
     // *** Manual
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long paymentId; // paymentId de mercadopago
 
     @Column(nullable = false)
-    private LocalDateTime fechaCompra; // Aca le agregue LocalDateTime que nos da tanto hora como fecha para tener mas precision con el manejo.
+    private LocalDateTime fechaVenta; // Aca le agregue LocalDateTime que nos da tanto hora como fecha para tener mas precision con el manejo.
 
     @Column(nullable = false)
     private String paymentStatus;
@@ -51,13 +52,13 @@ public class VentaPasaje {
 
     // *** FK Vendedor
     @ManyToOne
-    @JoinColumn(nullable = true,name = "sellerId", referencedColumnName = "id")
+    @JoinColumn(nullable = true,name = "sellerId", referencedColumnName = "clerkId")
     private Vendedor sellerId;
 
     // *** FK Cliente
     @ManyToOne
-    @JoinColumn(nullable = true,name = "buyerId", referencedColumnName = "id")
-    private Usuario buyerId;
+    @JoinColumn(nullable = true,name = "buyerId", referencedColumnName = "clerkId")
+    private Cliente buyerId;
 
 
     // *** Fk Pasaje
