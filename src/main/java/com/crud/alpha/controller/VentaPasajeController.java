@@ -38,7 +38,7 @@ public class VentaPasajeController {
         if (request == null) {
             return ResponseEntity.badRequest().body("El cuerpo de la solicitud no puede ser nulo.");
         }
-
+            // fix?
         try {
             // 1. Crear la venta con estado inicial
             VentaPasaje venta = ventaPasajeService.crearVentaPasaje(request);
