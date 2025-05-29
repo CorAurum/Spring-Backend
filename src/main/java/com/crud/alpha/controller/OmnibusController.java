@@ -1,12 +1,8 @@
 package com.crud.alpha.controller;
 
-import com.crud.alpha.clase.Localidad.UltimaLocalidad;
-import com.crud.alpha.clase.Localidad.dto.LocalidadDTO;
-import com.crud.alpha.clase.Localidad.dto.NewLocalidadDTO;
 import com.crud.alpha.clase.Omnibus.Omnibus;
 import com.crud.alpha.clase.Omnibus.dto.NewOmnibusDTO;
 import com.crud.alpha.clase.Omnibus.dto.OmnibusDTO;
-import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.service.OmnibusService;
@@ -17,13 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/omnibus")
+@RequestMapping("/flota")
 public class OmnibusController {
 
     @Autowired
@@ -36,8 +30,8 @@ public class OmnibusController {
 
     private OmnibusDTO convertToDTO(Omnibus omnibus) {
         OmnibusDTO dto = new OmnibusDTO();
-        dto.setDescripcion(omnibus.getDescripcion());
         dto.setNroCoche(omnibus.getNroCoche());
+        dto.setDescripcion(omnibus.getDescripcion());
         dto.setEstado(omnibus.getEstado());
         dto.setAccesibilidad(omnibus.isAccesibilidad());
 
@@ -47,9 +41,11 @@ public class OmnibusController {
             dto.setAsientos(0);
         }
 
+//        dto.setUltimaLocalidad(omnibus.getUltimasLocalidades().getFirst());  DA PROBLEMAS QUE TROLL!!!
         dto.setRegisteredByFullName(omnibus.getRegisteredBy().getNombre() + " " + omnibus.getRegisteredBy().getApellido());
         dto.setCreatedAt(omnibus.getCreatedAt());
         dto.setUpdatedAt(omnibus.getUpdatedAt());
+
 
         return dto;
     }
@@ -57,10 +53,10 @@ public class OmnibusController {
 
     // Listar todos los ómnibus
     @GetMapping
-    public ResponseEntity<List<OmnibusDTO>> listarOmnibus() {
+    public ResponseEntity<List<OmnibusDTO>> listarFlota() {
         try {
-            List<Omnibus> omnibuses = omnibusService.listEntities();
-            List<OmnibusDTO> omnibusDTOs = omnibuses.stream()
+            List<Omnibus> flota = omnibusService.listEntities();
+            List<OmnibusDTO> omnibusDTOs = flota.stream()
                     .map(this::convertToDTO)
                     .collect(Collectors.toList());
             return ResponseEntity.ok(omnibusDTOs);
