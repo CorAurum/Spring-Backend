@@ -27,10 +27,10 @@ public class UltimaLocalidad {
     private Long id;
 
     // *** Manual
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate fecha;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalTime hora;
 
     @CreatedDate
@@ -41,10 +41,11 @@ public class UltimaLocalidad {
 
     // *** FK
     @ManyToOne
+    @JoinColumn(name = "NroCoche", referencedColumnName = "nroCoche")
     private Omnibus omnibus;
 
     @ManyToOne
-    @JoinColumn(name = "localidad_nombre", referencedColumnName = "nombre")
+    @JoinColumn(name = "localidad_nombre", referencedColumnName = "id")
     private Localidad localidad;
 
 }

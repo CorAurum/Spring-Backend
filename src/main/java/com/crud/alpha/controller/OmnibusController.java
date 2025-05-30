@@ -47,7 +47,8 @@ public class OmnibusController {
         // Experimentales
         if (omnibus.getUltimasLocalidades() != null && !omnibus.getUltimasLocalidades().isEmpty()) {
             UltimaLocalidad ultima = omnibus.getUltimasLocalidades().getFirst();
-            dto.setUltimaLocalidadid(ultima.getId());
+
+            dto.setUltimaLocalidadid(ultima.getLocalidad().getId());
 
             if (ultima.getLocalidad() != null) {
                 dto.setUltimaLocalidadNombre(ultima.getLocalidad().getNombre());
@@ -57,7 +58,6 @@ public class OmnibusController {
         dto.setRegisteredByFullName(omnibus.getRegisteredBy().getNombre() + " " + omnibus.getRegisteredBy().getApellido());
         dto.setCreatedAt(omnibus.getCreatedAt());
         dto.setUpdatedAt(omnibus.getUpdatedAt());
-
 
         return dto;
     }

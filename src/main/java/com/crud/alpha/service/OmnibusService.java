@@ -1,5 +1,7 @@
 package com.crud.alpha.service;
 
+import com.crud.alpha.clase.Localidad.Localidad;
+import com.crud.alpha.clase.Localidad.UltimaLocalidad;
 import com.crud.alpha.clase.Omnibus.Asiento;
 import com.crud.alpha.clase.Omnibus.Omnibus;
 import com.crud.alpha.clase.Omnibus.dto.NewOmnibusDTO;
@@ -17,8 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static java.time.LocalDate.now;
 
 @Service
 public class OmnibusService {
@@ -71,6 +78,8 @@ public class OmnibusService {
                 throw new IllegalArgumentException("omnibus-duplicado " + entityDTO.getNroCoche());
             }
 
+
+
             // Convert DTO into an entity so that we can save it.
             Omnibus entity = new Omnibus();
             entity.setNroCoche(entityDTO.getNroCoche());
@@ -78,21 +87,29 @@ public class OmnibusService {
             entity.setAccesibilidad(entityDTO.isAccesibilidad());
             entity.setDescripcion(entityDTO.getDescripcion());
             entity.setRegisteredBy(vendedor);
-            // Initialize the ultimasLocalidades list with the last location that comes in the DTO.
-//            List<UltimaLocalidad> ultimasLocalidades = new ArrayList<>();
-//            Optional<Localidad> localidad = localidadRepository.findById(entityDTO.getUltimaLocalidadId());
-//            if (localidad.isEmpty()) {
-//                logger.error("No se encontró la localidad con id: " + entityDTO.getUltimaLocalidadId());
-//                throw new IllegalArgumentException("localidad-not-found " + entityDTO.getUltimaLocalidadId());
-//            }
-//            TIRA ESTE ERROR SI LO DESCOMENTO:
-//            Error al guardar el ómnibus not-null property references a null or transient value: com.crud.alpha.clase.Localidad.UltimaLocalidad.fecha
-//            NO SE COMO PONERLE LA FECHA A ESTA COSA DEL DIABLO
-//            UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
-//            ultimaLocalidad.setLocalidad(localidad.get());
-//            ultimaLocalidadService.guardar(ultimaLocalidad);
-//            ultimasLocalidades.add(ultimaLocalidad);
-//            entity.setUltimasLocalidades(ultimasLocalidades);
+
+
+
+           //  Initialize the ultimasLocalidades list with the last location that comes in the DTO.
+            List<UltimaLocalidad> ultimasLocalidades = new ArrayList<>();
+            Optional<Localidad> localidad = localidadRepository.findById(entityDTO.getUltimaLocalidadId());
+            if (localidad.isEmpty()) {
+                logger.error("No se encontró la localidad con id: " + entityDTO.getUltimaLocalidadId());
+                throw new IllegalArgumentException("localidad-not-found " + entityDTO.getUltimaLocalidadId());
+            }
+         //   TIRA ESTE ERROR SI LO DESCOMENTO:
+            //Error al guardar el ómnibus not-null property references a null or transient value: com.crud.alpha.clase.Localidad.UltimaLocalidad.fecha
+         //   NO SE COMO PONERLE LA FECHA A ESTA COSA DEL DIABLO
+
+
+            UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
+            ultimaLocalidad.setLocalidad(localidad.get());
+            ultimaLocalidadService.guardar(ultimaLocalidad);
+            ultimasLocalidades.add(ultimaLocalidad);
+            entity.setUltimasLocalidades(ultimasLocalidades);
+            ultimaLocalidad.setOmnibus(entity);
+            ultimaLocalidad.setFecha(LocalDate.now());
+            ultimaLocalidad.setHora(LocalTime.now());
 
             // Save entity.
             omnibusRepository.save(entity);
