@@ -35,8 +35,8 @@ public class ViajeController {
         dto.setHoraLlegada(viaje.getHora_llegada().toString());
         dto.setCerrado(viaje.isCerrado());
         dto.setNroCoche(viaje.getOmnibusAsignado().getNroCoche());
-        dto.setLocalidadInicial(viaje.getLocalidadInicial().getNombre());
-        dto.setLocalidadFinal(viaje.getLocalidadFinal().getNombre());
+        dto.setLocalidadInicial(viaje.getLocalidadInicial().getId());
+        dto.setLocalidadFinal(viaje.getLocalidadFinal().getId());
         dto.setCreatedAt(viaje.getCreatedAt());
         dto.setUpdatedAt(viaje.getUpdatedAt());
         dto.setRegisteredByFullName(viaje.getRegisteredBy().getNombre() + " " + viaje.getRegisteredBy().getApellido());
@@ -60,7 +60,7 @@ public class ViajeController {
 
     // Obtener viajes por nombre de localidad final
     @GetMapping("/{destino}")
-    public ResponseEntity<List<ViajeDTO>> obtenerPorLocalidadDestino(@PathVariable String destino) {
+    public ResponseEntity<List<ViajeDTO>> obtenerPorLocalidadDestino(@PathVariable long destino) {
         try {
             List<Viaje> viajes = viajeService.ObtenerPorLocalidadFinal(destino);
             if (viajes.isEmpty()) {
@@ -77,15 +77,19 @@ public class ViajeController {
     }
 
     // Obtener viajes por localidad inicial y final
-    @GetMapping("/localidades_{origen}_{destino}")
+
+    // Le saque los _ en el path del request porque por alguna razon no andaba, con / anda precioso
+    @GetMapping("/localidades/{origen}/{destino}")
     public ResponseEntity<List<ViajeDTO>> obtenerPorLocalidadInicialYFinal(
-            @PathVariable String origen,
-            @PathVariable String destino) {
+            @PathVariable Long origen,
+            @PathVariable Long destino) {
         try {
             List<Viaje> viajes = viajeService.ObtenerPorLocalidadInicialyFinal(origen, destino);
             List<ViajeDTO> viajeDTOs = viajes.stream()
                     .map(this::convertirAViajeDTO)
                     .toList();
+
+
 
             return ResponseEntity.ok(viajeDTOs);
         } catch (Exception e) {

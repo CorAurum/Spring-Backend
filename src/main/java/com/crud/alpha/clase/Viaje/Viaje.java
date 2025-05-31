@@ -76,7 +76,7 @@ public class Viaje {
     // FK tabla y relacion con Localidad // PENSADO PARA LOCALIDAD DONDE INICIA EL VIAJE
 
     @ManyToOne
-    @JoinColumn(nullable = false,name = "localidad_Inicial", referencedColumnName = "nombre")
+    @JoinColumn(nullable = false,name = "localidad_inicial", referencedColumnName = "id")
     // id es la PK de Localidad
     private Localidad localidadInicial;
 
@@ -84,7 +84,7 @@ public class Viaje {
     // FK tabla y relacion con Localidad // PENSADO PARA LOCALIDAD DONDE FINALIZA EL VIAJE
 
     @ManyToOne
-    @JoinColumn(nullable = false,name = "localidad_Final", referencedColumnName = "nombre") // id es la PK de Localidad
+    @JoinColumn(nullable = false,name = "localidad_final", referencedColumnName = "id") // id es la PK de Localidad
     private Localidad localidadFinal;
 
     // ** FK Tabla y relacion con Pasaje

@@ -16,12 +16,12 @@ public interface ViajeRepository extends JpaRepository<Viaje, Long> {
 
     // Hay que testear si estas funcionan, en vez de buscar por el atributo declarado,
 
-    List<Viaje> findByLocalidadFinal_Nombre(String nombre);
+    List<Viaje> findByLocalidadFinal_Id(Long id);
 
     List<Viaje> findByLocalidadInicial_Nombre(String nombre);
 
-    //Deberia devolver una instancia que tenga la localida inicial y localidad final buscada
-    List<Viaje> findByLocalidadInicial_NombreAndLocalidadFinal_Nombre(String nombreLocalidadInicial, String nombreLocalidadFinal);
+    //Deberia devolver una instancia que tenga la localida inicial y localidad final buscada por la Id de dicha localidad
+    List<Viaje> findByLocalidadInicial_IdAndLocalidadFinal_Id(Long localidadInicialId, Long localidadFinalId);
 
 
 

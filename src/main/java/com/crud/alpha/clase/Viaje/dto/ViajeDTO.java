@@ -20,8 +20,8 @@ public class ViajeDTO {
     private String horaLlegada;
     private boolean cerrado;
     private int nroCoche;
-    private String localidadInicial;
-    private String localidadFinal;
+    private Long localidadInicial;
+    private Long localidadFinal;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String registeredByFullName;
