@@ -119,6 +119,28 @@ public class VentaPasajeController {
         }
     }
 
+//    //POST Webhook que nos notifica si el pago fue exitoso (Hay que agregar parametro y metodos)
+//
+//    @PostMapping("/webhook")
+//    public ResponseEntity<?> recibirWebhook(@RequestBody String payload,
+//                                            @RequestHeader(value = "X-Topic", required = false) String topic,
+//                                            @RequestHeader(value = "X-Request-Id", required = false) String requestId) {
+//        try {
+//            System.out.println("📩 Webhook recibido de MercadoPago:");
+//            System.out.println("Topic: " + topic);
+//            System.out.println("Request ID: " + requestId);
+//            System.out.println("Payload: " + payload);
+//            return ResponseEntity.ok("Webhook recibido correctamente");
+//
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error al procesar el webhook: " + e.getMessage());
+//        }
+//    }
+
 
     // POST: Crear nueva venta de pasaje
     @PostMapping("vp")

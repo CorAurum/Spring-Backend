@@ -32,28 +32,25 @@ public class ViajeService {
     public Optional<Viaje> buscarViajeporId(long id) { return viajeRepository.findById(id);}
 
     // Obtener un Viaje por su LocalidadFinal
-    public List<Viaje> ObtenerPorLocalidadFinal(String nombreLocalidadDestino) { return viajeRepository.findByLocalidadFinal_Nombre(nombreLocalidadDestino);}
+    public List<Viaje> ObtenerPorLocalidadFinal(long localidadDestinoId) { return viajeRepository.findByLocalidadFinal_Id(localidadDestinoId);}
 
     // Obtener un Viaje por su LocalidadInicial y LocalidadFinal
-    public List<Viaje> ObtenerPorLocalidadInicialyFinal(String nombreLocalidadInicial, String nombreLocalidadFinal) { return viajeRepository.findByLocalidadInicial_NombreAndLocalidadFinal_Nombre(nombreLocalidadInicial, nombreLocalidadFinal);}
+    public List<Viaje> ObtenerPorLocalidadInicialyFinal(Long localidadInicialId, Long localidadFinalId) { return viajeRepository.findByLocalidadInicial_IdAndLocalidadFinal_Id(localidadInicialId, localidadFinalId);}
 
     // Guardar un  viaje
     public void guardarViaje(Viaje viaje) {
 
-
-
-
         viajeRepository.save(viaje);
     }
 
-    public void asignarDatosRelacionados(Viaje viaje, int nroCoche, String localidadInicial, String localidadFinal) {
+    public void asignarDatosRelacionados(Viaje viaje, int nroCoche, Long localidadInicial, Long localidadFinal) {
         Omnibus omnibus = omnibusRepository.findByNroCoche(nroCoche)
                 .orElseThrow(() -> new RuntimeException("Ómnibus no encontrado"));
 
-        Localidad origen = localidadRepository.findByNombre(localidadInicial)
+        Localidad origen = localidadRepository.findById(localidadInicial)
                 .orElseThrow(() -> new RuntimeException("Localidad origen no encontrada"));
 
-        Localidad destino = localidadRepository.findByNombre(localidadFinal)
+        Localidad destino = localidadRepository.findById(localidadFinal)
                 .orElseThrow(() -> new RuntimeException("Localidad destino no encontrada"));
 
         viaje.setOmnibusAsignado(omnibus);
