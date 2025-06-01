@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/public/venta")
@@ -160,7 +161,7 @@ public ResponseEntity<?> recibirWebhook(
         System.out.println("Request ID: " + requestId);
         System.out.println("Payload raw: " + payload);
 
-        // 1. Extraer el payment_id (o preference_id) enviado en payload.data.id
+        // 1. Extraer el id (el id autogenerado de la VentaPasaje) (o preference_id) enviado en payload.data.id
         @SuppressWarnings("unchecked")
         Map<String, Object> data = (Map<String, Object>) payload.get("data");
         Long mpPaymentId = null;
@@ -198,9 +199,12 @@ public ResponseEntity<?> recibirWebhook(
         // 5. Verificar el estado de pago (mpPayment.getStatus()), y actualizar tu entidad
         String statusMP = mpPayment.getStatus(); // ej. "approved", "pending", etc.
         venta.setPaymentStatus(statusMP);
-        ventaPasajeService.asignarVentaAPasajes(pasajeIds,venta);
-        ventaPasajeService.actualizar(venta);
-
+        if(Objects.equals(statusMP, "approved")) {
+            ventaPasajeService.asignarVentaAPasajes(pasajeIds, venta);
+            ventaPasajeService.actualizar(venta);
+        }else{
+            System.out.println("Pago no aprovado");
+        }
         return ResponseEntity.ok("Webhook procesado correctamente para venta ID " + ventaId);
 
     } catch (Exception e) {
@@ -212,22 +216,6 @@ public ResponseEntity<?> recibirWebhook(
 
 //----------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-    // POST: Crear nueva venta de pasaje
-    @PostMapping("vp")
-    public ResponseEntity<?> crearVentaPasaje(@RequestBody VentaPasajeDTO dto) {
-        try {
-            VentaPasaje venta = ventaPasajeService.crearVentaPasaje(dto);return ResponseEntity.status(HttpStatus.CREATED).body(venta);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Entidad no encontrada: " + e.getMessage());
-        } catch (ServiceException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error en el servicio: " + e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + e.getMessage());
-        }
-    }
 
     // GET: Listar todas las ventas de pasajes
     @GetMapping
