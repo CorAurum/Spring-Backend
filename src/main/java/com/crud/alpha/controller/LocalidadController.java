@@ -7,16 +7,21 @@ import com.crud.alpha.clase.Localidad.dto.NewLocalidadDTO;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.service.LocalidadService;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/localidades")
+@RequestMapping("/api/public/localidades")
 public class LocalidadController {
 
     @Autowired
@@ -129,6 +134,66 @@ public class LocalidadController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error del servicio: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar localidad: " + e.getMessage());
+        }
+    }
+
+    //Metodo para la carga de localidades masivas
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadLocalidadesExcel(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("Archivo vacío.");
+        }
+
+        try (InputStream inputStream = file.getInputStream(); Workbook workbook = new XSSFWorkbook(inputStream)) {
+            Sheet sheet = workbook.getSheetAt(0);
+            int rowCount = 0;
+            List<String> errores = new ArrayList<>();
+
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) continue; // Saltear encabezado
+
+                try {
+                    NewLocalidadDTO dto = new NewLocalidadDTO();
+
+                    // Leer nombre (col 0)
+                    Cell cell0 = row.getCell(0);
+                    dto.setNombre(cell0.getStringCellValue().trim());
+
+                    // Leer descripcion (col 1)
+                    Cell cell1 = row.getCell(1);
+                    dto.setDescripcion(cell1 != null ? cell1.getStringCellValue().trim() : "");
+
+                    // Leer registeredBy (col 2)
+                    Cell cell2 = row.getCell(2);
+                    String registeredBy = null;
+                    if (cell2 != null) {
+                        if (cell2.getCellType() == CellType.STRING) {
+                            registeredBy = cell2.getStringCellValue().trim();
+                        } else if (cell2.getCellType() == CellType.NUMERIC) {
+                            registeredBy = String.valueOf((long) cell2.getNumericCellValue());
+                        }
+                    }
+                    dto.setRegisteredBy(registeredBy);
+
+                    // Llamamos al metodo que ya tienes en el service
+                    localidadService.createEntity(dto);
+                    rowCount++;
+
+                } catch (Exception e) {
+                    errores.add("Fila " + (row.getRowNum() + 1) + ": " + e.getMessage());
+                }
+            }
+
+            if (errores.isEmpty()) {
+                return ResponseEntity.ok("Se cargaron " + rowCount++ + " localidades correctamente.");
+            } else {
+                String errorMsg = "Se cargaron " + rowCount++ + " localidades correctamente.\n"
+                        + "Errores:\n" + String.join("\n", errores);
+                return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(errorMsg);
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al procesar el archivo: " + e.getMessage());
         }
     }
 

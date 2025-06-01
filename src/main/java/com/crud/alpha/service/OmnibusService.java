@@ -97,10 +97,6 @@ public class OmnibusService {
                 logger.error("No se encontró la localidad con id: " + entityDTO.getUltimaLocalidadId());
                 throw new IllegalArgumentException("localidad-not-found " + entityDTO.getUltimaLocalidadId());
             }
-         //   TIRA ESTE ERROR SI LO DESCOMENTO:
-            //Error al guardar el ómnibus not-null property references a null or transient value: com.crud.alpha.clase.Localidad.UltimaLocalidad.fecha
-         //   NO SE COMO PONERLE LA FECHA A ESTA COSA DEL DIABLO
-
 
             UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
             ultimaLocalidad.setLocalidad(localidad.get());
