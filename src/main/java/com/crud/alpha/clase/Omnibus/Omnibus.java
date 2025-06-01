@@ -1,6 +1,7 @@
 package com.crud.alpha.clase.Omnibus;
 
 import com.crud.alpha.clase.Localidad.UltimaLocalidad;
+import com.crud.alpha.clase.Omnibus.dto.NewOmnibusDTO;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.enums.EstadoOmnibus;
 import jakarta.persistence.*;
@@ -67,5 +68,11 @@ public class Omnibus {
     @OneToMany(mappedBy = "omnibus", fetch = FetchType.LAZY)
     private List<Asiento> asientos;
 
+    public Omnibus (NewOmnibusDTO dto) {
+        this.nroCoche = dto.getNroCoche();
+        this.descripcion = dto.getDescripcion();
+        this.estado = dto.getEstado();
+        this.accesibilidad = dto.isAccesibilidad();
+    }
 
 }

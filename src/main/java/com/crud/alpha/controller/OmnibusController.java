@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/public/flota")
+@RequestMapping("/flota")
 public class OmnibusController {
 
     @Autowired
@@ -44,12 +44,16 @@ public class OmnibusController {
         dto.setDescripcion(omnibus.getDescripcion());
         dto.setEstado(omnibus.getEstado());
         dto.setAccesibilidad(omnibus.isAccesibilidad());
+        dto.setRegisteredByFullName(omnibus.getRegisteredBy().getNombre() + " " + omnibus.getRegisteredBy().getApellido());
+        dto.setCreatedAt(omnibus.getCreatedAt());
+        dto.setUpdatedAt(omnibus.getUpdatedAt());
 
         if (omnibus.getAsientos() != null && !omnibus.getAsientos().isEmpty()) {
             dto.setAsientos(omnibus.getAsientos().size());
         } else {
             dto.setAsientos(0);
         }
+
         // Experimentales
         if (omnibus.getUltimasLocalidades() != null && !omnibus.getUltimasLocalidades().isEmpty()) {
             UltimaLocalidad ultima = omnibus.getUltimasLocalidades().getFirst();
@@ -61,9 +65,6 @@ public class OmnibusController {
             }
         }
         // ----------------------------------------------------------------------------
-        dto.setRegisteredByFullName(omnibus.getRegisteredBy().getNombre() + " " + omnibus.getRegisteredBy().getApellido());
-        dto.setCreatedAt(omnibus.getCreatedAt());
-        dto.setUpdatedAt(omnibus.getUpdatedAt());
 
         return dto;
     }

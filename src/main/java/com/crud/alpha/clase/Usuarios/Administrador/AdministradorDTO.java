@@ -15,6 +15,7 @@ public class AdministradorDTO {
     private String apellido;
     private boolean activo;
     private LocalDateTime fechaNacimiento;
+    private LocalDateTime fechaIngreso;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

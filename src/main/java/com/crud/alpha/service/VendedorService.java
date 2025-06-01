@@ -1,5 +1,6 @@
 package com.crud.alpha.service;
 
+import com.crud.alpha.clase.Usuarios.Administrador.Administrador;
 import com.crud.alpha.clase.Usuarios.Vendedor.NewVendedorDTO;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.Usuarios.Vendedor.VendedorDTO;
@@ -20,6 +21,8 @@ public class VendedorService {
 
     @Autowired
     private VendedorRepository vendedorRepository;
+    @Autowired
+    private AdministradorService administradorService;
 
     // Obtener todos los vendedores.
     public List<Vendedor> listEntities() {
@@ -80,6 +83,12 @@ public class VendedorService {
                 throw new IllegalArgumentException("El email ya está en uso: " + entityDTO.getEmail());
             }
 
+            // Find who created the user
+            Administrador administrador = administradorService.findEntity(entityDTO.getRegisteredBy());
+            if (entityDTO.getRegisteredBy() != null && administrador == null) {
+                throw new IllegalArgumentException("No existe un administrador para el clerkId: " + entityDTO.getRegisteredBy());
+            }
+
             // Convert DTO into an entity so that we can save it.
             Vendedor entity = new Vendedor();
             entity.setClerkId(entityDTO.getClerkId());
@@ -89,6 +98,7 @@ public class VendedorService {
             entity.setActivo(entityDTO.isActivo());
             entity.setFechaNacimiento(entityDTO.getFechaNacimiento());
             entity.setFechaIngreso(entityDTO.getFechaIngreso());
+            entity.setRegisteredBy(administrador);
 
             // Save entity
             Vendedor savedVendedor = vendedorRepository.save(entity);
@@ -102,9 +112,6 @@ public class VendedorService {
             savedVendedorDTO.setActivo(savedVendedor.isActivo());
             savedVendedorDTO.setFechaNacimiento(savedVendedor.getFechaNacimiento());
             savedVendedorDTO.setFechaIngreso(savedVendedor.getFechaIngreso());
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            // Seguramente hacemos otra funcion aparte en el service para updatearle/crearle los omnibus creados, registro viaje y registro localidad.
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             return savedVendedorDTO;
         } catch (IllegalArgumentException e) {
@@ -148,9 +155,6 @@ public class VendedorService {
             updatedEntityDTO.setApellido(updatedEntity.getApellido());
             updatedEntityDTO.setFechaNacimiento(updatedEntity.getFechaNacimiento());
             updatedEntityDTO.setFechaIngreso(updatedEntity.getFechaIngreso());
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            // Seguramente hacemos otra funcion aparte en el service para updatearle/crearle los omnibus creados, registro viaje y registro localidad.
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             // return the updated object.
             return updatedEntityDTO;
