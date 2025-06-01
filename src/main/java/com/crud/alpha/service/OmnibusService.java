@@ -80,15 +80,9 @@ public class OmnibusService {
 
 
 
-            // Convert DTO into an entity so that we can save it.
-            Omnibus entity = new Omnibus();
-            entity.setNroCoche(entityDTO.getNroCoche());
-            entity.setEstado(entityDTO.getEstado());
-            entity.setAccesibilidad(entityDTO.isAccesibilidad());
-            entity.setDescripcion(entityDTO.getDescripcion());
+            // Create the new bus.
+            Omnibus entity = new Omnibus(entityDTO);
             entity.setRegisteredBy(vendedor);
-
-
 
            //  Initialize the ultimasLocalidades list with the last location that comes in the DTO.
             List<UltimaLocalidad> ultimasLocalidades = new ArrayList<>();
@@ -114,6 +108,7 @@ public class OmnibusService {
             // Save entity.
             omnibusRepository.save(entity);
             logger.info("[OMNIBUS createEntity] Ómnibus guardado");
+
             // Crear los asientos para el ómnibus.
             for (int i = 0; i < entityDTO.getAsientos(); i++) {
                 Asiento asiento = new Asiento();
@@ -121,6 +116,7 @@ public class OmnibusService {
                 asiento.setOmnibus(entity);
                 asientoRepository.save(asiento);
             }
+
             logger.info("[OMNIBUS createEntity] " + entityDTO.getAsientos() + " Asientos creados");
 
         } catch (IllegalArgumentException e) {
