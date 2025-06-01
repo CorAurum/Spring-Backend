@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class PasajeDTO {
     private Long id;
     private Asiento asiento;
-    private VentaPasaje idCompraPasaje;
+    private VentaPasaje idVentaPasaje;
     private Viaje idViaje;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

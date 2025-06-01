@@ -1,10 +1,15 @@
 package com.crud.alpha.controller;
 
+import com.crud.alpha.clase.Pasaje.Pasaje;
 import com.crud.alpha.clase.Pasaje.VentaPasaje;
 import com.crud.alpha.clase.Pasaje.dto.VentaPasajeDTO;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.clase.exceptions.ServiceException;
+import com.crud.alpha.service.PasajeService;
 import com.crud.alpha.service.VentaPasajeService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mercadopago.client.payment.PaymentClient;
+import com.mercadopago.resources.payment.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +23,12 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.resources.preference.Preference;
 import jakarta.annotation.PostConstruct;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/public/venta")
@@ -30,6 +37,13 @@ public class VentaPasajeController {
     @Autowired
     private VentaPasajeService ventaPasajeService;
 
+    @Autowired
+    private PasajeService pasajeService;
+
+
+    //-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
+    // Metodo Post para generar la preference y la URL de pago mediante mercadoPago
     @PostMapping("/create")
     public ResponseEntity<?> createPayment(@RequestBody VentaPasajeDTO request) {
         System.out.println("💬 VentaPasajeDTO recibido: " + request);
@@ -70,12 +84,23 @@ public class VentaPasajeController {
                     .pending("https://httpbin.org/status/202")
                     .build();
 
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Esto genera una variable, y luego en externalReference se envia
+            // los pasajesId y la VentaId al pago para que MP lo devuelva en el webhook
+            // y podamos confirmar la venta con estos datos.
+            String externalRef = objectMapper.writeValueAsString(Map.of(
+                    "ventaPasajeId", venta.getId(),
+                    "pasajeIds", request.getPasajesIds()
+            ));
+
             // 4. Crear la preferencia de pago
             PreferenceRequest preferenceRequest = PreferenceRequest.builder()
                     .items(Collections.singletonList(item))
                     .backUrls(backUrls)
                     .autoReturn("approved")
-                    .notificationUrl("https://tudominio.com/api/pagos/webhook")
+                    .notificationUrl("https://webhook.site/53266780-77bb-48a0-adcc-21b1d7ca9eea")
+                    .externalReference(externalRef)
                     .build();
 
             // 5. Llamar al cliente MercadoPago para crear la preferencia
@@ -118,28 +143,76 @@ public class VentaPasajeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + e.getMessage());
         }
     }
+    //-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 
-//    //POST Webhook que nos notifica si el pago fue exitoso (Hay que agregar parametro y metodos)
-//
-//    @PostMapping("/webhook")
-//    public ResponseEntity<?> recibirWebhook(@RequestBody String payload,
-//                                            @RequestHeader(value = "X-Topic", required = false) String topic,
-//                                            @RequestHeader(value = "X-Request-Id", required = false) String requestId) {
-//        try {
-//            System.out.println("📩 Webhook recibido de MercadoPago:");
-//            System.out.println("Topic: " + topic);
-//            System.out.println("Request ID: " + requestId);
-//            System.out.println("Payload: " + payload);
-//            return ResponseEntity.ok("Webhook recibido correctamente");
-//
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body("Error al procesar el webhook: " + e.getMessage());
-//        }
-//    }
+//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
+//    //POST Webhook que nos notifica si el pago fue exitoso (hay que limpiar el codigo, lo dejo asi para testeo)
+@PostMapping("/webhook")
+public ResponseEntity<?> recibirWebhook(
+        @RequestBody Map<String, Object> payload,
+        @RequestHeader(value = "X-Topic", required = false) String topic,
+        @RequestHeader(value = "X-Request-Id", required = false) String requestId) {
+    try {
+        System.out.println("📩 Webhook recibido de MercadoPago:");
+        System.out.println("Topic: " + topic);
+        System.out.println("Request ID: " + requestId);
+        System.out.println("Payload raw: " + payload);
+
+        // 1. Extraer el payment_id (o preference_id) enviado en payload.data.id
+        @SuppressWarnings("unchecked")
+        Map<String, Object> data = (Map<String, Object>) payload.get("data");
+        Long mpPaymentId = null;
+        if (data != null && data.get("id") != null) {
+            mpPaymentId = Long.valueOf(data.get("id").toString());
+        } else {
+            return ResponseEntity.badRequest().body("No vino data.id en el payload");
+        }
+
+        // 2. Usar el SDK de MercadoPago para traer el objeto Payment (o Preference).
+        // Por ejemplo, si es notificación de pago, usamos PaymentClient:
+        PaymentClient paymentClient = new PaymentClient();
+        Payment mpPayment = paymentClient.get(mpPaymentId);
+
+        // 3. Leer el external_reference que asignaste al crear la preferencia
+        String externalRefJson = mpPayment.getExternalReference();
+        System.out.println("external_reference recibido: " + externalRefJson);
+
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> externalData = mapper.readValue(externalRefJson, Map.class);
+
+        Long ventaPasajeId = Long.parseLong(externalData.get("ventaPasajeId").toString());
+        System.out.println("ventaPasajeId " + ventaPasajeId);
+        List<Integer> pasajeIds = (List<Integer>) externalData.get("pasajeIds");
+        System.out.println("pasajeIds " + pasajeIds);
+
+        // 4. Con ese externalRef (que es el ID de tu VentaPasaje), buscas la entidad en tu BD
+        Long ventaId = Long.valueOf(ventaPasajeId);
+        VentaPasaje venta = ventaPasajeService.obtenerVentaPorId(ventaId);
+
+        if (venta == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No existe venta con ID " + ventaId);
+        }
+
+        // 5. Verificar el estado de pago (mpPayment.getStatus()), y actualizar tu entidad
+        String statusMP = mpPayment.getStatus(); // ej. "approved", "pending", etc.
+        venta.setPaymentStatus(statusMP);
+        ventaPasajeService.asignarVentaAPasajes(pasajeIds,venta);
+        ventaPasajeService.actualizar(venta);
+
+        return ResponseEntity.ok("Webhook procesado correctamente para venta ID " + ventaId);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error al procesar el webhook: " + e.getMessage());
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------
+
 
 
     // POST: Crear nueva venta de pasaje

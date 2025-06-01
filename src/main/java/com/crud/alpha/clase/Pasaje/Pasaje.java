@@ -46,8 +46,8 @@ public class Pasaje {
 
     // *** FK Tabla y relacion con VentaPasaje
     @ManyToOne
-    @JoinColumn(name = "id_compra_pasaje", referencedColumnName = "id")
-    private VentaPasaje idCompraPasaje;
+    @JoinColumn(name = "id_venta_pasaje", referencedColumnName = "id")
+    private VentaPasaje idVentaPasaje;
 
 
     // *** FK Tabla y relacion con Viaje

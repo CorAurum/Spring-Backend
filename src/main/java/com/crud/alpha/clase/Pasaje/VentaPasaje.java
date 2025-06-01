@@ -62,7 +62,7 @@ public class VentaPasaje {
 
 
     // *** Fk Pasaje
-    @OneToMany(mappedBy = "idCompraPasaje")
+    @OneToMany(mappedBy = "idVentaPasaje")
     private List<Pasaje> idPasaje;
 
     // *** Fk Viaje

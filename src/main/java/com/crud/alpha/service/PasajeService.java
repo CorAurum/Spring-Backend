@@ -61,7 +61,7 @@ public class PasajeService {
                 .orElseThrow(() -> new EntityNotFoundException("Pasaje no encontrado con ID: " + id));
 
         existente.setAsiento(pasajeActualizado.getAsiento());
-        existente.setIdCompraPasaje(pasajeActualizado.getIdCompraPasaje());
+        existente.setIdVentaPasaje(pasajeActualizado.getIdVentaPasaje());
         existente.setIdViaje(pasajeActualizado.getIdViaje());
 
         return pasajeRepository.save(existente);

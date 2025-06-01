@@ -6,12 +6,18 @@ import com.crud.alpha.clase.Pasaje.dto.VentaPasajeDTO;
 import com.crud.alpha.clase.Usuarios.Cliente.Cliente;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.Viaje.Viaje;
+import com.crud.alpha.clase.exceptions.ServiceException;
+import com.crud.alpha.clase.exceptions.VentaPasajeUpdateException;
 import com.crud.alpha.repository.*;
 import jakarta.transaction.Transactional;
+import org.hibernate.Session;
+import org.hibernate.SessionBuilder;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VentaPasajeService {
@@ -87,7 +93,40 @@ public class VentaPasajeService {
         return ventaPasajeRepository.findById(id).orElseThrow(() -> new RuntimeException("Venta no encontrada"));
     }
 
-    public void actualizar(VentaPasaje venta) {
+
+    // Actualiza una VentaPasaje cuando el pago fue exitoso con los nuevos datos.
+    @Transactional
+    public VentaPasaje actualizar(VentaPasaje ventaPasaje) {
+        try {
+            if (ventaPasaje.getId() == null) {
+                throw new VentaPasajeUpdateException("La venta no tiene un ID asignado.");
+            }
+
+            if (!ventaPasajeRepository.existsById(ventaPasaje.getId())) {
+                throw new VentaPasajeUpdateException("No se encontró la venta con ID: " + ventaPasaje.getId());
+            }
+
+            return ventaPasajeRepository.save(ventaPasaje);
+
+        } catch (Exception e) {
+            throw new VentaPasajeUpdateException("Error al actualizar la venta: " + e.getMessage());
+        }
+    }
+
+    //Actualiza los IdVentaPasaje en los correspondientes pasajes comprados, mediante el aviso del webhook
+    public void asignarVentaAPasajes(List<Integer> pasajeIds, VentaPasaje ventaPasaje) {
+
+        for (Integer pasajeId : pasajeIds) {
+            Optional<Pasaje> optionalPasaje = pasajeRepository.findById(Long.valueOf(pasajeId));
+            if (optionalPasaje.isPresent()) {
+                Pasaje pasaje = optionalPasaje.get();
+                pasaje.setIdVentaPasaje(ventaPasaje);
+                pasajeRepository.save(pasaje);
+            }
+
+
+        }
 
     }
 }
+

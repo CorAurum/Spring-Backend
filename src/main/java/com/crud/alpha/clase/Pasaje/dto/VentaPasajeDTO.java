@@ -29,6 +29,6 @@ public class VentaPasajeDTO {
     private LocalDateTime fechaVenta;
     private String sellerId;        // ID del vendedor
     private String buyerId;         // ID del cliente
-    private List<Long> pasajesIds; // Lista de IDs de pasajes asociados (opcional)
+    private List<Long> pasajesIds; // Lista de IDs de pasajes asociados
     private Long viajeId;         // ID del viaje
 }
