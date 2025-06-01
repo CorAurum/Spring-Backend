@@ -4,6 +4,7 @@ import com.crud.alpha.clase.Usuarios.Administrador.Administrador;
 import com.crud.alpha.clase.Usuarios.Administrador.AdministradorDTO;
 import com.crud.alpha.clase.Usuarios.Administrador.AdministradorUpdateDTO;
 import com.crud.alpha.clase.Usuarios.Administrador.NewAdministradorDTO;
+import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
 import com.crud.alpha.repository.AdministradorRepository;
@@ -81,6 +82,12 @@ public class AdministradorService {
                 throw new IllegalArgumentException("El email ya está en uso: " + entityDTO.getEmail());
             }
 
+            // Find who created the user
+            Administrador administrador = findEntity(entityDTO.getRegisteredBy());
+            if (entityDTO.getRegisteredBy() != null && administrador == null) {
+                throw new IllegalArgumentException("No existe un administrador para el clerkId: " + entityDTO.getRegisteredBy());
+            }
+
             // Convert DTO into an entity so that we can save it.
             Administrador entity = new Administrador();
             entity.setClerkId(entityDTO.getClerkId());
@@ -89,7 +96,9 @@ public class AdministradorService {
             entity.setApellido(entityDTO.getApellido());
             entity.setActivo(entityDTO.isActivo());
             entity.setFechaNacimiento(entityDTO.getFechaNacimiento());
+            entity.setFechaIngreso(entityDTO.getFechaIngreso());
             entity.setRegistroUsuario(new ArrayList<>());
+            entity.setRegisteredBy(administrador);
 
             // Save entity.
             Administrador savedEntity = administradorRepository.save(entity);
@@ -102,6 +111,7 @@ public class AdministradorService {
             savedEntityDTO.setApellido(savedEntity.getApellido());
             savedEntityDTO.setActivo(savedEntity.isActivo());
             savedEntityDTO.setFechaNacimiento(savedEntity.getFechaNacimiento());
+            savedEntityDTO.setFechaIngreso(savedEntity.getFechaIngreso());
 
             return savedEntityDTO;
         } catch (IllegalArgumentException e) {
@@ -131,6 +141,9 @@ public class AdministradorService {
             if (entityUpdateDTO.getFechaNacimiento() != null) {
                 entity.setFechaNacimiento(entityUpdateDTO.getFechaNacimiento());
             }
+            if (entityUpdateDTO.getFechaIngreso() != null) {
+                entity.setFechaIngreso(entityUpdateDTO.getFechaIngreso());
+            }
 
             // Save the updated entity.
             Administrador updatedEntity = administradorRepository.save(entity);
@@ -141,6 +154,8 @@ public class AdministradorService {
             updatedEntityDTO.setNombre(updatedEntity.getNombre());
             updatedEntityDTO.setApellido(updatedEntity.getApellido());
             updatedEntityDTO.setFechaNacimiento(updatedEntity.getFechaNacimiento());
+            updatedEntityDTO.setFechaIngreso(updatedEntity.getFechaIngreso());
+
 
             // return the updated object.
             return updatedEntityDTO;

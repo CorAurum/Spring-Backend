@@ -14,7 +14,8 @@ public class NewVendedorDTO {
     private String email;
     private String nombre;
     private String apellido;
-    private boolean activo;
     private LocalDateTime fechaNacimiento;
     private LocalDateTime fechaIngreso;
+    private boolean activo;
+    private String registeredBy;
 }

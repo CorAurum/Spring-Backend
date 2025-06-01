@@ -1,5 +1,7 @@
 package com.crud.alpha.clase.Usuarios;
 
+import com.crud.alpha.clase.Usuarios.Administrador.Administrador;
+import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.enums.Tipo_Usuario;
 import jakarta.persistence.*;
 import lombok.*;
@@ -53,5 +55,10 @@ public class Usuario {
 
     @Column(nullable = false)
     private LocalDateTime fechaNacimiento;
+
+    // Fk tabla y relacion con Administrador
+    @ManyToOne
+    @JoinColumn(name = "registered_by", referencedColumnName = "id", nullable = true)
+    private Administrador registeredBy;
 
 }

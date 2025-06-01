@@ -1,11 +1,13 @@
 package com.crud.alpha.service;
 
+import com.crud.alpha.clase.Usuarios.Administrador.Administrador;
 import com.crud.alpha.clase.Usuarios.Cliente.Cliente;
 import com.crud.alpha.clase.Usuarios.Cliente.ClienteDTO;
 import com.crud.alpha.clase.Usuarios.Cliente.ClienteUpdateDTO;
 import com.crud.alpha.clase.Usuarios.Cliente.NewClienteDTO;
 import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
+import com.crud.alpha.enums.Beneficiario;
 import com.crud.alpha.repository.ClienteRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private AdministradorService administradorService;
 
     // Obtener todos los clientes.
     public List<Cliente> listEntities() {
@@ -90,6 +94,14 @@ public class ClienteService {
             entity.setActivo(entityDTO.isActivo());
             entity.setFechaNacimiento(entityDTO.getFechaNacimiento());
 
+            // Find who created the user. If the clerkId of the creator was provided (case when an admin creates a client)
+            if (entityDTO.getRegisteredBy() != null) {
+                Administrador administrador = administradorService.findEntity(entityDTO.getRegisteredBy());
+                if (administrador != null) {
+                    entity.setRegisteredBy(administrador);
+                }
+            }
+
             // Save entity.
             Cliente savedClient = clienteRepository.save(entity);
 
@@ -130,6 +142,11 @@ public class ClienteService {
             }
             if (entityUpdateDTO.getFechaNacimiento() != null) {
                 entity.setFechaNacimiento(entityUpdateDTO.getFechaNacimiento());
+            }
+            if (entityUpdateDTO.getTipoBeneficiario() != null && entityUpdateDTO.getTipoBeneficiario() != Beneficiario.NO_APLICA) {
+                entity.setTipoBeneficiario(entityUpdateDTO.getTipoBeneficiario());
+            } else {
+                entity.setTipoBeneficiario(Beneficiario.NO_APLICA);
             }
 
             // Save the updated entity.

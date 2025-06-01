@@ -14,6 +14,8 @@ public class UserDetailsDTO {
     private String apellido;
     private boolean activo;
     private String tipo; // Determined by the controller.
+    private LocalDateTime fechaNacimiento;
+    private String registeredByFullName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
