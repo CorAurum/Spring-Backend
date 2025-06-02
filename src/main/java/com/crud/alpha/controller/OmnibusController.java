@@ -56,12 +56,10 @@ public class OmnibusController {
 
         // Experimentales
         if (omnibus.getUltimasLocalidades() != null && !omnibus.getUltimasLocalidades().isEmpty()) {
-            UltimaLocalidad ultima = omnibus.getUltimasLocalidades().getFirst();
-
-            dto.setUltimaLocalidadid(ultima.getLocalidad().getId());
-
-            if (ultima.getLocalidad() != null) {
-                dto.setUltimaLocalidadNombre(ultima.getLocalidad().getNombre());
+            UltimaLocalidad ultimaLocalidad = omnibus.getUltimasLocalidades().getLast();
+            if (ultimaLocalidad.getLocalidad() != null) {
+                dto.setUltimaLocalidadId(ultimaLocalidad.getLocalidad().getId());
+                dto.setUltimaLocalidadNombre(ultimaLocalidad.getLocalidad().getNombre());
             }
         }
         // ----------------------------------------------------------------------------

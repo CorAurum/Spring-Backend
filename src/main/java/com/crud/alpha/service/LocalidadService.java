@@ -31,7 +31,7 @@ public class LocalidadService {
 
     // Obtener todas las localidades
     public List<Localidad> listEntities() {
-        return LocalidadRepository.findAll();
+        return localidadRepository.findAll();
     }
 
     // Obtener Localidad por nombre

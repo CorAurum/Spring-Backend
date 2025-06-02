@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static java.time.LocalDate.now;
-
 @Service
 public class OmnibusService {
     private static final Logger logger = LoggerFactory.getLogger(OmnibusService.class);
@@ -79,27 +77,27 @@ public class OmnibusService {
             }
 
 
-
             // Create the new bus.
             Omnibus entity = new Omnibus(entityDTO);
             entity.setRegisteredBy(vendedor);
 
-           //  Initialize the ultimasLocalidades list with the last location that comes in the DTO.
-            List<UltimaLocalidad> ultimasLocalidades = new ArrayList<>();
+            // Get the location corresponding to the DTO ultimaLocalidadId
             Optional<Localidad> localidad = localidadRepository.findById(entityDTO.getUltimaLocalidadId());
             if (localidad.isEmpty()) {
                 logger.error("No se encontró la localidad con id: " + entityDTO.getUltimaLocalidadId());
-                throw new IllegalArgumentException("localidad-not-found " + entityDTO.getUltimaLocalidadId());
+                throw new IllegalArgumentException("localidad-not-found" + entityDTO.getUltimaLocalidadId());
             }
 
             UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
             ultimaLocalidad.setLocalidad(localidad.get());
-            ultimaLocalidadService.guardar(ultimaLocalidad);
-            ultimasLocalidades.add(ultimaLocalidad);
-            entity.setUltimasLocalidades(ultimasLocalidades);
             ultimaLocalidad.setOmnibus(entity);
             ultimaLocalidad.setFecha(LocalDate.now());
             ultimaLocalidad.setHora(LocalTime.now());
+            ultimaLocalidadService.guardar(ultimaLocalidad);
+
+            List<UltimaLocalidad> ultimasLocalidades = new ArrayList<>();
+            ultimasLocalidades.add(ultimaLocalidad);
+            entity.setUltimasLocalidades(ultimasLocalidades);
 
             // Save entity.
             omnibusRepository.save(entity);
@@ -157,6 +155,7 @@ public class OmnibusService {
             }
             // Asientos.
             // Faltaría handlear que si el omnibus tiene un viaje y ya vendió pasajes, seguramente tire un error de foreign key entre pasaje y asiento.
+            // Por lo que los asientos de un omnibus no deberian de poder editarse nunca, o por lo menos solo editables mientras todavia no tengan su primer viaje asignado.
             if (entityUpdateDTO.getAsientos() != entity.getAsientos().size()) {
                 // Delete all associated seats.
                 asientoRepository.deleteByOmnibus_nroCoche(nroCoche);
@@ -167,10 +166,29 @@ public class OmnibusService {
                     Asiento asiento = new Asiento();
                     asiento.setNumero(i + 1);
                     asiento.setOmnibus(entity);
-                    asientoRepository.save(asiento);
+                    asientoRepository.save(asiento); // ESTO AUTOMATICAMENTE TAMBIEN LE 'HACE' EL OMNIBUS.SETASIENTOS()??? o no es necesario hacerlo?? parece que no igual pero no se!!111111!!
                 }
                 logger.info("[OMNIBUS updateEntity] " + entityUpdateDTO.getAsientos() + " Asientos creados");
             }
+
+            // Get the location corresponding to the DTO ultimaLocalidadId
+            Optional<Localidad> localidad = localidadRepository.findById(entityUpdateDTO.getUltimaLocalidadId());
+            if (localidad.isEmpty()) {
+                logger.error("No se encontró la localidad con id: " + entityUpdateDTO.getUltimaLocalidadId());
+                throw new IllegalArgumentException("localidad-not-found" + entityUpdateDTO.getUltimaLocalidadId());
+            }
+
+            UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
+            ultimaLocalidad.setLocalidad(localidad.get());
+            ultimaLocalidad.setOmnibus(entity);
+            ultimaLocalidad.setFecha(LocalDate.now());
+            ultimaLocalidad.setHora(LocalTime.now());
+            ultimaLocalidadService.guardar(ultimaLocalidad);
+
+            // Add the last location to the list.
+            List<UltimaLocalidad> ultimasLocalidades = entity.getUltimasLocalidades();
+            ultimasLocalidades.add(ultimaLocalidad);
+            entity.setUltimasLocalidades(ultimasLocalidades);
 
             // Save the updated entity.
             omnibusRepository.save(entity);

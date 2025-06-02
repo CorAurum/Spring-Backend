@@ -25,5 +25,5 @@ public class OmnibusDTO {
     private LocalDateTime updatedAt;
     // Experimentales
     private String ultimaLocalidadNombre;
-    private long ultimaLocalidadid;
+    private long ultimaLocalidadId;
 }

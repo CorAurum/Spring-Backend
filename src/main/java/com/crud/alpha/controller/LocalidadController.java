@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/public/localidades")
+@RequestMapping("/localidades")
 public class LocalidadController {
 
     @Autowired
@@ -48,7 +48,6 @@ public class LocalidadController {
                     .map(this::convertToDTO)
                     .collect(Collectors.toList());
             return ResponseEntity.ok(localidadDTOs);
-
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(null);
         }
