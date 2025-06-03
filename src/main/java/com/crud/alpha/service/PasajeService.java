@@ -43,7 +43,7 @@ public class PasajeService {
         for (Asiento asiento : asientos) {
             Pasaje pasaje = new Pasaje();
             pasaje.setAsiento(asiento);
-            pasaje.setIdViaje(viaje);
+            pasaje.setViaje(viaje);
             pasajeRepository.save(pasaje);
         }
     }
@@ -53,7 +53,7 @@ public class PasajeService {
     }
 
     public List<Pasaje> listarPasajesPorViaje(Long idViaje) {
-        return pasajeRepository.findByIdViajeId(idViaje);
+        return pasajeRepository.findByViaje_id(idViaje);
     }
 
     public Pasaje actualizarPasaje(Long id, Pasaje pasajeActualizado) {
@@ -61,8 +61,8 @@ public class PasajeService {
                 .orElseThrow(() -> new EntityNotFoundException("Pasaje no encontrado con ID: " + id));
 
         existente.setAsiento(pasajeActualizado.getAsiento());
-        existente.setIdVentaPasaje(pasajeActualizado.getIdVentaPasaje());
-        existente.setIdViaje(pasajeActualizado.getIdViaje());
+        existente.setVentaPasaje(pasajeActualizado.getVentaPasaje());
+        existente.setViaje(pasajeActualizado.getViaje());
 
         return pasajeRepository.save(existente);
     }

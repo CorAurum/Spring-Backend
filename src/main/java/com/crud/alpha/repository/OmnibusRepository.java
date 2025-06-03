@@ -1,10 +1,12 @@
 package com.crud.alpha.repository;
 
-import com.crud.alpha.clase.Localidad.Localidad;
 import com.crud.alpha.clase.Omnibus.Omnibus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +18,31 @@ public interface OmnibusRepository extends JpaRepository<Omnibus, Long> {
     void deleteOmnibusByNroCoche(int nroCoche);
 
     boolean existsByNroCoche(int nroCoche);
+
+    // Un ómnibus se considera disponible si se encuentra en la localidad de origen a la fecha de partida
+    // del viaje que se está creando y no se encuentra en mantenimiento u otros estados que presenten impedimento.
+    // A notar:
+    // - A un omnibus se le cambia la ultima localidad cuando se le asigna un viaje
+    // (se le pone la ultima localidad como la localidad del destino inmediatamente con la fecha de llegada)
+    // - A un omnibus se le cambia la ultima localidad cuando se le reasigna un viaje,
+    // sea que se le desasigna (se borra la última correspondiente al viaje desasignado) o se le asigna uno (el caso de arriba).
+    // Y asi se va construyendo su historial de ultimas localidades con las fechas futuras de arribo correspondientes.
+    // *** Por lo que es factible ponerle una nueva ultima localidad con una fecha futura, indicando que recien a partir de esa fecha estará libre para un viaje.
+    @Query(value =
+            "SELECT * " +
+                    " FROM omnibus o INNER JOIN ultima_localidad ul ON o.nro_coche = ul.nro_coche " +
+                    "INNER JOIN viaje v on v.id_omnibus_asignado = o.nro_coche " +
+                    "AND ul.fecha = ( " + // la mas ultima de las ultimas localidades.
+                    "    SELECT MAX(ul2.fecha) " +
+                    "    FROM ultima_localidad ul2 " +
+                    "    WHERE ul2.nro_coche = ul.nro_coche) " +
+                    "AND ul.localidad_id = :localidadOrigenId " + // que la ultima localidad sea igual a la de origen del nuevo viaje.
+                    "AND ul.fecha <= :fechaPartida " +
+                    "AND o.estado NOT IN ('MANTENIMIENTO', 'FUERA_DE_SERVICIO'); ", // puede estar EN_VIAJE y DISPONIBLE
+            nativeQuery = true)
+    List<Omnibus> findOmnibusDisponibles(
+            @Param("localidadOrigen") Long localidadOrigenId,
+            @Param("fechaPartida") LocalDateTime fechaPartida
+    );
+
 }

@@ -1,8 +1,6 @@
 package com.crud.alpha.controller;
 
 import com.crud.alpha.clase.Localidad.UltimaLocalidad;
-import com.crud.alpha.clase.Localidad.dto.LocalidadDTO;
-import com.crud.alpha.clase.Localidad.dto.LocalidadUpdateDTO;
 import com.crud.alpha.clase.Omnibus.Omnibus;
 import com.crud.alpha.clase.Omnibus.dto.NewOmnibusDTO;
 import com.crud.alpha.clase.Omnibus.dto.OmnibusDTO;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -95,11 +94,27 @@ public class OmnibusController {
         }
     }
 
+    // Buscar flota disponible para asignar a viajes.
+    // EJEMPLO: GET /omnibus/disponibles?localidadOrigenId=123&fechaPartida=2024-12-15T14:30:00
+    @GetMapping("/disponibles")
+    public ResponseEntity<List<OmnibusDTO>> buscarOmnibusDisponibles(@RequestParam Long localidadOrigenId, @RequestParam LocalDateTime fechaPartida) {
+        try {
+            List<Omnibus> flotaDisponible = omnibusService.listEntitiesDisponibles(localidadOrigenId, fechaPartida);
+            List<OmnibusDTO> omnibusDTOs = flotaDisponible.stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(omnibusDTOs);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(null);
+        }
+    }
+
     // Crear Omnibus
     @PostMapping
     public ResponseEntity<String> createEntity(@RequestBody NewOmnibusDTO entityDTO) {
         try {
-           omnibusService.createEntity(entityDTO);
+            omnibusService.createEntity(entityDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Ómnibus creado con éxito");
         } catch (IllegalArgumentException e) {
             if (e.getMessage().contains("entidad-duplicada")) {
@@ -113,28 +128,27 @@ public class OmnibusController {
         }
     }
 
-// Modificar un omnibus por nroCoche
-@PatchMapping("/{nroCoche}")
-public ResponseEntity<String> updateEntity(
-        @PathVariable int nroCoche,
-        @RequestBody OmnibusUpdateDTO updateDTO) {
-    try {
-        omnibusService.updateEntity(nroCoche, updateDTO);
-        return ResponseEntity.ok("Ómnibus actualizado con exito");
-    } catch (EntityNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-    } catch (IllegalArgumentException e) {
-        if (e.getMessage().contains("entidad-duplicada")) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+    // Modificar un omnibus por nroCoche
+    @PatchMapping("/{nroCoche}")
+    public ResponseEntity<String> updateEntity(
+            @PathVariable int nroCoche,
+            @RequestBody OmnibusUpdateDTO updateDTO) {
+        try {
+            omnibusService.updateEntity(nroCoche, updateDTO);
+            return ResponseEntity.ok("Ómnibus actualizado con exito");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("entidad-duplicada")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (ServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    } catch (ServiceException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
-}
-
 
 
     // Eliminar un omnibus por nroCoche.

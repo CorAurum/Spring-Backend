@@ -1,7 +1,6 @@
 package com.crud.alpha.clase.Pasaje;
 
 import com.crud.alpha.clase.Usuarios.Cliente.Cliente;
-import com.crud.alpha.clase.Usuarios.Usuario;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.Viaje.Viaje;
 import jakarta.persistence.*;
@@ -62,7 +61,7 @@ public class VentaPasaje {
 
 
     // *** Fk Pasaje
-    @OneToMany(mappedBy = "idVentaPasaje")
+    @OneToMany(mappedBy = "ventaPasaje")
     private List<Pasaje> idPasaje;
 
     // *** Fk Viaje

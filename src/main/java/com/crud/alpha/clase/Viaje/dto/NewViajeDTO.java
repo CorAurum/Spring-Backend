@@ -1,7 +1,6 @@
 package com.crud.alpha.clase.Viaje.dto;
 
 
-import com.crud.alpha.clase.Viaje.Viaje;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,15 +12,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ViajeDTO {
-    private Long id;
+public class NewViajeDTO {
     private String fechaPartida;
     private String fechaLlegada;
+    private Long localidadOrigenId; // localidad origen id
+    private Long localidadDestinoId; // localidad destino id
     private boolean cerrado;
-    private int nroCoche;
-    private Long localidadInicialId;
-    private Long localidadFinalId;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private String registeredByFullName;
+    private float precio;
+    private int nroCoche; // omnibus asignado
+    private String registeredBy; // seller's clerkId
 }

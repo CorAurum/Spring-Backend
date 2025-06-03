@@ -19,8 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +42,11 @@ public class OmnibusService {
     // Obtener todos los ómnibus.
     public List<Omnibus> listEntities() {
         return omnibusRepository.findAll();
+    }
+
+    // Obtener todos los ómnibus disponibles.
+    public List<Omnibus> listEntitiesDisponibles(Long localidadOrigenId, LocalDateTime fechaPartida) {
+        return omnibusRepository.findOmnibusDisponibles(localidadOrigenId, fechaPartida);
     }
 
     // Obtener ómnibus por numero de coche.
@@ -76,7 +80,6 @@ public class OmnibusService {
                 throw new IllegalArgumentException("omnibus-duplicado " + entityDTO.getNroCoche());
             }
 
-
             // Create the new bus.
             Omnibus entity = new Omnibus(entityDTO);
             entity.setRegisteredBy(vendedor);
@@ -91,8 +94,7 @@ public class OmnibusService {
             UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
             ultimaLocalidad.setLocalidad(localidad.get());
             ultimaLocalidad.setOmnibus(entity);
-            ultimaLocalidad.setFecha(LocalDate.now());
-            ultimaLocalidad.setHora(LocalTime.now());
+            ultimaLocalidad.setFecha(LocalDateTime.now());
             ultimaLocalidadService.guardar(ultimaLocalidad);
 
             List<UltimaLocalidad> ultimasLocalidades = new ArrayList<>();
@@ -181,8 +183,7 @@ public class OmnibusService {
             UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
             ultimaLocalidad.setLocalidad(localidad.get());
             ultimaLocalidad.setOmnibus(entity);
-            ultimaLocalidad.setFecha(LocalDate.now());
-            ultimaLocalidad.setHora(LocalTime.now());
+            ultimaLocalidad.setFecha(LocalDateTime.now());
             ultimaLocalidadService.guardar(ultimaLocalidad);
 
             // Add the last location to the list.

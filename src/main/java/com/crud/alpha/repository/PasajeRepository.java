@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PasajeRepository extends JpaRepository<Pasaje, Long> {
-    List<Pasaje> findByIdViajeId(Long idViaje);
+    List<Pasaje> findByViaje_id(Long id);
 }

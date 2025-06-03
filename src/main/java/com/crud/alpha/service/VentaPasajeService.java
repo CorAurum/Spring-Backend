@@ -6,13 +6,9 @@ import com.crud.alpha.clase.Pasaje.dto.VentaPasajeDTO;
 import com.crud.alpha.clase.Usuarios.Cliente.Cliente;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.Viaje.Viaje;
-import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.clase.exceptions.VentaPasajeUpdateException;
 import com.crud.alpha.repository.*;
 import jakarta.transaction.Transactional;
-import org.hibernate.Session;
-import org.hibernate.SessionBuilder;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -120,7 +116,7 @@ public class VentaPasajeService {
             Optional<Pasaje> optionalPasaje = pasajeRepository.findById(Long.valueOf(pasajeId));
             if (optionalPasaje.isPresent()) {
                 Pasaje pasaje = optionalPasaje.get();
-                pasaje.setIdVentaPasaje(ventaPasaje);
+                pasaje.setVentaPasaje(ventaPasaje);
                 pasajeRepository.save(pasaje);
             }
 

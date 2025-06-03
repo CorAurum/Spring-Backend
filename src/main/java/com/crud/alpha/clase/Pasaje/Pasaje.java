@@ -47,13 +47,13 @@ public class Pasaje {
     // *** FK Tabla y relacion con VentaPasaje
     @ManyToOne
     @JoinColumn(name = "id_venta_pasaje", referencedColumnName = "id")
-    private VentaPasaje idVentaPasaje;
+    private VentaPasaje ventaPasaje;
 
 
     // *** FK Tabla y relacion con Viaje
     @ManyToOne
-    @JoinColumn(name = "idViaje", referencedColumnName = "id")  // id seria el atributo PK de Viaje, idViaje es el nombre que tendra en la BD este atributo.
-    private Viaje idViaje;
+    @JoinColumn(name = "id_viaje", referencedColumnName = "id")  // id seria el atributo PK de Viaje, idViaje es el nombre que tendra en la BD este atributo.
+    private Viaje viaje;
 
 
 }
