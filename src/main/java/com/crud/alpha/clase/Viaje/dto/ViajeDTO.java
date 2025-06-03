@@ -19,9 +19,11 @@ public class ViajeDTO {
     private String fechaLlegada;
     private boolean cerrado;
     private int nroCoche;
-    private Long localidadInicialId;
-    private Long localidadFinalId;
+    private Long localidadOrigenId;
+    private Long localidadDestinoId;
+    private String localidadOrigenNombre;
+    private String localidadDestinoNombre;
+    private String registeredByFullName;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private String registeredByFullName;
 }

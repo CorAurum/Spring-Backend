@@ -125,7 +125,7 @@ public class LocalidadService {
             // Fetch the existing localidad by name.
             Localidad entity = findEntityById(id); // Throws an Exception if not found
             // Check if a localidad with the new name exists. It is not necessary to do so if the name was not modified.
-            if (!entity.getNombre().equals(entityUpdateDTO.getNombre())) {
+            if (!entity.getNombre().equalsIgnoreCase(entityUpdateDTO.getNombre())) {
                 Optional<Localidad> entityOptional = localidadRepository.findByNombre(entityUpdateDTO.getNombre());
                 if (entityOptional.isPresent()) {
                     logger.error("Ya existe una localidad para el nuevo nombre: " + entityUpdateDTO.getNombre());

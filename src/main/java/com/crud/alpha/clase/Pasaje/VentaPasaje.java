@@ -4,7 +4,10 @@ import com.crud.alpha.clase.Usuarios.Cliente.Cliente;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.Viaje.Viaje;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -33,7 +36,7 @@ public class VentaPasaje {
     private Long id;
 
     // *** Manual
-    @Column(nullable = true)
+    @Column(nullable = true, unique = true)
     private Long paymentId; // paymentId de mercadopago
 
     @Column(nullable = false)
@@ -51,12 +54,12 @@ public class VentaPasaje {
 
     // *** FK Vendedor
     @ManyToOne
-    @JoinColumn(nullable = true,name = "sellerId", referencedColumnName = "clerkId")
+    @JoinColumn(nullable = true, name = "sellerId", referencedColumnName = "clerkId")
     private Vendedor sellerId;
 
     // *** FK Cliente
     @ManyToOne
-    @JoinColumn(nullable = true,name = "buyerId", referencedColumnName = "clerkId")
+    @JoinColumn(nullable = true, name = "buyerId", referencedColumnName = "clerkId")
     private Cliente buyerId;
 
 
@@ -66,7 +69,8 @@ public class VentaPasaje {
 
     // *** Fk Viaje
     @ManyToOne
-    @JoinColumn(name = "precioViaje", referencedColumnName = "precio")  // id seria el atributo PK de Viaje, idViaje es el nombre que tendra en la BD este atributo.
+    @JoinColumn(name = "precioViaje", referencedColumnName = "precio")
+    // id seria el atributo PK de Viaje, idViaje es el nombre que tendra en la BD este atributo.
     private Viaje precioViaje;
 
 

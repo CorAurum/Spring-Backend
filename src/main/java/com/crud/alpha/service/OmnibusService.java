@@ -45,7 +45,9 @@ public class OmnibusService {
     }
 
     // Obtener todos los ómnibus disponibles.
-    public List<Omnibus> listEntitiesDisponibles(Long localidadOrigenId, LocalDateTime fechaPartida) {
+    public List<Omnibus> listEntitiesDisponibles(Long localidadOrigenId, String fechaPartida) {
+        logger.info(localidadOrigenId.toString());
+        logger.info(fechaPartida.toString());
         return omnibusRepository.findOmnibusDisponibles(localidadOrigenId, fechaPartida);
     }
 

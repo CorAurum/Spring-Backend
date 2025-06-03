@@ -28,7 +28,7 @@ public class UltimaLocalidad {
 
     // *** Manual
     @Column(nullable = true)
-    private LocalDateTime fecha;
+    private LocalDateTime fecha; // cambiar a fechaLlegada para ser mas explicito
 
     @CreatedDate
     private LocalDateTime createdAt;
