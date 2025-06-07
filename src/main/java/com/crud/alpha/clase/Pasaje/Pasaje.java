@@ -37,18 +37,15 @@ public class Pasaje {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-
     // *** FK Tabla y relacion con Asiento
     @ManyToOne
     @JoinColumn(name = "asiento", referencedColumnName = "id")
     private Asiento asiento;
 
-
     // *** FK Tabla y relacion con VentaPasaje
     @ManyToOne
     @JoinColumn(name = "id_venta_pasaje", referencedColumnName = "id")
     private VentaPasaje ventaPasaje;
-
 
     // *** FK Tabla y relacion con Viaje
     @ManyToOne

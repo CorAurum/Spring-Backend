@@ -45,12 +45,15 @@ public class VentaPasaje {
     @Column(nullable = false)
     private String paymentStatus;
 
+    // PRECIO FINAL (CALCULADO A PARTIR DEL PRECIO DEL VIAJE Y LOS BENEFICIOS CORRESPONDIENTES AL CLIENTE)
+    @Column(nullable = false)
+    private float precioFinal;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
 
     // *** FK Vendedor
     @ManyToOne
@@ -62,17 +65,9 @@ public class VentaPasaje {
     @JoinColumn(nullable = true, name = "buyerId", referencedColumnName = "clerkId")
     private Cliente buyerId;
 
-
     // *** Fk Pasaje
     @OneToMany(mappedBy = "ventaPasaje")
-    private List<Pasaje> idPasaje;
-
-    // *** Fk Viaje
-    @ManyToOne
-    @JoinColumn(name = "precioViaje", referencedColumnName = "precio")
-    // id seria el atributo PK de Viaje, idViaje es el nombre que tendra en la BD este atributo.
-    private Viaje precioViaje;
-
+    private List<Pasaje> pasaje;
 
 }
 

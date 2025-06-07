@@ -1,10 +1,8 @@
 package com.crud.alpha.controller;
 
-import com.crud.alpha.clase.Pasaje.Pasaje;
 import com.crud.alpha.clase.Pasaje.VentaPasaje;
 import com.crud.alpha.clase.Pasaje.dto.VentaPasajeDTO;
 import com.crud.alpha.clase.exceptions.EntityNotFoundException;
-import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.service.PasajeService;
 import com.crud.alpha.service.VentaPasajeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,10 +18,7 @@ import com.mercadopago.client.preference.PreferenceRequest;
 import com.mercadopago.client.preference.PreferenceBackUrlsRequest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.resources.preference.Preference;
-import jakarta.annotation.PostConstruct;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -42,108 +37,109 @@ public class VentaPasajeController {
     private PasajeService pasajeService;
 
 
-    //-------------------------------------------------------------------------------------------------------------------------------------
-//-------------------------------------------------------------------------------------------------------------------------------------
-    // Metodo Post para generar la preference y la URL de pago mediante mercadoPago
-    @PostMapping("/create")
-    public ResponseEntity<?> createPayment(@RequestBody VentaPasajeDTO request) {
-        System.out.println("💬 VentaPasajeDTO recibido: " + request);
-
-
-        if (request == null) {
-            return ResponseEntity.badRequest().body("El cuerpo de la solicitud no puede ser nulo.");
-        }
-            // fix?
-        try {
-            // 1. Crear la venta con estado inicial
-            VentaPasaje venta = ventaPasajeService.crearVentaPasaje(request);
-            if (venta == null) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se pudo crear la venta.");
-            }
-
-            BigDecimal precio = null;
-            if (venta.getPrecioViaje() != null) {
-                precio = BigDecimal.valueOf(venta.getPrecioViaje().getPrecio());
-            }
-
-            if (precio == null || precio.compareTo(BigDecimal.ZERO) <= 0) {
-                return ResponseEntity.badRequest().body("Precio inválido para la venta.");
-            }
-
-            // 2. Crear el ítem de la preferencia
-            PreferenceItemRequest item = PreferenceItemRequest.builder()
-                    .title("Compra de pasajes - ID Venta " + venta.getId())
-                    .quantity(1)
-                    .unitPrice(precio)
-                    .currencyId("UYU")
-                    .build();
-
-            // 3. Configurar URLs de retorno
-            PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
-                    .success("https://httpbin.org/status/200")
-                    .failure("https://httpbin.org/status/400")
-                    .pending("https://httpbin.org/status/202")
-                    .build();
-
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            // Esto genera una variable, y luego en externalReference se envia
-            // los pasajesId y la VentaId al pago para que MP lo devuelva en el webhook
-            // y podamos confirmar la venta con estos datos.
-            String externalRef = objectMapper.writeValueAsString(Map.of(
-                    "ventaPasajeId", venta.getId(),
-                    "pasajeIds", request.getPasajesIds()
-            ));
-
-            // 4. Crear la preferencia de pago
-            PreferenceRequest preferenceRequest = PreferenceRequest.builder()
-                    .items(Collections.singletonList(item))
-                    .backUrls(backUrls)
-                    .autoReturn("approved")
-                    .notificationUrl("https://webhook.site/53266780-77bb-48a0-adcc-21b1d7ca9eea")
-                    .externalReference(externalRef)
-                    .build();
-
-            // 5. Llamar al cliente MercadoPago para crear la preferencia
-            PreferenceClient client = new PreferenceClient();
-            Preference preference = client.create(preferenceRequest);
-
-            if (preference == null || preference.getInitPoint() == null) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se pudo generar la preferencia de pago.");
-            }
-
-            //  6. Guardar el ID del pago (opcional, pero recomendable)
-            try {
-                venta.setPaymentId(venta.getId());
-               ventaPasajeService.actualizar(venta);
-            } catch (Exception ex) {
-                System.err.println("No se pudo guardar el paymentId: " + ex.getMessage());
-                // No detiene el proceso, solo informa el error
-            }
-
-            // 7. Devolver la URL al frontend para que el usuario pague
-            return ResponseEntity.ok(preference.getInitPoint());
-
-        } catch (MPApiException apiException) {
-            System.err.println("MPApiException occurred:");
-            System.err.println("Status Code: " + apiException.getStatusCode());
-            System.err.println("Cause: " + apiException.getCause());
-            System.err.println("Message: " + apiException.getMessage());
-            if (apiException.getApiResponse() != null) {
-                System.err.println("Response Content: " + apiException.getApiResponse().getContent());
-            }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error de API MercadoPago: " + apiException.getMessage());
-
-        } catch (MPException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creando el pago: " + e.getMessage());
-
-        } catch (Exception e) {
-            // Captura cualquier otro error inesperado
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + e.getMessage());
-        }
-    }
+//    //-------------------------------------------------------------------------------------------------------------------------------------
+////-------------------------------------------------------------------------------------------------------------------------------------
+//    // Metodo Post para generar la preference y la URL de pago mediante mercadoPago
+//    @PostMapping("/create")
+//    public ResponseEntity<?> createPayment(@RequestBody VentaPasajeDTO request) {
+//        System.out.println("💬 VentaPasajeDTO recibido: " + request);
+//
+//
+//        if (request == null) {
+//            return ResponseEntity.badRequest().body("El cuerpo de la solicitud no puede ser nulo.");
+//        }
+//            // fix?
+//        try {
+//            // 1. Crear la venta con estado inicial
+//            VentaPasaje venta = ventaPasajeService.crearVentaPasaje(request);
+//            if (venta == null) {
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se pudo crear la venta.");
+//            }
+//
+//            // VENTA PASAJE AHORA TIENE SU PROPIO PRECIO FINAL, DEBE SER CALCULADO (EN BASE A LOS BENEFICIOS DEL CLIENTE) ANTES DE ESTE PASO.
+//            BigDecimal precio = null;
+//            if (venta.getViaje() != null) {
+//                precio = BigDecimal.valueOf(venta.getViaje().getPrecio());
+//            }
+//
+//            if (precio == null || precio.compareTo(BigDecimal.ZERO) <= 0) {
+//                return ResponseEntity.badRequest().body("Precio inválido para la venta.");
+//            }
+//
+//            // 2. Crear el ítem de la preferencia
+//            PreferenceItemRequest item = PreferenceItemRequest.builder()
+//                    .title("Compra de pasajes - ID Venta " + venta.getId())
+//                    .quantity(1)
+//                    .unitPrice(precio)
+//                    .currencyId("UYU")
+//                    .build();
+//
+//            // 3. Configurar URLs de retorno
+//            PreferenceBackUrlsRequest backUrls = PreferenceBackUrlsRequest.builder()
+//                    .success("https://httpbin.org/status/200")
+//                    .failure("https://httpbin.org/status/400")
+//                    .pending("https://httpbin.org/status/202")
+//                    .build();
+//
+//            ObjectMapper objectMapper = new ObjectMapper();
+//
+//            // Esto genera una variable, y luego en externalReference se envia
+//            // los pasajesId y la VentaId al pago para que MP lo devuelva en el webhook
+//            // y podamos confirmar la venta con estos datos.
+//            String externalRef = objectMapper.writeValueAsString(Map.of(
+//                    "ventaPasajeId", venta.getId(),
+//                    "pasajeIds", request.getPasajesIds()
+//            ));
+//
+//            // 4. Crear la preferencia de pago
+//            PreferenceRequest preferenceRequest = PreferenceRequest.builder()
+//                    .items(Collections.singletonList(item))
+//                    .backUrls(backUrls)
+//                    .autoReturn("approved")
+//                    .notificationUrl("https://webhook.site/53266780-77bb-48a0-adcc-21b1d7ca9eea")
+//                    .externalReference(externalRef)
+//                    .build();
+//
+//            // 5. Llamar al cliente MercadoPago para crear la preferencia
+//            PreferenceClient client = new PreferenceClient();
+//            Preference preference = client.create(preferenceRequest);
+//
+//            if (preference == null || preference.getInitPoint() == null) {
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("No se pudo generar la preferencia de pago.");
+//            }
+//
+//            //  6. Guardar el ID del pago (opcional, pero recomendable)
+//            try {
+//                venta.setPaymentId(venta.getId());
+//               ventaPasajeService.actualizar(venta);
+//            } catch (Exception ex) {
+//                System.err.println("No se pudo guardar el paymentId: " + ex.getMessage());
+//                // No detiene el proceso, solo informa el error
+//            }
+//
+//            // 7. Devolver la URL al frontend para que el usuario pague
+//            return ResponseEntity.ok(preference.getInitPoint());
+//
+//        } catch (MPApiException apiException) {
+//            System.err.println("MPApiException occurred:");
+//            System.err.println("Status Code: " + apiException.getStatusCode());
+//            System.err.println("Cause: " + apiException.getCause());
+//            System.err.println("Message: " + apiException.getMessage());
+//            if (apiException.getApiResponse() != null) {
+//                System.err.println("Response Content: " + apiException.getApiResponse().getContent());
+//            }
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error de API MercadoPago: " + apiException.getMessage());
+//
+//        } catch (MPException e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creando el pago: " + e.getMessage());
+//
+//        } catch (Exception e) {
+//            // Captura cualquier otro error inesperado
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error inesperado: " + e.getMessage());
+//        }
+//    }
     //-------------------------------------------------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------
 

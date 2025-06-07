@@ -46,7 +46,7 @@ public class Viaje {
     @Column(nullable = false)
     private boolean cerrado;
 
-    @Column
+    @Column(nullable = false)
     private float precio;
 
     // Fk tabla y relacion con Omnibus

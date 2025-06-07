@@ -2,12 +2,14 @@ package com.crud.alpha.service;
 
 import com.crud.alpha.clase.Localidad.Localidad;
 import com.crud.alpha.clase.Omnibus.Omnibus;
+import com.crud.alpha.clase.Pasaje.Pasaje;
 import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.Viaje.Viaje;
 import com.crud.alpha.clase.Viaje.dto.NewViajeDTO;
 import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.repository.LocalidadRepository;
 import com.crud.alpha.repository.OmnibusRepository;
+import com.crud.alpha.repository.PasajeRepository;
 import com.crud.alpha.repository.ViajeRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -35,6 +37,8 @@ public class ViajeService {
     private OmnibusService omnibusService;
     @Autowired
     private LocalidadService localidadService;
+    @Autowired
+    private PasajeRepository pasajeRepository;
 
 
     // Obtener todos los Viajes.
@@ -63,25 +67,25 @@ public class ViajeService {
         try {
             Vendedor vendedor = vendedorService.findEntity(entityDTO.getRegisteredBy());
             if (entityDTO.getRegisteredBy() != null && vendedor == null) {
-                logger.error("No existe un vendedor para el clerkId: " + entityDTO.getRegisteredBy());
+                logger.error("[VIAJE createEntity] No existe un vendedor para el clerkId: " + entityDTO.getRegisteredBy());
                 throw new IllegalArgumentException("No existe un vendedor para el clerkId: " + entityDTO.getRegisteredBy());
             }
 
             Omnibus omnibus = omnibusService.findEntity(entityDTO.getNroCoche());
             if (omnibus == null) {
-                logger.error("No existe un omnibus para el nroCoche: " + entityDTO.getNroCoche());
+                logger.error("[VIAJE createEntity] No existe un omnibus para el nroCoche: " + entityDTO.getNroCoche());
                 throw new IllegalArgumentException("No existe un omnibus para el nroCoche: " + entityDTO.getNroCoche());
             }
 
             Localidad origen = localidadService.findEntityById(entityDTO.getLocalidadOrigenId());
             if (origen == null) {
-                logger.error("No existe una localidad para la id: " + entityDTO.getLocalidadOrigenId());
+                logger.error("[VIAJE createEntity] No existe una localidad para la id: " + entityDTO.getLocalidadOrigenId());
                 throw new IllegalArgumentException("No existe una localidad para la id: " + entityDTO.getLocalidadOrigenId());
             }
 
             Localidad destino = localidadService.findEntityById(entityDTO.getLocalidadDestinoId());
             if (origen == null) {
-                logger.error("No existe una localidad para la id: " + entityDTO.getLocalidadDestinoId());
+                logger.error("[VIAJE createEntity] No existe una localidad para la id: " + entityDTO.getLocalidadDestinoId());
                 throw new IllegalArgumentException("No existe una localidad para la id: " + entityDTO.getLocalidadDestinoId());
             }
 
@@ -95,19 +99,26 @@ public class ViajeService {
             entity.setPrecio(entityDTO.getPrecio());
             entity.setOmnibusAsignado(omnibus);
             entity.setRegisteredBy(vendedor);
-
             // Save entity.
             viajeRepository.save(entity);
-            logger.info("Viaje guardado");
+            logger.info("[VIAJE createEntity] Viaje guardado");
+            // Crear los pasajes para el viaje.
+            for (int i = 0; i < omnibus.getAsientos().size(); i++) {
+                Pasaje pasaje = new Pasaje();
+                pasaje.setAsiento(omnibus.getAsientos().get(i));
+                pasaje.setViaje(entity);
+                pasajeRepository.save(pasaje);
+            }
+            logger.info("[VIAJE createEntity] " + omnibus.getAsientos().size() + " Pasajes creados");
 
         } catch (IllegalArgumentException e) {
-            logger.warn("IllegalArgumentException: ");
+            logger.warn("[VIAJE createEntity] IllegalArgumentException: ");
             throw e;
         } catch (DataAccessException e) {
-            logger.warn("DataAcessException: Error al guardar viaje ");
+            logger.warn("[VIAJE createEntity] : Error al guardar viaje ");
             throw new ServiceException("Error al guardar viaje", e);
         } catch (Exception e) {
-            logger.warn("Exception: Error inesperado al guardar viaje ");
+            logger.warn("[VIAJE createEntity] Exception: Error inesperado al guardar viaje " + e);
             throw new ServiceException("Error inesperado al guardar viaje", e);
         }
     }
