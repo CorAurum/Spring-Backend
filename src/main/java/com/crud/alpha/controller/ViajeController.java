@@ -143,35 +143,36 @@ public class ViajeController {
 
 //    // Cerrar un viaje (cambia cerrado de false a true)
  // Cerrar un viaje (cambia cerrado de false a true)
-    @PostMapping("/cerrar/{id}")
-    public ResponseEntity<String> cerrarViaje(@PathVariable Long id) {
-        try {
-            Viaje viaje = viajeService.buscarViajeporId(id)
-                    .orElseThrow(() -> new RuntimeException("Viaje no encontrado"));
+//    @PostMapping("/cerrar/{id}")
+//    public ResponseEntity<String> cerrarViaje(@PathVariable Long id) {
+//        try {
+//            Viaje viaje = viajeService.buscarViajeporId(id)
+//                    .orElseThrow(() -> new RuntimeException("Viaje no encontrado"));
+//
+//            if (viaje.isCerrado()) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                        .body("El viaje ya está cerrado.");
+//            }
+//
+//            viaje.setCerrado(true);
+//            viaje.setUpdatedAt(LocalDateTime.now());
+//            viajeRepository.save(viaje);
+//
+//            // Creamos la nueva instancia de UltimaLocalidad
+//            UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
+//            ultimaLocalidad.setFecha(LocalDateTime.now());
+//            ultimaLocalidad.setOmnibus(viaje.getOmnibusAsignado());
+//            ultimaLocalidad.setLocalidad(viaje.getLocalidadDestino());
+//
+//            ultimaLocalidadRepository.save(ultimaLocalidad);
+//
+//            return ResponseEntity.ok("El viaje fue cerrado exitosamente.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error al cerrar el viaje: " + e.getMessage());
+//        }
+//    }
 
-            if (viaje.isCerrado()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("El viaje ya está cerrado.");
-            }
-
-            viaje.setCerrado(true);
-            viaje.setUpdatedAt(LocalDateTime.now());
-            viajeRepository.save(viaje);
-
-            // Creamos la nueva instancia de UltimaLocalidad
-            UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
-            ultimaLocalidad.setFecha(LocalDateTime.now());
-            ultimaLocalidad.setOmnibus(viaje.getOmnibusAsignado());
-            ultimaLocalidad.setLocalidad(viaje.getLocalidadDestino());
-
-            ultimaLocalidadRepository.save(ultimaLocalidad);
-
-            return ResponseEntity.ok("El viaje fue cerrado exitosamente.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al cerrar el viaje: " + e.getMessage());
-        }
-    }
 
 
 }
