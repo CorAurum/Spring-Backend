@@ -1,10 +1,12 @@
 package com.crud.alpha.controller;
 
+import com.crud.alpha.clase.Localidad.UltimaLocalidad;
 import com.crud.alpha.clase.Viaje.Viaje;
 import com.crud.alpha.clase.Viaje.dto.NewViajeDTO;
 import com.crud.alpha.clase.Viaje.dto.ViajeDTO;
 import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.repository.UltimaLocalidadRepository;
+import com.crud.alpha.repository.ViajeRepository;
 import com.crud.alpha.service.VendedorService;
 import com.crud.alpha.service.ViajeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
