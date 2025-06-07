@@ -33,6 +33,9 @@ public class ViajeController {
     @Autowired
     private UltimaLocalidadRepository ultimaLocalidadRepository;
 
+    @Autowired
+    private ViajeRepository viajeRepository;
+
     // Convertir a DTO
     private ViajeDTO convertirAViajeDTO(Viaje viaje) {
         ViajeDTO dto = new ViajeDTO();
