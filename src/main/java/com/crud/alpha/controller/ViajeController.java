@@ -1,6 +1,8 @@
 package com.crud.alpha.controller;
 
+import com.crud.alpha.clase.Localidad.Localidad;
 import com.crud.alpha.clase.Localidad.UltimaLocalidad;
+import com.crud.alpha.clase.Omnibus.Omnibus;
 import com.crud.alpha.clase.Viaje.Viaje;
 import com.crud.alpha.clase.Viaje.dto.NewViajeDTO;
 import com.crud.alpha.clase.Viaje.dto.ViajeDTO;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/viajes")
@@ -143,36 +146,48 @@ public class ViajeController {
 
 //    // Cerrar un viaje (cambia cerrado de false a true)
  // Cerrar un viaje (cambia cerrado de false a true)
-//    @PostMapping("/cerrar/{id}")
-//    public ResponseEntity<String> cerrarViaje(@PathVariable Long id) {
-//        try {
-//            Viaje viaje = viajeService.buscarViajeporId(id)
-//                    .orElseThrow(() -> new RuntimeException("Viaje no encontrado"));
-//
-//            if (viaje.isCerrado()) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                        .body("El viaje ya está cerrado.");
-//            }
-//
-//            viaje.setCerrado(true);
-//            viaje.setUpdatedAt(LocalDateTime.now());
-//            viajeRepository.save(viaje);
-//
-//            // Creamos la nueva instancia de UltimaLocalidad
-//            UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
-//            ultimaLocalidad.setFecha(LocalDateTime.now());
-//            ultimaLocalidad.setOmnibus(viaje.getOmnibusAsignado());
-//            ultimaLocalidad.setLocalidad(viaje.getLocalidadDestino());
-//
-//            ultimaLocalidadRepository.save(ultimaLocalidad);
-//
-//            return ResponseEntity.ok("El viaje fue cerrado exitosamente.");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body("Error al cerrar el viaje: " + e.getMessage());
-//        }
-//    }
+// Cerrar un viaje (cambia cerrado de false a true)
+    @PostMapping("/cerrar/{id}")
+    public ResponseEntity<String> cerrarViaje(@PathVariable Long id) {
+        try {
+            Optional<Viaje> optionalViaje = viajeService.buscarViajeporId(id);
+            if (optionalViaje.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Viaje no encontrado");
+            }
 
+            Viaje viaje = optionalViaje.get();
 
+            if (viaje.isCerrado()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("El viaje ya está cerrado.");
+            }
 
-}
+            viaje.setCerrado(true);
+            viaje.setUpdatedAt(LocalDateTime.now());
+            viajeRepository.save(viaje);
+
+            UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
+            ultimaLocalidad.setFecha(LocalDateTime.now());
+
+            Omnibus omnibus = viaje.getOmnibusAsignado();
+            Localidad localidadDestino = viaje.getLocalidadDestino();
+
+            if (omnibus == null || localidadDestino == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Error: Datos incompletos en el viaje (Omnibus o LocalidadDestino es null).");
+            }
+
+            ultimaLocalidad.setOmnibus(omnibus);
+            ultimaLocalidad.setLocalidad(localidadDestino);
+
+            ultimaLocalidadRepository.save(ultimaLocalidad);
+
+            return ResponseEntity.ok("El viaje fue cerrado exitosamente.");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al cerrar el viaje: " + e.getMessage());
+        }
+    }
+    }
