@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class NewViajeDTO {
-    private String fechaPartida;
-    private String fechaLlegada;
+    private LocalDateTime fechaPartida;
+    private LocalDateTime fechaLlegada;
     private Long localidadOrigenId; // localidad origen id
     private Long localidadDestinoId; // localidad destino id
     private boolean cerrado;

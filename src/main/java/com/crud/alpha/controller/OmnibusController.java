@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -101,8 +99,8 @@ public class OmnibusController {
     public ResponseEntity<List<OmnibusDTO>> buscarOmnibusDisponibles(@RequestParam Long localidadOrigenId, @RequestParam String fechaPartida) {
         try {
             // Handle both formats: with 'T' and with space, with/without microseconds
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd[ ]['T']HH:mm:ss[.SSSSSS][.SSS]");
-            LocalDateTime fechaPartidaLDT = LocalDateTime.parse(fechaPartida, formatter);
+            // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd[ ]['T']HH:mm:ss[.SSSSSS][.SSS]");
+            // LocalDateTime fechaPartidaLDT = LocalDateTime.parse(fechaPartida, formatter);
 
             List<Omnibus> flotaDisponible = omnibusService.listEntitiesDisponibles(localidadOrigenId, fechaPartida);
 

@@ -97,7 +97,7 @@ public class AdministradorService {
             entity.setActivo(entityDTO.isActivo());
             entity.setFechaNacimiento(entityDTO.getFechaNacimiento());
             entity.setFechaIngreso(entityDTO.getFechaIngreso());
-            entity.setRegistroUsuario(new ArrayList<>());
+//            entity.setRegistroUsuario(new ArrayList<>());
             entity.setRegisteredBy(administrador);
 
             // Save entity.

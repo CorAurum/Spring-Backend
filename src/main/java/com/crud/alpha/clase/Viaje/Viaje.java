@@ -62,14 +62,14 @@ public class Viaje {
 
     // FK tabla y relacion con Localidad // PENSADO PARA LOCALIDAD DONDE INICIA EL VIAJE
     @ManyToOne
-    @JoinColumn(nullable = false, name = "localidad_inicial", referencedColumnName = "id")
-    private Localidad localidadInicial;
+    @JoinColumn(nullable = false, name = "localidad_origen", referencedColumnName = "id")
+    private Localidad localidadOrigen;
 
 
     // FK tabla y relacion con Localidad // PENSADO PARA LOCALIDAD DONDE FINALIZA EL VIAJE
     @ManyToOne
-    @JoinColumn(nullable = false, name = "localidad_final", referencedColumnName = "id")
-    private Localidad localidadFinal;
+    @JoinColumn(nullable = false, name = "localidad_destino", referencedColumnName = "id")
+    private Localidad localidadDestino;
 
     // ** FK Tabla y relacion con Pasaje
     @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)

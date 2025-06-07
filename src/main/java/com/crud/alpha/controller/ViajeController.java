@@ -1,9 +1,9 @@
 package com.crud.alpha.controller;
 
-import com.crud.alpha.clase.Localidad.UltimaLocalidad;
-import com.crud.alpha.clase.Usuarios.Vendedor.Vendedor;
 import com.crud.alpha.clase.Viaje.Viaje;
+import com.crud.alpha.clase.Viaje.dto.NewViajeDTO;
 import com.crud.alpha.clase.Viaje.dto.ViajeDTO;
+import com.crud.alpha.clase.exceptions.ServiceException;
 import com.crud.alpha.repository.UltimaLocalidadRepository;
 import com.crud.alpha.service.VendedorService;
 import com.crud.alpha.service.ViajeService;
@@ -12,14 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/public/viajes")
+@RequestMapping("/viajes")
 public class ViajeController {
 
     @Autowired
@@ -31,20 +27,21 @@ public class ViajeController {
     @Autowired
     private UltimaLocalidadRepository ultimaLocalidadRepository;
 
-    // ✅ Convertir manualmente a DTO // Este metodo me lo dio Gepeto lo voy a testear
+    // Convertir a DTO
     private ViajeDTO convertirAViajeDTO(Viaje viaje) {
         ViajeDTO dto = new ViajeDTO();
-//        dto.setId(viaje.getId());
-//        dto.setFecha(viaje.getFecha().toString());
-//        dto.setHoraPartida(viaje.getHora_partida().toString());
-//        dto.setHoraLlegada(viaje.getHora_llegada().toString());
-//        dto.setCerrado(viaje.isCerrado());
-//        dto.setNroCoche(viaje.getOmnibusAsignado().getNroCoche());
-//        dto.setLocalidadInicial(viaje.getLocalidadInicial().getId());
-//        dto.setLocalidadFinal(viaje.getLocalidadFinal().getId());
-//        dto.setCreatedAt(viaje.getCreatedAt());
-//        dto.setUpdatedAt(viaje.getUpdatedAt());
-//        dto.setRegisteredByFullName(viaje.getRegisteredBy().getNombre() + " " + viaje.getRegisteredBy().getApellido());
+        dto.setId(viaje.getId());
+        dto.setFechaPartida(viaje.getFechaPartida());
+        dto.setFechaLlegada(viaje.getFechaLlegada());
+        dto.setCerrado(viaje.isCerrado());
+        dto.setNroCoche(viaje.getOmnibusAsignado().getNroCoche());
+        dto.setLocalidadOrigenNombre(viaje.getLocalidadOrigen().getNombre());
+        dto.setLocalidadDestinoNombre(viaje.getLocalidadDestino().getNombre());
+        dto.setLocalidadOrigenId(viaje.getLocalidadOrigen().getId());
+        dto.setLocalidadDestinoId(viaje.getLocalidadDestino().getId());
+        dto.setRegisteredByFullName(viaje.getRegisteredBy().getNombre() + " " + viaje.getRegisteredBy().getApellido());
+        dto.setCreatedAt(viaje.getCreatedAt());
+        dto.setUpdatedAt(viaje.getUpdatedAt());
         return dto;
     }
 
@@ -67,7 +64,7 @@ public class ViajeController {
     @GetMapping("/{destino}")
     public ResponseEntity<List<ViajeDTO>> obtenerPorLocalidadDestino(@PathVariable long destino) {
         try {
-            List<Viaje> viajes = viajeService.ObtenerPorLocalidadFinal(destino);
+            List<Viaje> viajes = viajeService.ObtenerPorLocalidadDestino(destino);
             if (viajes.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
@@ -88,11 +85,10 @@ public class ViajeController {
             @PathVariable Long origen,
             @PathVariable Long destino) {
         try {
-            List<Viaje> viajes = viajeService.ObtenerPorLocalidadInicialyFinal(origen, destino);
+            List<Viaje> viajes = viajeService.ObtenerPorLocalidadOrigenyDestino(origen, destino);
             List<ViajeDTO> viajeDTOs = viajes.stream()
                     .map(this::convertirAViajeDTO)
                     .toList();
-
 
 
             return ResponseEntity.ok(viajeDTOs);
@@ -101,31 +97,24 @@ public class ViajeController {
         }
     }
 
-//    //Crear un viaje
-//    @PostMapping
-//    public ResponseEntity<String> crearViaje(@RequestBody ViajeDTO dto) {
-//        try {
-//            Viaje viaje = new Viaje();
-//
-//            Vendedor vendedor = vendedorService.findEntity(dto.getRegisteredByFullName());
-//
-//            viaje.setFecha(LocalDate.parse(dto.getFecha()));
-//            viaje.setHora_partida(LocalTime.parse(dto.getHoraPartida()));
-//            viaje.setHora_llegada(LocalTime.parse(dto.getHoraLlegada()));
-//            viaje.setCerrado(dto.isCerrado());
-//            viaje.setCreatedAt(LocalDateTime.now());
-//            viaje.setUpdatedAt(LocalDateTime.now());
-//            viaje.setRegisteredBy(vendedor);
-//
-//            viajeService.asignarDatosRelacionados(viaje, dto.getNroCoche(), dto.getLocalidadInicial(), dto.getLocalidadFinal());
-//
-//            viajeService.guardarViaje(viaje);
-//            return ResponseEntity.ok("Viaje creado exitosamente.");
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear viaje: " + e.getMessage());
-//        }
-//    }
-//
+    // Crear un nuevo viaje.
+    @PostMapping
+    public ResponseEntity<String> createEntity(@RequestBody NewViajeDTO entityDTO) {
+        try {
+            viajeService.createEntity(entityDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Viaje creado con exito");
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("entidad-duplicada")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (ServiceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 //    // modifica un viaje
 //    @PatchMapping("/{id}")
 //    public ResponseEntity<String> modificarViaje(@PathVariable Long id, @RequestBody ViajeDTO dto) {
@@ -149,36 +138,36 @@ public class ViajeController {
 //        }
 //    }
 
-    // Cerrar un viaje (cambia cerrado de false a true)
-    @PostMapping("/cerrar/{id}")
-    public ResponseEntity<String> cerrarViaje(@PathVariable Long id) {
-        try {
-            Viaje viaje = viajeService.buscarViajeporId(id)
-                    .orElseThrow(() -> new RuntimeException("Viaje no encontrado"));
-
-            if (viaje.isCerrado()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("El viaje ya está cerrado.");
-            }
-
-            viaje.setCerrado(true);
-            viaje.setUpdatedAt(LocalDateTime.now());
-            viajeService.guardarViaje(viaje);
-
-            // Creamos la nueva instancia de UltimaLocalidad
-            UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
-            ultimaLocalidad.setFecha(LocalDateTime.now());
-            ultimaLocalidad.setOmnibus(viaje.getOmnibusAsignado());
-            ultimaLocalidad.setLocalidad(viaje.getLocalidadFinal());
-
-            ultimaLocalidadRepository.save(ultimaLocalidad);
-
-            return ResponseEntity.ok("El viaje fue cerrado exitosamente.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al cerrar el viaje: " + e.getMessage());
-        }
-    }
+//    // Cerrar un viaje (cambia cerrado de false a true)
+//    @PostMapping("/cerrar/{id}")
+//    public ResponseEntity<String> cerrarViaje(@PathVariable Long id) {
+//        try {
+//            Viaje viaje = viajeService.buscarViajeporId(id)
+//                    .orElseThrow(() -> new RuntimeException("Viaje no encontrado"));
+//
+//            if (viaje.isCerrado()) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                        .body("El viaje ya está cerrado.");
+//            }
+//
+//            viaje.setCerrado(true);
+//            viaje.setUpdatedAt(LocalDateTime.now());
+//            viajeService.guardarViaje(viaje);
+//
+//            // Creamos la nueva instancia de UltimaLocalidad
+//            UltimaLocalidad ultimaLocalidad = new UltimaLocalidad();
+//            ultimaLocalidad.setFecha(LocalDateTime.now());
+//            ultimaLocalidad.setOmnibus(viaje.getOmnibusAsignado());
+//            ultimaLocalidad.setLocalidad(viaje.getLocalidadDestino());
+//
+//            ultimaLocalidadRepository.save(ultimaLocalidad);
+//
+//            return ResponseEntity.ok("El viaje fue cerrado exitosamente.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error al cerrar el viaje: " + e.getMessage());
+//        }
+//    }
 
 
 }

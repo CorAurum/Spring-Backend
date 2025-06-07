@@ -33,7 +33,7 @@ public interface OmnibusRepository extends JpaRepository<Omnibus, Long> {
     // *** Por lo que es factible ponerle una nueva ultima localidad con una fecha futura, indicando que recien a partir de esa fecha estará libre para un viaje.
     @Query(value =
             "SELECT o.* " +
-                    " FROM omnibus o INNER JOIN ultima_localidad ul ON o.nro_coche = ul.nro_coche " +
+                    "FROM omnibus o INNER JOIN ultima_localidad ul ON o.nro_coche = ul.nro_coche " +
                     "WHERE ul.fecha = ( " + // la mas ultima de las ultimas localidades.
                     "    SELECT MAX(ul2.fecha) " +
                     "    FROM ultima_localidad ul2 " +

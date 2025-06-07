@@ -18,9 +18,9 @@ public class Administrador extends Usuario {
     @Column(nullable = false)
     private LocalDateTime fechaIngreso;
 
-    // Usuarios que registró
-    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
-    private List<com.crud.alpha.clase.Usuarios.RegistroUsuario> RegistroUsuario = new ArrayList<>();
+//    // Usuarios que registró
+//    @OneToMany(mappedBy = "id", fetch = FetchType.LAZY)
+//    private List<com.crud.alpha.clase.Usuarios.RegistroUsuario> RegistroUsuario = new ArrayList<>();
 
 
 }
